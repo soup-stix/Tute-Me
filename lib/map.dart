@@ -16,17 +16,18 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  /*
-  static LatLng _kMapCenter =
+
+  static final LatLng _kMapCenter =
   LatLng(19.018255973653343, 72.84793849278007);
 
-  static CameraPosition _kInitialPosition =
+  static final CameraPosition _kInitialPosition =
   CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
 
-  static LatLng _initialPosition;
-  final Set<Marker> _markers = {};
-  static  LatLng _lastMapPosition = _initialPosition;
-  Completer<GoogleMapController> controller1;
+  //static LatLng _initialPosition;
+  //final Set<Marker> _markers = {};
+  //static  LatLng _lastMapPosition = _initialPosition;
+/*
+  GoogleMapController _controller;
 
 
   Future <void> onMapCreated(GoogleMapController controller) async {
@@ -34,8 +35,8 @@ class _MapState extends State<Map> {
     String value = await DefaultAssetBundle.of(context)
         .loadString('assets/map_style.json');
     _controller.setMapStyle(value);
-  }
-
+  }*/
+  /*
   void _currentLocation() async {
 
     // Create a map controller
@@ -57,8 +58,8 @@ class _MapState extends State<Map> {
         zoom: 17.0,
       ),
     ));
-  }
-*/
+  }*/
+/*
   LatLng initPosition = LatLng(0, 0); //initial Position cannot assign null values
   LatLng currentLatLng= LatLng(0.0, 0.0); //initial currentPosition values cannot assign null values
   LocationPermission permission = LocationPermission.denied; //initial permission status
@@ -106,7 +107,7 @@ class _MapState extends State<Map> {
     } else {
       return false;
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +127,7 @@ class _MapState extends State<Map> {
       ),
       body: Stack(
         children: [
-          GoogleMap(
+          /*GoogleMap(
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
@@ -148,12 +149,11 @@ class _MapState extends State<Map> {
             ),
           ),
         ],
-      ), /*GoogleMap(
+      ), */GoogleMap(
         initialCameraPosition: _kInitialPosition,
-        myLocationEnabled: true,
-        trafficEnabled: true,
-        onMapCreated: onMapCreated,
-      ),*/
+      ),
+      ],
+    ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlueAccent,
         child: Container(

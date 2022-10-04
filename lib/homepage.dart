@@ -25,8 +25,8 @@ class _HomePageState extends State<HomePage> {
   ];
   final List _categories = [
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Math for children in such a way that they will fall in love","assets/book.png","Bikes/Cycles","Buy books and other assignment needs"],
-    ["assets/mia.jpg","Miss. Amy","Biology for children in such a way that they will fall in love","assets/book.png","Calculators","Buy books and other assignment needs"],
-    ["assets/sins.jpg","Dr. Jerkalot","Physics for children in such a way that they will fall in love","assets/book.png","Random","Buy books and other assignment needs"],
+    ["assets/gajju.jpg","Dr. Gajendra Purohit","Biology for children in such a way that they will fall in love","assets/book.png","Calculators","Buy books and other assignment needs"],
+    ["assets/gajju.jpg","Dr. Gajendra Purohit","Physics for children in such a way that they will fall in love","assets/book.png","Random","Buy books and other assignment needs"],
   ];
 
   @override
