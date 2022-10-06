@@ -5,6 +5,7 @@ import 'package:tute_me/profile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/resetpassword.dart';
 import 'package:tute_me/homepage.dart';
+import 'package:tute_me/student_register.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/cycles.dart';
 import 'package:tute_me/listingnew.dart';
@@ -24,6 +25,7 @@ void main() {
       'forgotpassword':(context) => ForgotPassword(),
       'resetpassword':(context) => ResetPassword(),
       'homepage':(context) => HomePage(),
+      'homepage':(context) => Student_Register(),
       'books':(context) => Books(),
       'cycles':(context) => Cycles(),
       'listingnew':(context) => Listing(),

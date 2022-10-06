@@ -9,15 +9,14 @@ import 'package:tute_me/listingnew.dart';
 import 'package:flutter_svg/avd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tute_me/profile.dart';
-import 'package:tute_me/student_register.dart';
 
-class HomePage extends StatefulWidget {
+class Student_Register extends StatefulWidget {
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _Student_RegisterState createState() => _Student_RegisterState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _Student_RegisterState extends State<Student_Register> {
   final List _posts = [
     ["Da Vinci Code","Dan Brown","https://m.media-amazon.com/images/I/5171w-4D2FL.jpg","500","Anand","123456798"],
     ["Trek Speed","Rarely used","https://thecyclesportexperience.files.wordpress.com/2019/08/mes1.jpg","69,000","Anand","123456798"],
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.white,
-        ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -47,11 +46,11 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           leading: Builder(builder: (context) =>
               IconButton(
-            icon: Icon(Icons.menu_rounded),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
+                icon: Icon(Icons.menu_rounded),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              ),
 
-        ),
+          ),
         ),
         drawer: Drawer(
           backgroundColor: Colors.lightBlueAccent,
@@ -64,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
                     style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
+                      foregroundColor: Colors.white,
                     ),
                     child: Container(
                         alignment: Alignment.centerLeft,
@@ -84,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                     )
                 ),
                 TextButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Student_Register())),
+                    onPressed: () {},
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                     ),
@@ -159,27 +158,27 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.lightBlueAccent,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 5),
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Colors.transparent,
-              ),
-              child: Stack(
-                children: [
-                  Row(
+          child: Container(
+            margin: EdgeInsets.only(bottom: 5),
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: Colors.transparent,
+            ),
+            child: Stack(
+              children: [
+                Row(
                   children: [
                     Spacer(),
                     IconButton(
-                        onPressed: () {
+                      onPressed: () {
 
-                        },
-                        hoverColor: Colors.black,
-                        color: Colors.white,
-                        highlightColor: Colors.black12,
-                        tooltip: "Home",
-                        icon: Icon(Icons.home_rounded),
+                      },
+                      hoverColor: Colors.black,
+                      color: Colors.white,
+                      highlightColor: Colors.black12,
+                      tooltip: "Home",
+                      icon: Icon(Icons.home_rounded),
                       iconSize: 35,
                     ),
                     Spacer(),
@@ -205,9 +204,9 @@ class _HomePageState extends State<HomePage> {
                     Spacer(),
                   ],
                 ),
-          ],
-              ),
+              ],
             ),
+          ),
         ),
       ),
     );
