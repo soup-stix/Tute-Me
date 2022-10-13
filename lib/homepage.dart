@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tute_me/books.dart';
@@ -17,18 +19,27 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final List _posts = [
-    ["Da Vinci Code","Dan Brown","https://m.media-amazon.com/images/I/5171w-4D2FL.jpg","500","Anand","123456798"],
-    ["Trek Speed","Rarely used","https://thecyclesportexperience.files.wordpress.com/2019/08/mes1.jpg","69,000","Anand","123456798"],
-    ["FireFox Tarmak","Upgrading to new bike!!","https://s3.ap-south-1.amazonaws.com/choosemybicycle/images/reviews/firefox-tarmak.jpg","29,999","Anand","123456798"],
-    ["Rich Dad, Poor Dad","Robert T Kiyosaki","https://images-na.ssl-images-amazon.com/images/I/81bsw6fnUiL.jpg","1000","Anand","123456798"],
-  ];
+class _HomePageState extends State<HomePage>{
   final List _categories = [
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Math for children in such a way that they will fall in love","assets/book.png","Bikes/Cycles","Buy books and other assignment needs"],
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Biology for children in such a way that they will fall in love","assets/book.png","Calculators","Buy books and other assignment needs"],
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Physics for children in such a way that they will fall in love","assets/book.png","Random","Buy books and other assignment needs"],
   ];
+  final _database = FirebaseDatabase.instance.reference();
+
+  @override
+    void initState(){
+      super.initState();
+      _database.child('Teachers').push().set({'name': 'Dr. Arulkumar'});
+      _activeListners();
+    }
+
+    void _activeListners(){
+      final _teachers = _database.child('Teachers').onValue.listen((event) {
+        final Object? teacher = event.snapshot.value;
+        print(teacher);
+      });
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,10 @@ class _HomePageState extends State<HomePage> {
           leading: Builder(builder: (context) =>
               IconButton(
             icon: Icon(Icons.menu_rounded),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+              //print(faculty);
+            },
           ),
 
         ),

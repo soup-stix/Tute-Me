@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 //import 'package:resale_test_1/flutter_flow/flutter_flow_theme.dart';
 //import '../flutter_flow/flutter_flow_util.dart';
@@ -76,18 +77,18 @@ class Details extends StatefulWidget {
                                   scrollDirection: Axis.horizontal,
                                   children:[
                                     Image.asset(
-                                      'assets/mia.jpg',
+                                      'assets/gajju.jpg',
                                       //width: 100,
                                       //height: 100,
                                       fit: BoxFit.fill,
                                     ),
-                                    Image.network(
-                                      'assets/sins.jpg',
+                                    Image.asset(
+                                      'assets/gajju.jpg',
                                       //width: 100,
                                       //height: 100,
                                       fit: BoxFit.fill,
                                     ),
-                                    Image.network(
+                                    Image.asset(
                                       'assets/gajju.jpg',
                                       //width: 100,
                                       //height: 100,
@@ -143,27 +144,130 @@ class Details extends StatefulWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Rs. "+widget.child[3],
+                        child: Text(widget.child[1],
                           style: TextStyle(color: Colors.black,fontSize: 26,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.35),
-                        child: Text('Negotiable *',
-                          style: TextStyle(color: Colors.black,fontSize: 12,),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
                         //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Condition",
+                        child: Text("Classes",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      Text("Good Condition, neatly maintained",
+                      Row(
+                        children: [
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("11"),
+                            ),),
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("12"),
+                            ),),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                        child: Text("Subjects",
+                          style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                      Row(
+                        children: [
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("Math"),
+                            ),),
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("Physics"),
+                            ),),
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("Biology"),
+                            ),),
+                          Card(
+                            color: Colors.white70,
+                            elevation: 5,
+                            shadowColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.black,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text("Chemistry"),
+                            ),),
+                        ],
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                        child: Text("Speciality",
+                          style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                      Text("Extremely well versed in physics and maths",
                         style: TextStyle(fontSize: 14,),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
