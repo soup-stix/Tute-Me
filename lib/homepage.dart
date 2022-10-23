@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage>{
   @override
     void initState(){
       super.initState();
-      _database.child('Teachers').push().set({'name': 'Dr. Arulkumar'});
+      //_database.child('Teachers').push().set({'name': 'Dr. Arulkumar'});
       _activeListners();
     }
 

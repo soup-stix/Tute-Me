@@ -47,8 +47,32 @@ class _MapState extends State<Map> {
   }
 */
   final Completer<GoogleMapController> _controller = Completer();
-
+  var _isSelected = false;
   static const CameraPosition initialPosition = CameraPosition(target: LatLng(45.521563, -122.677433),zoom: 10.0,);
+
+  Set<Marker> _createMarker() {
+    return {
+      Marker(
+          markerId: MarkerId("marker_1"),
+          position: LatLng(45.521563, -122.677433),
+          //infoWindow: InfoWindow(title: 'Dr. Gajendra Purohit',),
+        onTap: () {
+            print("Tapped");
+            setState(() {
+              if(_isSelected == true){
+                _isSelected = false;
+              }
+              else
+                _isSelected = true;
+            });
+            },
+      ),
+      Marker(
+        markerId: MarkerId("marker_2"),
+        position: LatLng(18.997962200185533, 72.8379758747611),
+      ),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,19 +90,48 @@ class _MapState extends State<Map> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        initialCameraPosition: initialPosition,
-        mapType: MapType.normal,
+      body: Stack(
+        children: [
+          GoogleMap(
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          initialCameraPosition: initialPosition,
+          mapType: MapType.normal,
+          myLocationEnabled: true,
+          markers: _createMarker(),
+        ),
+          _isSelected ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.all(10),
+                height: MediaQuery.of(context).size.height*0.12,
+                width: MediaQuery.of(context).size.width*0.9,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white,),
+                child: Row(
+                  children: [
+                    Image.asset('assets/gajju.jpg'),
+                    SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Dr. Gajendra Purohit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
+                          Text("Address:", style: TextStyle(fontWeight: FontWeight.bold,),),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ) : Container(),
+      ],
       ),
-      /*GoogleMap(
-        initialCameraPosition: _kInitialPosition,
-        myLocationEnabled: true,
-        //onMapCreated: onMapCreated,
-        //markers: _createMarker(),
-      ),*/
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlueAccent,
         child: Container(
