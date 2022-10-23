@@ -16,13 +16,39 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-
+/*
   static final LatLng _kMapCenter =
-  LatLng(19.018255973653343, 72.84793849278007);
+  LatLng(19, 72);
 
   static final CameraPosition _kInitialPosition =
   CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
 
+  void _currentLocation() async {
+
+    // Create a map controller
+    final GoogleMapController controller = await _controller.future;
+    LocationData? currentLocation;
+    var location = new Location();
+    try {
+      // Find and store your location in a variable
+      currentLocation = await location.getLocation();
+    } on Exception {
+      currentLocation = null;
+    }
+
+    // Move the map camera to the found location using the controller
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: 0,
+        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        zoom: 17.0,
+      ),
+    ));
+  }
+*/
+  final Completer<GoogleMapController> _controller = Completer();
+
+  static const CameraPosition initialPosition = CameraPosition(target: LatLng(45.521563, -122.677433),zoom: 10.0,);
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +66,19 @@ class _MapState extends State<Map> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Stack(
-        children: [
-          GoogleMap(
-        initialCameraPosition: _kInitialPosition,
-            zoomControlsEnabled: true,
-            zoomGesturesEnabled: true,
-            myLocationButtonEnabled: true,
+      body: GoogleMap(
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+        initialCameraPosition: initialPosition,
+        mapType: MapType.normal,
       ),
-      ],
-    ),
+      /*GoogleMap(
+        initialCameraPosition: _kInitialPosition,
+        myLocationEnabled: true,
+        //onMapCreated: onMapCreated,
+        //markers: _createMarker(),
+      ),*/
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlueAccent,
         child: Container(
