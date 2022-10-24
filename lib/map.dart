@@ -1,7 +1,11 @@
 
 import 'dart:async';
+import 'package:custom_marker/marker_icon.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:label_marker/label_marker.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:tute_me/cards.dart';
@@ -16,66 +20,119 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-/*
-  static final LatLng _kMapCenter =
-  LatLng(19, 72);
-
-  static final CameraPosition _kInitialPosition =
-  CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
-
-  void _currentLocation() async {
-
-    // Create a map controller
-    final GoogleMapController controller = await _controller.future;
-    LocationData? currentLocation;
-    var location = new Location();
-    try {
-      // Find and store your location in a variable
-      currentLocation = await location.getLocation();
-    } on Exception {
-      currentLocation = null;
-    }
-
-    // Move the map camera to the found location using the controller
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        bearing: 0,
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
-        zoom: 17.0,
-      ),
-    ));
-  }
-*/
-  final Completer<GoogleMapController> _controller = Completer();
+  late final Completer<GoogleMapController> _controller = Completer();
+  var _searchText;
+  var _cardImage;
+  dynamic location;
   var _isSelected = false;
-  static const CameraPosition initialPosition = CameraPosition(target: LatLng(45.521563, -122.677433),zoom: 10.0,);
+  var _cardName;
+  var _cardData;
+  dynamic data = [];
 
-  Set<Marker> _createMarker() {
-    return {
-      Marker(
-          markerId: MarkerId("marker_1"),
-          position: LatLng(45.521563, -122.677433),
-          //infoWindow: InfoWindow(title: 'Dr. Gajendra Purohit',),
-        onTap: () {
-            print("Tapped");
-            setState(() {
-              if(_isSelected == true){
-                _isSelected = false;
-              }
-              else
-                _isSelected = true;
-            });
+  final _database = FirebaseDatabase.instance.reference();
+  late StreamSubscription _dataStream;
+
+  MapType currentMapType = MapType.normal;
+  static final CameraPosition _kGoogle = const CameraPosition(
+    target: LatLng(20.42796133580664, 80.885749655962),
+    zoom: 14.4746,
+  );
+
+  void _onMapTypeChanged() {
+    setState(() {
+      currentMapType = currentMapType == MapType.normal ? MapType.satellite : MapType.normal;
+    });
+  }
+
+  final Set<Marker> markers = Set();
+
+  Set<Marker> getmarkers() {
+    print(data);
+    for (dynamic items in data){
+      //print("marker maker:");
+      //print(items);
+      setState(() {
+        markers.add(Marker(
+          markerId: MarkerId(items[0]),
+          position: LatLng(items[3],items[4]),
+          infoWindow: InfoWindow(
+            onTap: (){
+              setState(() {
+                _cardImage = items[2];
+                _cardName = items[0];
+                _cardData = items[1];
+                _isSelected = true;});
             },
-      ),
-      Marker(
-        markerId: MarkerId("marker_2"),
-        position: LatLng(18.997962200185533, 72.8379758747611),
-      ),
-    };
+            title: items[0],
+            snippet: items[1],
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _cardImage = items[2];
+              _cardName = items[0];
+              _cardData = items[1];
+              _isSelected = true;});
+          },//Icon for Marker
+        ));
+      });
+    }
+    //print(markers);
+    return markers;
+  }
+
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission().then((value){
+    }).onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR"+error.toString());
+    });
+    return await Geolocator.getCurrentPosition();
+  }
+
+  void mylocationMarker() async{
+    dynamic value = await getUserCurrentLocation();
+      markers.addLabelMarker(LabelMarker(
+        label: "ME",
+        markerId: MarkerId("My Location"),
+        position: LatLng(value.latitude, value.longitude),
+        backgroundColor: Colors.blue,
+        visible: true,
+      ));
+  }
+
+  void _activateListeners() {
+    _dataStream = _database.child('Teachers').onValue.listen((event) {
+      final dynamic teacher = event.snapshot.value;
+      setState(() {
+        for(int i=1;i<4;i++) {
+          //print(teacher[i]['coordinates']);
+          //print([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
+          data.add([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
+          //print(data);
+          //getmarkers();
+        }
+      });
+  });
+}
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _activateListeners();
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    _dataStream.cancel();
+    super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
+    mylocationMarker();
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
@@ -87,6 +144,9 @@ class _MapState extends State<Map> {
                 onPressed: () => Navigator.pop(context),
               ),
         ),
+        actions: [
+          IconButton(onPressed: _onMapTypeChanged, icon: Icon(Icons.map_rounded,),)
+        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -96,42 +156,92 @@ class _MapState extends State<Map> {
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
-          initialCameraPosition: initialPosition,
-          mapType: MapType.normal,
-          myLocationEnabled: true,
-          markers: _createMarker(),
+            initialCameraPosition: _kGoogle,
+          mapType: currentMapType,
+            myLocationEnabled: true,
+            compassEnabled: true,
+            markers: getmarkers(),
         ),
-          _isSelected ? Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                alignment: Alignment.topCenter,
-                padding: EdgeInsets.all(10),
-                height: MediaQuery.of(context).size.height*0.12,
-                width: MediaQuery.of(context).size.width*0.9,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white,),
-                child: Row(
-                  children: [
-                    Image.asset('assets/gajju.jpg'),
-                    SizedBox(width: MediaQuery.of(context).size.width*0.02,),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 8.0),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                  width: MediaQuery.of(context).size.width*0.8,
+                  child: TextField(
+                    onTap: () {
+                      setState(() {_isSelected = false; });
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      icon: Icon(Icons.search_rounded),
+                      hintText: "Search area",
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchText = value;
+                        print(_searchText);
+                      });
+                    },
+                    onSubmitted: (value) {
+                      setState(() {
+                        _searchText = value;
+                        print(_searchText);
+                      });
+                    },
+                  ),
+                ),
+              ),
+              _isSelected ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    //padding: EdgeInsets.all(10),
+                    height: MediaQuery.of(context).size.height*0.12,
+                    width: MediaQuery.of(context).size.width*0.9,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white,),
+                    child: TextButton(
+                      onPressed: (){},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        foregroundColor: Colors.black,
+                      ),
+                      child: Row(
                         children: [
-                          Text("Dr. Gajendra Purohit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
-                          Text("Address:", style: TextStyle(fontWeight: FontWeight.bold,),),
+                          Image.asset(_cardImage),
+                          SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_cardName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
+                                Text(_cardData, style: TextStyle(fontWeight: FontWeight.bold,),),
+                              ],
+                            ),
+                          ),
+                          IconButton(onPressed: () {setState(() {_isSelected = false;});}, icon: Icon(Icons.close), iconSize: 20,)
                         ],
                       ),
                     ),
-
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ) : Container(),
+              ) : Container(),
+            ],
+          ),
+
       ],
       ),
+      /*floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.map_rounded, size: 20),
+        onPressed: _onMapTypeChanged,
+      ),*/
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlueAccent,
         child: Container(
@@ -191,5 +301,6 @@ class _MapState extends State<Map> {
         ),
       ),
     );
+
   }
 }

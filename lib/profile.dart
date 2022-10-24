@@ -135,22 +135,27 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.01,),
-                _isSelected ? Expanded(
-                  child: ListView.builder(
-                      itemCount: _bought.length,
-                      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                      itemBuilder: (context, index){
-                        return MyFavourites(child: _bought[index]);
-                      }
-                  ),
+                _isSelected ? SingleChildScrollView(
+                  physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                    child: Column(
+                      children: [Text("No Subjects")],)/*ListView.builder(
+                        itemCount: _listed.length,
+                        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        itemBuilder: (context, index){
+                          return MyFavourites(child: _listed[index]);
+                        }
+                    ),*/
                 ) : Container(),
-                _isSelected2 ? Expanded(
-                  child: ListView.builder(
-                      itemCount: _listed.length,
-                      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                      itemBuilder: (context, index){
-                        return MyFavourites(child: _listed[index]);
-                      }
+                _isSelected2 ? SingleChildScrollView(
+                  physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  child: Column(
+                    children: [Text("No Subjects")],/*ListView.builder(
+                        itemCount: _listed.length,
+                        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        itemBuilder: (context, index){
+                          return MyFavourites(child: _listed[index]);
+                        }
+                    ),*/
                   ),
                 ) : Container(),
               ]
