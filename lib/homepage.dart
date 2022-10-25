@@ -139,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                       iconSize: 35,
                     ),
                     Spacer(),
+                    IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Listing())),
+                        icon: Icon(Icons.add_box))
                   ],
                 ),
           ],

@@ -9,7 +9,7 @@ import 'package:tute_me/books.dart';
 import 'package:tute_me/cycles.dart';
 import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/favourites_expanded.dart';
-import 'package:tute_me/favourites.dart';
+
 import 'package:tute_me/map.dart';
 
 void main() {
