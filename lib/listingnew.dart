@@ -1,9 +1,11 @@
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:tute_me/cards.dart';
+import 'package:tute_me/map.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
+import 'package:geocoder/geocoder.dart';
 
 class Listing extends StatefulWidget {
   const Listing({Key? key}) : super(key: key);
@@ -13,13 +15,9 @@ class Listing extends StatefulWidget {
 }
 
 class _ListingState extends State<Listing> {
-  final List _posts = [
-    ["Kaichou wa Maid-Sama!","For Sale!!","https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1342630688l/15758313.jpg","300","Anand","123456798"],
-    ["Da Vinci Code","Dan Brown","https://m.media-amazon.com/images/I/5171w-4D2FL.jpg","500","Anand","123456798"],
-    ["IKIGAI","Japanese","https://images-na.ssl-images-amazon.com/images/I/81l3rZK4lnL.jpg","400","Anand","123456798"],
-    ["Harry Potter and The Chamber of Secrets","JK Rowling","https://images-na.ssl-images-amazon.com/images/I/91HHqVTAJQL.jpg","700","Anand","123456798"],
-    ["Rich Dad, Poor Dad","Robert T Kiyosaki","https://images-na.ssl-images-amazon.com/images/I/81bsw6fnUiL.jpg","1000","Anand","123456798"],
-  ];
+
+  final _database = FirebaseDatabase.instance.reference();
+
   List<String> items = [
     "Calculators",
     "Class Notes - Handwritten",
@@ -40,13 +38,88 @@ class _ListingState extends State<Listing> {
   var categories;
   var negotiable;
   var delivery;
+  bool _loadingWidget = false;
+  dynamic _latitude;
+  dynamic _longitude;
+  final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    _nameController.addListener(_printLatestValue);
+    _addressController.addListener(_printLatestValue);
+    _phoneController.addListener(_printLatestValue);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    _nameController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _printLatestValue() {
+    print('Address field: ${_addressController.text}');
+    print('Name field: ${_nameController.text}');
+    print('Phone field: ${_phoneController.text}');
+  }
+
+  void _getlocation() async{
+    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text);
+    var first = addresses.first;
+    var location = first.coordinates.toMap();
+    setState(() {
+      _latitude = location['latitude'];
+      _longitude = location['longitude'];
+    });
+    print(first.coordinates.toMap());
+  }
+
+  void _onLoading() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          backgroundColor: Colors.white,
+          title: Center(child: Text("Loading",style: TextStyle(fontSize: 30,color: Colors.lightBlue),)),
+          actions: <Widget>[
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                  CircularProgressIndicator(),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.05,)
+                  //Text("Loading",style: TextStyle(fontSize: 20,color: Colors.lightBlue),),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    new Future.delayed(new Duration(seconds: 3), () {
+      Navigator.pop(context); //pop dialog
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Add a listing", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),),
+        title: Text("Add a Tutor", style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
               IconButton(
@@ -63,6 +136,143 @@ class _ListingState extends State<Listing> {
           child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Tutor name",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "name",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _nameController,
+                  //maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Tutor address",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "address",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _addressController,
+                  //maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Tutor phone number",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "ph no",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _phoneController,
+                  //maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                SizedBox(
+                  width: 120,
+                  height: 40,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _getlocation();
+                          _loadingWidget = true;
+                          _onLoading();
+                          Future.delayed(Duration(seconds: 3), (){
+                            _database.child('Teachers').child(_phoneController.text).set({
+                              'name': _nameController.text,
+                              'coordinates': {'latitude': _latitude,'longitude':_longitude}
+                            });
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                title: Icon(Icons.check_circle, size: MediaQuery.of(context).size.height*0.125, color: Colors.lightBlue, shadows: [BoxShadow(
+                                  color: Colors.black38,
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: Offset(0,4),
+                                )],
+                                ),
+                                actions: <Widget>[
+                                  Column(
+                                    children: [
+                                      Text('Tutor Added Successfully !', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                                      Row(
+                                        children: [
+                                          Spacer(),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Click here", style: TextStyle(fontSize: 14, fontFamily: 'poppins', color: Colors.lightBlue),)
+                                          ),
+                                          Text("to continue", style: TextStyle(fontSize: 14, fontFamily: 'poppins'),),
+                                          Spacer(),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                        });
+                      },
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  side: BorderSide(color: Colors.lightBlue)
+                              )
+                          )
+                      ),
+                      child: Text("Add", style: TextStyle(fontSize: 14),)
+                  ),
+                ),
+                /*SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 Align(
                   alignment: Alignment.centerLeft,
                   //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
@@ -337,13 +547,13 @@ class _ListingState extends State<Listing> {
                       child: Text("List", style: TextStyle(fontSize: 14),)
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),*/
               ]
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.redAccent,
+        color: Colors.lightBlueAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           height: 50,
@@ -358,44 +568,28 @@ class _ListingState extends State<Listing> {
                   Spacer(),
                   IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+
                     },
                     hoverColor: Colors.black,
                     color: Colors.white,
                     highlightColor: Colors.black12,
-                    tooltip: "Cart",
-                    icon: Icon(Icons.shopping_bag_outlined),
+                    tooltip: "Home",
+                    icon: Icon(Icons.home_rounded),
                     iconSize: 35,
                   ),
                   Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Map())),
                     hoverColor: Colors.black,
                     color: Colors.white,
                     highlightColor: Colors.black12,
-                    tooltip: "Sell",
-                    icon: Icon(Icons.turned_in_rounded,),
+                    tooltip: "Locate",
+                    icon: Icon(Icons.location_on_outlined,),
                     iconSize: 35,
                   ),
                   Spacer(),
                   IconButton(
-                    onPressed: () {},
-                    hoverColor: Colors.black,
-                    color: Colors.white,
-                    highlightColor: Colors.black12,
-                    tooltip: "Chat",
-                    icon: Icon(Icons.textsms_outlined,),
-                    iconSize: 35,
-                  ),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MyProfile()));
-                    },
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
                     hoverColor: Colors.black,
                     color: Colors.white,
                     highlightColor: Colors.black12,

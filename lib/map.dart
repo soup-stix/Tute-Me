@@ -105,13 +105,18 @@ class _MapState extends State<Map> {
     _dataStream = _database.child('Teachers').onValue.listen((event) {
       final dynamic teacher = event.snapshot.value;
       setState(() {
-        for(int i=1;i<4;i++) {
+        /*
+        for(int i=1;i<teacher;i++) {
           //print(teacher[i]['coordinates']);
-          //print([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
+          print([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
           data.add([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
           //print(data);
           //getmarkers();
-        }
+        }*/
+        teacher.forEach((k, v){
+          print([v['name'],v['name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          data.add([v['name'],v['name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+        });
       });
   });
 }

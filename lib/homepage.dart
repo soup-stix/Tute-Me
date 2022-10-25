@@ -119,6 +119,17 @@ class _HomePageState extends State<HomePage>{
                         child: Text("Homepage", style: TextStyle(fontSize: 20),)
                     )
                 ),
+                TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width*1,
+                        child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
+                    )
+                ),
               ],
             ),
           ),
