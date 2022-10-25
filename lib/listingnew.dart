@@ -16,7 +16,7 @@ class Listing extends StatefulWidget {
 
 class _ListingState extends State<Listing> {
 
-  //final _database = FirebaseDatabase.instance.reference();
+  final _database = FirebaseDatabase.instance.reference();
 
   bool _loadingWidget = false;
   List<String> _values = [];
