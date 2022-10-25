@@ -18,42 +18,41 @@ class Item{
 
 var techstackjson = [
   {
-    'name': 'class 1  '
+    'name': 'class 1'
   },
   {
-    'name': 'class 2  '
+    'name': 'class 2'
   },
   {
-    'name': 'class 3  '
+    'name': 'class 3'
   },
   {
-    'name': 'class 4  '
+    'name': 'class 4'
   },
   {
-    'name': 'class 5  '
+    'name': 'class 5'
   },
   {
-    'name': 'class 6  '
+    'name': 'class 6'
   },
   {
-    'name': 'class 7  '
+    'name': 'class 7'
   },
   {
-    'name': 'class 8  '
+    'name': 'class 8'
   },
   {
-    'name': 'class 9  '
+    'name': 'class 9'
   },
   {
-    'name': 'class 10  '
+    'name': 'class 10'
   },
   {
-    'name': 'class 11  '
+    'name': 'class 11'
   },
   {
-    'name': 'class 12  '
+    'name': 'class 12'
   },
-
 ];
 
 
@@ -72,7 +71,12 @@ class Listing extends StatefulWidget {
 class _ListingState extends State<Listing> {
   var indexs = [];
   int? selectedIndex;
-
+  bool _loadingWidget = false;
+  dynamic _latitude;
+  dynamic _longitude;
+  final _nameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _phoneController = TextEditingController();
   var futures;
 
   bool isSelected(index, List indexs) {
@@ -97,10 +101,42 @@ class _ListingState extends State<Listing> {
   void initState() {
     super.initState();
     futures = getTeckstack();
+    _nameController.addListener(_printLatestValue);
+    _addressController.addListener(_printLatestValue);
+    _phoneController.addListener(_printLatestValue);
   }
 
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    _nameController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _printLatestValue() {
+    print('Address field: ${_addressController.text}');
+    print('Name field: ${_nameController.text}');
+    print('Phone field: ${_phoneController.text}');
+  }
+
+  /*void _getlocation() async{
+    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text);
+    var first = addresses.first;
+    var location = first.coordinates.toMap();
+    setState(() {
+      _latitude = location['latitude'];
+      _longitude = location['longitude'];
+    });
+    print(first.coordinates.toMap());
+  }
+*/
   String location = 'Null, Press Button';
   String Address = 'search';
+  List<String> _values = [];
+  List<bool> _selected = [];
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -147,6 +183,67 @@ class _ListingState extends State<Listing> {
     Address = '${place.street}, ${place.subLocality}, ${place.locality}, ${place
         .postalCode}, ${place.country}';
     setState(() {});}
+
+  Widget buildChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _values.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: _selected[i],
+        label: Text(_values[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove class",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _selected[i] = !_selected[i];
+          });
+        },
+        onDeleted: () {
+          _values.removeAt(i);
+          _selected.removeAt(i);
+
+          setState(() {
+            _values = _values;
+            _selected = _selected;
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+
+  Widget buildButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 1; i < 13; i++) {
+      TextButton buttonChip = TextButton(
+        style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              _values.add('class $i');
+              _selected.add(true);
+            });
+          },
+          child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
 
     @override
     Widget build(BuildContext context) {
@@ -249,7 +346,7 @@ class _ListingState extends State<Listing> {
                   DropdownButtonFormField(
                     dropdownColor: Colors.white,
                     icon: Icon(
-                      Icons.keyboard_arrow_down_rounded, color: Colors.red,),
+                      Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
                     hint: Text("Choose a Mode"),
                     items: [
                       "Online",
@@ -281,10 +378,11 @@ class _ListingState extends State<Listing> {
                       ),
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
                   Align(
                     alignment: Alignment.centerLeft,
                     //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                    child: Text("Location",
+                    child: Text("Address",
                       style: TextStyle(color: Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
@@ -292,7 +390,7 @@ class _ListingState extends State<Listing> {
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      hintText: "Location",
+                      hintText: "address",
                       hintStyle: TextStyle(fontSize: 14),
                       //border: UnderlineInputBorder(
                       //borderRadius: BorderRadius.circular(16),
@@ -306,16 +404,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     //maxLines: 3,
                   ),
-                  SizedBox(height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.03,),
-
-
-
-
-
-
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
                   Text('Coordinates Points',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
                   SizedBox(height: 10,),
                   Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),
@@ -344,28 +433,23 @@ class _ListingState extends State<Listing> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Preffered classes",
-                      hintStyle: TextStyle(fontSize: 14),
-                      //border: UnderlineInputBorder(
-                      //borderRadius: BorderRadius.circular(16),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
-                    style: TextStyle(fontSize: 14,),
-                    //maxLines: 3,
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildChips(),
+                  ),
+                  Divider(
+                    thickness: 2,
+                    color: Colors.black,
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildButtons(),
                   ),
                   SizedBox(height: MediaQuery
                       .of(context)
                       .size
                       .height * 0.03,),
-                  const SizedBox(
+                  /*const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -396,26 +480,31 @@ class _ListingState extends State<Listing> {
                                       crossAxisCount: 3),
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, int index) => InputChip(
-                                    backgroundColor: isSelected(index, indexs)
-                                        ? Theme.of(context).primaryColor
-                                        : const Color(0xFF3E5561),
+                                    backgroundColor: Colors.white,
+                                    /*backgroundColor: isSelected(index, indexs)
+                                        ? Colors.lightBlue
+                                        : Colors.white12,*/
                                     avatar: isSelected(index, indexs)
                                         ? const Icon(
                                       Icons.check_box_rounded,
+                                      color: Colors.lightBlue,
                                       size: 20,
                                     )
                                         : const Icon(Icons.add),
                                     label: Text(
-                                      '${snapshot.data![index].name!},',
-                                      style: isSelected(index, indexs)
+                                      '${snapshot.data![index].name!}',
+                                      style: TextStyle(fontSize: 18,
+                                        color: Colors.black,)/*isSelected(index, indexs)
                                           ? const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)
+                                          fontSize: 18,
+                                          color: Colors.lightBlue,
+                                          //fontWeight: FontWeight.bold
+                                          )
                                           : TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.blueGrey[100],
-                                          fontWeight: FontWeight.bold),
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                          //fontWeight: FontWeight.bold
+                                          ),*/
                                     ),
                                     onSelected: (bool value) {
                                       selectedIndex = index;
@@ -423,6 +512,8 @@ class _ListingState extends State<Listing> {
                                         (indexs.contains(index)
                                             ? indexs.remove(index)
                                             : indexs.add(index));
+                                        _values.add('${snapshot.data![index].name!}');
+                                        _selected.add(true);
                                       });
                                     },
                                   ),
@@ -430,15 +521,64 @@ class _ListingState extends State<Listing> {
                               }
                           }
                         },
-                      )),
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Add',
-                        style: TextStyle(fontSize: 20,color: Colors.black),
-                      ))
-
-]
+                      )),*/
+                  SizedBox(
+                    width: 120,
+                    height: 40,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          print(_values);
+                          Future.delayed(Duration(seconds: 0), (){
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                title: Icon(Icons.check_circle, size: MediaQuery.of(context).size.height*0.125, color: Colors.lightBlue, shadows: [BoxShadow(
+                                  color: Colors.black38,
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: Offset(0,4),
+                                )],
+                                ),
+                                actions: <Widget>[
+                                  Column(
+                                    children: [
+                                      Text('Tutor Added Successfully !', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                                      Row(
+                                        children: [
+                                          Spacer(),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Click here", style: TextStyle(fontSize: 14, fontFamily: 'poppins', color: Colors.lightBlue),)
+                                          ),
+                                          Text("to continue", style: TextStyle(fontSize: 14, fontFamily: 'poppins'),),
+                                          Spacer(),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                        },
+                        style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    side: BorderSide(color: Colors.lightBlue)
+                                )
+                            )
+                        ),
+                        child: Text("Add", style: TextStyle(fontSize: 14),)
+                    ),
+                  ),
+              ]
           ),
         ),
         )     );
