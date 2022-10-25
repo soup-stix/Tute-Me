@@ -16,31 +16,14 @@ class Listing extends StatefulWidget {
 
 class _ListingState extends State<Listing> {
 
-  final _database = FirebaseDatabase.instance.reference();
+  //final _database = FirebaseDatabase.instance.reference();
 
-  List<String> items = [
-    "Calculators",
-    "Class Notes - Handwritten",
-    "Engineering Graphics Tools",
-    "Mini Drafters",
-    "Non - Academics Books",
-    "Observations",
-    "Other PDF reference materials",
-    "PDF Notes",
-    "Previous year questions papers",
-    "Reference Books",
-    "Reference Materials - PDF",
-    "Text Books",
-    "Others",
-  ];
-  //var seen = Set<String>();
-  //List<String> uniquelist = items.where((item) => seen.add(item)).toList();
-  var categories;
-  var negotiable;
-  var delivery;
   bool _loadingWidget = false;
+  List<String> _values = [];
+  List<bool> _selected = [];
   dynamic _latitude;
   dynamic _longitude;
+  dynamic _modeValue;
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -114,6 +97,67 @@ class _ListingState extends State<Listing> {
     });
   }
 
+  Widget buildChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _values.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: _selected[i],
+        label: Text(_values[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove class",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _selected[i] = !_selected[i];
+          });
+        },
+        onDeleted: () {
+          _values.removeAt(i);
+          _selected.removeAt(i);
+
+          setState(() {
+            _values = _values;
+            _selected = _selected;
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+
+  Widget buildButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 1; i < 13; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              _values.add('class $i');
+              _selected.add(true);
+            });
+          },
+          child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,7 +183,7 @@ class _ListingState extends State<Listing> {
                 Align(
                   alignment: Alignment.centerLeft,
                   //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Tutor name",
+                  child: Text("Name",
                     style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -163,7 +207,7 @@ class _ListingState extends State<Listing> {
                 Align(
                   alignment: Alignment.centerLeft,
                   //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Tutor address",
+                  child: Text("Address",
                     style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -183,11 +227,57 @@ class _ListingState extends State<Listing> {
                   controller: _addressController,
                   //maxLines: 3,
                 ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Mode",
+                      style: TextStyle(color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                  DropdownButtonFormField(
+                    dropdownColor: Colors.white,
+                    icon: Icon(
+                    Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
+                  hint: Text("Choose a Mode"),
+                  items: [
+                    "Online",
+                    "Offline",
+
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                        style: TextStyle(fontSize: 14, color: Colors.black),),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    print(newValue);
+                    _modeValue = newValue;
+                  },
+                  decoration: const InputDecoration(
+                    enabled: true,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    disabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 2,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 Align(
                   alignment: Alignment.centerLeft,
                   //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Tutor phone number",
+                  child: Text("Phone number",
                     style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -208,20 +298,43 @@ class _ListingState extends State<Listing> {
                   //maxLines: 3,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Classes",
+                    style: TextStyle(color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.08,
+                  child: buildChips(),
+                ),
+                Divider(
+                  thickness: 1,
+                  color: Colors.black,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.08,
+                  child: buildButtons(),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 SizedBox(
                   width: 120,
                   height: 40,
                   child: ElevatedButton(
                       onPressed: () {
+                        print(_values);
                         setState(() {
                           _getlocation();
                           _loadingWidget = true;
                           _onLoading();
                           Future.delayed(Duration(seconds: 3), (){
-                            _database.child('Teachers').child(_phoneController.text).set({
+                            /*_database.child('Teachers').child(_phoneController.text).set({
                               'name': _nameController.text,
                               'coordinates': {'latitude': _latitude,'longitude':_longitude}
-                            });
+                            });*/
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
