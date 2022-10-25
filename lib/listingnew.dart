@@ -331,10 +331,10 @@ class _ListingState extends State<Listing> {
                           _loadingWidget = true;
                           _onLoading();
                           Future.delayed(Duration(seconds: 3), (){
-                            /*_database.child('Teachers').child(_phoneController.text).set({
+                            _database.child('Teachers').child(_phoneController.text).set({
                               'name': _nameController.text,
                               'coordinates': {'latitude': _latitude,'longitude':_longitude}
-                            });*/
+                            });
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
