@@ -1,4 +1,4 @@
-
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -19,23 +19,50 @@ class _ListingState extends State<Listing> {
   final _database = FirebaseDatabase.instance.reference();
 
   bool _loadingWidget = false;
+  bool _showSubjectList = false;
+  bool _chipClassMade = false;
+  bool _chipSubjectMade = false;
+  bool _showChipButtons = false;
   List<String> _values = [];
   List<bool> _selected = [];
+  List<dynamic> _subjects = [];
+  List<bool> _selectedSubjects = [];
   dynamic _latitude;
   dynamic _longitude;
   dynamic _modeValue;
   final _nameController = TextEditingController();
+  final _subjectController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
+  List _searchResult = [];
+  List<dynamic> _allSubjects = ["Math","Science","English","History","Civics","Economics"];
+
+  List<dynamic> items = [];
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    if(_values.length > 0)
+      _chipClassMade = true;
+    else
+      _chipClassMade = false;
+    if(_subjects.length > 0)
+      _chipSubjectMade = true;
+    else
+      _chipSubjectMade = false;
+  }
 
   @override
   void initState() {
+    items.addAll(_allSubjects);
     super.initState();
 
     // Start listening to changes.
     _nameController.addListener(_printLatestValue);
     _addressController.addListener(_printLatestValue);
     _phoneController.addListener(_printLatestValue);
+    _subjectController.addListener(_printLatestValue);
   }
 
   @override
@@ -45,13 +72,43 @@ class _ListingState extends State<Listing> {
     _nameController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
+    _subjectController.dispose();
     super.dispose();
+  }
+
+  void filterSearchResults(String query) {
+    List<dynamic> dummySearchList = <dynamic>[];
+    dummySearchList.addAll(_allSubjects);
+    if(query.isNotEmpty) {
+      List<String> dummyListData = <String>[];
+      dummySearchList.forEach((item) {
+        if(item.contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+        if(item.contains(query.toUpperCase())) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        items.clear();
+        items.addAll(_allSubjects);
+      });
+    }
+
   }
 
   void _printLatestValue() {
     print('Address field: ${_addressController.text}');
     print('Name field: ${_nameController.text}');
     print('Phone field: ${_phoneController.text}');
+    print('subject field: ${_subjectController.text}');
+    subjectSearch();
   }
 
   void _getlocation() async{
@@ -97,7 +154,18 @@ class _ListingState extends State<Listing> {
     });
   }
 
-  Widget buildChips() {
+  void subjectSearch() {
+    _allSubjects.forEach((item) {
+      print("test");
+      print(_subjectController.text);
+      if(item.contains(_subjectController.text) == true){
+        _searchResult.add(item);
+        print(_searchResult);
+      }
+    });
+  }
+
+  Widget buildClassChips() {
     List<Widget> chips = [];
 
     for (int i = 0; i < _values.length; i++) {
@@ -111,6 +179,7 @@ class _ListingState extends State<Listing> {
         onPressed: () {
           setState(() {
             _selected[i] = !_selected[i];
+            _chipClassMade = true;
           });
         },
         onDeleted: () {
@@ -134,7 +203,40 @@ class _ListingState extends State<Listing> {
     );
   }
 
-  Widget buildButtons() {
+  Widget buildSubjectChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _subjects.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_subjects[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove class",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _chipClassMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _subjects.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+
+  Widget buildClassButtons() {
     List<Widget> buttons = [];
 
     for (int i = 1; i < 13; i++) {
@@ -142,8 +244,10 @@ class _ListingState extends State<Listing> {
           style: ButtonStyle(enableFeedback: true,),
           onPressed: () {
             setState(() {
-              _values.add('class $i');
-              _selected.add(true);
+              if (_values.contains('class $i') == false) {
+                _values.add('class $i');
+                _selected.add(true);
+              }
             });
           },
           child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
@@ -151,7 +255,31 @@ class _ListingState extends State<Listing> {
       buttons.add(buttonChip);
       buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
     }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
 
+  Widget buildSubjectButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 1; i < _searchResult.length; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_values.contains('class $i') == false) {
+                _values.add('class $i');
+                _selected.add(true);
+              }
+            });
+          },
+          child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
     return ListView(
       scrollDirection: Axis.horizontal,
       children: buttons,
@@ -307,18 +435,107 @@ class _ListingState extends State<Listing> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Container(
+                _chipClassMade ? Container(
                   height: MediaQuery.of(context).size.height*0.08,
-                  child: buildChips(),
+                  child: buildClassChips(),
+                ) : Container(),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "class",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  onTap: () {
+                    setState(() {
+                      _showChipButtons = true;
+                      _chipClassMade = true;
+                    });
+                  },
+                  onSubmitted: (value) {
+                    setState(() { _showChipButtons = false;});
+                  },
                 ),
-                Divider(
-                  thickness: 1,
-                  color: Colors.black,
-                ),
-                Container(
+                _showChipButtons ? Container(
                   height: MediaQuery.of(context).size.height*0.08,
-                  child: buildButtons(),
+                  child: buildClassButtons(),
+                ) : Container(),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Subjects",
+                    style: TextStyle(color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
+                _chipSubjectMade ? Container(
+                  height: MediaQuery.of(context).size.height*0.08,
+                  child: buildSubjectChips(),
+                ) : Container(),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "subjects",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _subjectController,
+                  onTap: () {
+                    setState(() {
+                      _showSubjectList = true;
+                    });
+                  },
+                  onChanged: (value) {
+                    filterSearchResults(value);
+                  },
+                  onSubmitted: (value) {
+                    setState(() {
+                      _showSubjectList = false;
+                    });
+                  },
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                _showSubjectList ?
+                Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height*0.3,
+                  child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width*0.8,
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                if(_subjects.contains(items[index]) == false)
+                                  _subjects.add(items[index]);
+                                print(_subjects);
+                                _chipSubjectMade = true;
+                              });
+                            },
+                              child: Text('${items[index]}'),
+                              style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                          )
+                      ),
+                      );
+                    },
+                  ),
+                ) : Container(),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 SizedBox(
                   width: 120,
@@ -385,282 +602,6 @@ class _ListingState extends State<Listing> {
                       child: Text("Add", style: TextStyle(fontSize: 14),)
                   ),
                 ),
-                /*SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Product name",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "Give a title",
-                    hintStyle: TextStyle(fontSize: 14),
-                    //border: UnderlineInputBorder(
-                      //borderRadius: BorderRadius.circular(16),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Category",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DropdownButtonFormField(
-                  dropdownColor: Colors.white,
-                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.red,),
-                  hint: Text("Choose a category"),
-                  items: [
-                    "Calculators",
-                    "Class Notes - Handwritten",
-                    "Engineering Graphics Tools",
-                    "Mini Drafters",
-                    "Non - Academics Books",
-                    "Observations",
-                    "Other PDF reference materials",
-                    "PDF Notes",
-                    "Previous year questions papers",
-                    "Reference Books",
-                    "Reference Materials - PDF",
-                    "Text Books",
-                    "Others",
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontSize: 14, color: Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    print(newValue);
-                    categories = newValue;
-                    print(categories);
-                  },
-                  decoration: const InputDecoration(
-                    enabled: true,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Price",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "Enter a price",
-                    hintStyle: TextStyle(fontSize: 14),
-                    //border: UnderlineInputBorder(
-                    //borderRadius: BorderRadius.circular(16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Negotiable",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DropdownButtonFormField(
-                  dropdownColor: Colors.white,
-                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.red,),
-                  hint: Text("Choose an option"),
-                  items: ["Yes","No"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontSize: 14, color: Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    print(newValue);
-                    negotiable = newValue;
-                    print(negotiable);
-                  },
-                  decoration: const InputDecoration(
-                    enabled: true,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Condition",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "Briefly explain the condition of the product",
-                    hintStyle: TextStyle(fontSize: 14),
-                    //border: UnderlineInputBorder(
-                    //borderRadius: BorderRadius.circular(16),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Hand Over In",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DropdownButtonFormField(
-                  dropdownColor: Colors.white,
-                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.red,),
-                  hint: Text("Choose a time period"),
-                  items: ["1-3 days after connecting","4-7 days after connecting"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value, style: TextStyle(fontSize: 14, color: Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    print(newValue);
-                    delivery = newValue;
-                    print(delivery);
-                  },
-                  decoration: const InputDecoration(
-                    enabled: true,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Additional Info",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.01,),
-                TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: 'Mention any damage, Special features, Author names, contents of the products etc.',
-                    hintMaxLines: 3,
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black, width: 1),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    //border: //(BorderRadius.circular(8),),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                SizedBox(
-                  width: 120,
-                  height: 40,
-                  child: ElevatedButton(
-                      onPressed: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                          title: Icon(Icons.check_circle, size: MediaQuery.of(context).size.height*0.125, color: Colors.red, shadows: [BoxShadow(
-                            color: Colors.black38,
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: Offset(0,4),
-                          )],
-                          ),
-                          actions: <Widget>[
-                            Column(
-                              children: [
-                                Text('Listing Added Successfully !', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-                                Row(
-                                  children: [
-                                    Spacer(),
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Click here", style: TextStyle(fontSize: 14, fontFamily: 'poppins', color: Colors.red),)
-                                    ),
-                                    Text("to continue", style: TextStyle(fontSize: 14, fontFamily: 'poppins'),),
-                                    Spacer(),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Colors.red)
-                              )
-                          )
-                      ),
-                      child: Text("List", style: TextStyle(fontSize: 14),)
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),*/
               ]
           ),
         ),
