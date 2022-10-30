@@ -296,7 +296,7 @@ class Details extends StatefulWidget {
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Additional Info",
+                        child: Text("About Myself",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -310,7 +310,7 @@ class Details extends StatefulWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(5),
-                          child: Text("1-3 days after connecting",
+                          child: Text(widget.child['about'],
                             style: TextStyle(fontSize: 14,),
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
