@@ -1,9 +1,6 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
-import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
 import 'package:geocoder/geocoder.dart';
 
@@ -18,15 +15,14 @@ class _ListingState extends State<Listing> {
 
   final _database = FirebaseDatabase.instance.reference();
 
-  bool _loadingWidget = false;
   bool _showSubjectList = false;
   bool _chipClassMade = false;
   bool _chipSubjectMade = false;
   bool _showChipButtons = false;
+  bool _loadingWidget = false;
   List<String> _values = [];
   List<bool> _selected = [];
   List<dynamic> _subjects = [];
-  List<bool> _selectedSubjects = [];
   dynamic _latitude;
   dynamic _longitude;
   dynamic _modeValue;
@@ -36,7 +32,6 @@ class _ListingState extends State<Listing> {
   final _phoneController = TextEditingController();
   List _searchResult = [];
   List<dynamic> _allSubjects = ["Math","Science","English","History","Civics","Economics"];
-
   List<dynamic> items = [];
 
   @override
@@ -58,7 +53,6 @@ class _ListingState extends State<Listing> {
     items.addAll(_allSubjects);
     super.initState();
 
-    // Start listening to changes.
     _nameController.addListener(_printLatestValue);
     _addressController.addListener(_printLatestValue);
     _phoneController.addListener(_printLatestValue);
@@ -67,8 +61,6 @@ class _ListingState extends State<Listing> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    // This also removes the _printLatestValue listener.
     _nameController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
@@ -100,7 +92,6 @@ class _ListingState extends State<Listing> {
         items.addAll(_allSubjects);
       });
     }
-
   }
 
   void _printLatestValue() {
@@ -109,6 +100,8 @@ class _ListingState extends State<Listing> {
     print('Phone field: ${_phoneController.text}');
     print('subject field: ${_subjectController.text}');
     subjectSearch();
+    print(_values);
+    print(_subjects);
   }
 
   void _getlocation() async{
@@ -141,7 +134,6 @@ class _ListingState extends State<Listing> {
                   SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                   CircularProgressIndicator(),
                   SizedBox(height: MediaQuery.of(context).size.height*0.05,)
-                  //Text("Loading",style: TextStyle(fontSize: 20,color: Colors.lightBlue),),
                 ],
               ),
             ),
@@ -156,11 +148,11 @@ class _ListingState extends State<Listing> {
 
   void subjectSearch() {
     _allSubjects.forEach((item) {
-      print("test");
+      //print("test");
       print(_subjectController.text);
       if(item.contains(_subjectController.text) == true){
         _searchResult.add(item);
-        print(_searchResult);
+        //print(_searchResult);
       }
     });
   }

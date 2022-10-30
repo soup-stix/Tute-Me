@@ -20,25 +20,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>{
-  final List _categories = [
+  final List _categories = [];
+  /*
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Math for children in such a way that they will fall in love","assets/book.png","Bikes/Cycles","Buy books and other assignment needs"],
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Biology for children in such a way that they will fall in love","assets/book.png","Calculators","Buy books and other assignment needs"],
     ["assets/gajju.jpg","Dr. Gajendra Purohit","Physics for children in such a way that they will fall in love","assets/book.png","Random","Buy books and other assignment needs"],
-  ];
+  ];*/
   final _database = FirebaseDatabase.instance.reference();
+  dynamic _data;
 
   @override
     void initState(){
       super.initState();
       //_database.child('Teachers').push().set({'name': 'Dr. Arulkumar'});
       _activeListners();
+      _get_Teachers_ID();
     }
 
     void _activeListners(){
-      final _teachers = _database.child('Teachers').onValue.listen((event) {
+      _database.child('Teachers_ID').onValue.listen((event) {
         final Object? teacher = event.snapshot.value;
-        print(teacher);
+        _get_Teachers_ID();
+        //print(teacher);
       });
+    }
+
+    void _get_Teachers_ID() async {
+      _data = await _database.child('Teachers_ID').get();
+      if (_data.exists) {
+        _data.value.forEach((k, v) {
+          print(k);
+          if (_categories.contains(v) == false){
+            setState(() {
+              _categories.add(v);
+            });
+            print(_categories);
+        }
+        });
+      } else {
+        print('No data available.');
+      }
     }
 
   @override
@@ -165,10 +186,7 @@ class _HomePageState extends State<HomePage>{
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites_Expanded())),
                         icon: Icon(Icons.arrow_forward_rounded)),
                   ],
-                ),/*Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Favourites" ,style: TextStyle(color: Colors.black,fontSize: 30,),)
-                ),*/
+                ),
               ),
               Expanded(
                 child: ListView.builder(

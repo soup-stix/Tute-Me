@@ -114,8 +114,8 @@ class _MapState extends State<Map> {
           //getmarkers();
         }*/
         teacher.forEach((k, v){
-          print([v['name'],v['name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
-          data.add([v['name'],v['name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          //print("[v['name']","","assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          data.add(["[v['name']","v['name']","assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
         });
       });
   });

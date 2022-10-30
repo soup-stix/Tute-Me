@@ -1,18 +1,12 @@
-
 import 'package:flutter/material.dart';
-//import 'package:resale_test_1/flutter_flow/flutter_flow_theme.dart';
-//import '../flutter_flow/flutter_flow_util.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tute_me/profile.dart';
-import 'package:tute_me/homepage.dart';
-import 'package:tute_me/homepage.dart';
 import 'package:tute_me/map.dart';
-import 'package:tute_me/listingnew.dart';
 
 
 class Details extends StatefulWidget {
-  final List child;
+  final child;
   const Details({Key? key, required this.child}) : super(key: key);
 
   @override
@@ -21,12 +15,69 @@ class Details extends StatefulWidget {
 
   class DetailsState extends State<Details> {
     PageController? pageViewController;
+
+
+    Widget buildClassChip() {
+      List<Widget> buttons = [];
+      widget.child['classes'].forEach((k, v){
+        print(k);
+        Card ClassChip = Card(
+          color: Colors.white70,
+          elevation: 5,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.black,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(k),
+          ),);
+        buttons.add(ClassChip);
+        buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+      });
+      return ListView(
+        scrollDirection: Axis.horizontal,
+        children: buttons,
+      );
+    }
+
+    Widget buildSubjectChip() {
+      List<Widget> buttons = [];
+      widget.child['subjects'].forEach((k, v){
+        print(k);
+        Card SubjectChip = Card(
+          color: Colors.white70,
+          elevation: 5,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: Colors.black,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Text(k),
+          ),);
+        buttons.add(SubjectChip);
+        buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+      });
+      return ListView(
+        scrollDirection: Axis.horizontal,
+        children: buttons,
+      );
+    }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
     backgroundColor: Colors.lightBlueAccent,
     appBar: AppBar(
-      title: Text(widget.child[0],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+      title: Text(widget.child['first_name'],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
     leading: Builder(
     builder: (context) =>
     IconButton(
@@ -40,7 +91,6 @@ class Details extends StatefulWidget {
     body: SingleChildScrollView(
       child: Column(
         children: [
-          //SizedBox(height: MediaQuery.of(context).size.height*0.05,),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
@@ -61,7 +111,7 @@ class Details extends StatefulWidget {
                       Align(
                         alignment: AlignmentDirectional(-0.7, 0),
                         child: Container(
-                          height: MediaQuery.of(context).size.height*0.35,
+                          height: MediaQuery.of(context).size.height*0.4,
                           width: MediaQuery.of(context).size.width*0.90,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -78,20 +128,14 @@ class Details extends StatefulWidget {
                                   children:[
                                     Image.asset(
                                       'assets/gajju.jpg',
-                                      //width: 100,
-                                      //height: 100,
                                       fit: BoxFit.fill,
                                     ),
                                     Image.asset(
                                       'assets/gajju.jpg',
-                                      //width: 100,
-                                      //height: 100,
                                       fit: BoxFit.fill,
                                     ),
                                     Image.asset(
                                       'assets/gajju.jpg',
-                                      //width: 100,
-                                      //height: 100,
                                       fit: BoxFit.fill,
                                     ),
                                   ],
@@ -130,144 +174,72 @@ class Details extends StatefulWidget {
                           ),
                         ),
                       ),
-                      /*Container(
-                    height: MediaQuery.of(context).size.height*0.3,
-                    width: MediaQuery.of(context).size.width*0.90,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.white,
-                      image: DecorationImage(
-                          image: NetworkImage(child[2]),fit: BoxFit.fill,),
-                      ),
-                      ),*/
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                       Align(
                         alignment: Alignment.centerLeft,
                         //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text(widget.child[1],
+                        child: Text(widget.child['first_name'],
                           style: TextStyle(color: Colors.black,fontSize: 26,fontWeight: FontWeight.bold),
                         ),
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                      ),
+                      RatingBarIndicator(
+                        rating: 5,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        itemCount: 5,
+                        itemSize: 20.0,
+                        direction: Axis.horizontal,
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
                         child: Text("Classes",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      Row(
-                        children: [
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("11"),
-                            ),),
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("12"),
-                            ),),
-                        ],
+                      Container(
+                        height: MediaQuery.of(context).size.height*0.05,
+                        child: buildClassChip(),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
                         child: Text("Subjects",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      Row(
-                        children: [
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("Math"),
-                            ),),
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("Physics"),
-                            ),),
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("Biology"),
-                            ),),
-                          Card(
-                            color: Colors.white70,
-                            elevation: 5,
-                            shadowColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.black,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("Chemistry"),
-                            ),),
-                        ],
+                      Container(
+                        height: MediaQuery.of(context).size.height*0.05,
+                        child: buildSubjectChip(),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Speciality",
+                        child: Text("Mode",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      Text("Extremely well versed in physics and maths",
+                      widget.child['mode'].keys.length == 2?
+                      Text(widget.child['mode']['online'].toString()+", "+widget.child['mode']['offline'].toString(),
+                        style: TextStyle(fontSize: 14,),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ):widget.child['mode']['online'] != null?
+                      Text(widget.child['mode']['online'].toString(),
+                          style: TextStyle(fontSize: 14,),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ):
+                      Text(widget.child['mode']['offline'].toString(),
                         style: TextStyle(fontSize: 14,),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -276,16 +248,26 @@ class Details extends StatefulWidget {
                         thickness: 1,
                         color: Colors.black,
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height*0.01,),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Hand Over in",
+                        child: Text("type",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      Text("1-3 days after connecting",
+                      widget.child['type'].keys.length == 2?
+                      Text(widget.child['type']['individual'].toString()+", "+widget.child['type']['group'].toString(),
+                        style: TextStyle(fontSize: 14,),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ):widget.child['type']['individual'] != null?
+                      Text(widget.child['type']['individual'].toString(),
+                        style: TextStyle(fontSize: 14,),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ):
+                      Text(widget.child['type']['group'].toString(),
                         style: TextStyle(fontSize: 14,),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -294,10 +276,26 @@ class Details extends StatefulWidget {
                         thickness: 1,
                         color: Colors.black,
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height*0.04,),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                        child: Text("Fee",
+                          style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                      Text("${widget.child['fee']}",
+                        style: TextStyle(fontSize: 14,),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Divider(
+                        thickness: 1,
+                        color: Colors.black,
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                      Align(
+                        alignment: Alignment.centerLeft,
                         child: Text("Additional Info",
                           style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                         ),
@@ -317,22 +315,6 @@ class Details extends StatefulWidget {
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height*0.05,),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Sold By",
-                          style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height*0.005,),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text("Anand",
-                          style: TextStyle(color: Colors.black,fontSize: 14,fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.1,),
