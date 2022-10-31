@@ -1,17 +1,15 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
-import 'package:searchfield/searchfield.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'models.dart';
-import 'search.dart';
+
 class Item{
   Item(this.title);
   String title;
@@ -70,7 +68,7 @@ class Listing extends StatefulWidget {
   _ListingState createState() => _ListingState();
 }
 
-String? userSelected;
+
 class _ListingState extends State<Listing> {
   var indexs = [];
   int? selectedIndex;
@@ -150,10 +148,10 @@ class _ListingState extends State<Listing> {
         .postalCode}, ${place.country}';
     setState(() {});}
 
-  @override
-  Widget build(BuildContext context) {
-    var dropdownValue;
-    return Scaffold(
+    @override
+    Widget build(BuildContext context) {
+      var dropdownValue;
+      return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text("Your details", style: TextStyle(
@@ -173,8 +171,7 @@ class _ListingState extends State<Listing> {
           padding: EdgeInsets.all(10.0),
 
           child: SingleChildScrollView(
-            child:
-            Column(
+            child: Column(
                 children: [
                   SizedBox(height: MediaQuery
                       .of(context)
@@ -440,91 +437,13 @@ class _ListingState extends State<Listing> {
                       child: const Text(
                         'Add',
                         style: TextStyle(fontSize: 20,color: Colors.black),
-                      )),
-            SizedBox(
-            height: 40,
-            width: double.infinity,
-            child: TypeAheadField(
-              noItemsFoundBuilder: (context) => const SizedBox(
-                height: 50,
-                child: Center(
-                  child: Text('No Item Found'),
-                ),
-              ),
-              suggestionsBoxDecoration: const SuggestionsBoxDecoration(
-                  color: Colors.white,
-                  elevation: 4.0,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  )),
-              debounceDuration: const Duration(milliseconds: 400),
-              textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            15.0,
-                          )),
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15.0),
-                          ),
-                          borderSide: BorderSide(color: Colors.black)),
-                      hintText: "Search",
-                      contentPadding:
-                      const EdgeInsets.only(top: 4, left: 10),
-                      hintStyle:
-                      const TextStyle(color: Colors.grey, fontSize: 14),
-                      suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon:
-                          const Icon(Icons.search, color: Colors.grey)),
-                      fillColor: Colors.white,
-                      filled: true)),
-              suggestionsCallback: (value) {
-                return StateService.getSuggestions(value);
-              },
-              itemBuilder: (context, String suggestion) {
-                return Row(
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Icon(
-                      Icons.refresh,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Text(
-                          suggestion,
-                          maxLines: 1,
-                          // style: TextStyle(color: Colors.red),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              },
-              onSuggestionSelected: (String suggestion) {
-                setState(() {
-                  userSelected = suggestion;
-                });
-              },
-            )),
-    ],),
-    )
+                      ))
 
+]
+          ),
+        ),
         )     );
+    }
   }
-}
 
 

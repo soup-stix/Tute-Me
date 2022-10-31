@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tute_me/cards.dart';
+import 'package:tute_me/editprofile.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites.dart';
@@ -77,7 +78,7 @@ class _MyProfileState extends State<MyProfile> {
                   width: 165,
                   height: 32,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => (EditProfilePage()))),
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
@@ -88,6 +89,7 @@ class _MyProfileState extends State<MyProfile> {
                               )
                           )
                       ),
+
                       child: Text("Edit Profile", style: TextStyle(fontSize: 14),)
                   ),
                 ),

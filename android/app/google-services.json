@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "269401359979",
+    "project_id": "profiledit-1e3c9",
+    "storage_bucket": "profiledit-1e3c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269401359979:android:a00b30552ab6a2b7bb532e",
+        "android_client_info": {
+          "package_name": "com.example.tute_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269401359979-upr9jqp1iin3ad1qdoe258fmh6c2ro9f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDd_a01YBV9NwTiTO3gASfoQGuPyEozxFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269401359979-upr9jqp1iin3ad1qdoe258fmh6c2ro9f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
