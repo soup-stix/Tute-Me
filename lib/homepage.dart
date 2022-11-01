@@ -8,8 +8,6 @@ import 'package:tute_me/favourites.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
-import 'package:flutter_svg/avd.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/student_register.dart';
 
@@ -21,25 +19,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>{
   final List _categories = [];
-  /*
-    ["assets/gajju.jpg","Dr. Gajendra Purohit","Math for children in such a way that they will fall in love","assets/book.png","Bikes/Cycles","Buy books and other assignment needs"],
-    ["assets/gajju.jpg","Dr. Gajendra Purohit","Biology for children in such a way that they will fall in love","assets/book.png","Calculators","Buy books and other assignment needs"],
-    ["assets/gajju.jpg","Dr. Gajendra Purohit","Physics for children in such a way that they will fall in love","assets/book.png","Random","Buy books and other assignment needs"],
-  ];*/
   final _database = FirebaseDatabase.instance.reference();
   dynamic _data;
 
   @override
     void initState(){
       super.initState();
-      //_database.child('Teachers').push().set({'name': 'Dr. Arulkumar'});
       _activeListners();
       _get_Teachers_ID();
     }
+    @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    _get_Teachers_ID();
+  }
 
     void _activeListners(){
       _database.child('Teachers_ID').onValue.listen((event) {
-        final Object? teacher = event.snapshot.value;
         _get_Teachers_ID();
         //print(teacher);
       });
@@ -54,7 +51,8 @@ class _HomePageState extends State<HomePage>{
             setState(() {
               _categories.add(v);
             });
-            print(_categories);
+
+            //print(_categories);
         }
         });
       } else {
@@ -158,7 +156,6 @@ class _HomePageState extends State<HomePage>{
         body: Container(
           child: Column(
             children: [
-              //SizedBox(height: MediaQuery.of(context).size.height*0.1,),
               SizedBox(height: MediaQuery.of(context).size.height*0.02,),
               Container(
                 height: MediaQuery.of(context).size.height*0.06,
@@ -216,7 +213,6 @@ class _HomePageState extends State<HomePage>{
                     Spacer(),
                     IconButton(
                         onPressed: () {
-
                         },
                         hoverColor: Colors.black,
                         color: Colors.white,

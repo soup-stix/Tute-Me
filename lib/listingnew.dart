@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/profile.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:flutter/services.dart';
 
 class Listing extends StatefulWidget {
   const Listing({Key? key}) : super(key: key);
@@ -23,13 +24,23 @@ class _ListingState extends State<Listing> {
   List<String> _values = [];
   List<bool> _selected = [];
   List<dynamic> _subjects = [];
+  final subject_map = {};
+  final class_map = {};
   dynamic _latitude;
   dynamic _longitude;
   dynamic _modeValue;
-  final _nameController = TextEditingController();
+  dynamic _typeValue;
+  final _first_nameController = TextEditingController();
+  final _last_nameController = TextEditingController();
   final _subjectController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _stateController = TextEditingController();
+  final _pincodeController = TextEditingController();
+  final _aboutController = TextEditingController();
+  final _feeController = TextEditingController();
+  final _emailController = TextEditingController();
   List _searchResult = [];
   List<dynamic> _allSubjects = ["Math","Science","English","History","Civics","Economics"];
   List<dynamic> items = [];
@@ -53,19 +64,43 @@ class _ListingState extends State<Listing> {
     items.addAll(_allSubjects);
     super.initState();
 
-    _nameController.addListener(_printLatestValue);
+    _first_nameController.addListener(_printLatestValue);
+    _last_nameController.addListener(_printLatestValue);
     _addressController.addListener(_printLatestValue);
     _phoneController.addListener(_printLatestValue);
     _subjectController.addListener(_printLatestValue);
+    _cityController.addListener(_printLatestValue);
+    _stateController.addListener(_printLatestValue);
+    _pincodeController.addListener(_printLatestValue);
+    _aboutController.addListener(_printLatestValue);
+    _feeController.addListener(_printLatestValue);
+    _emailController.addListener(_printLatestValue);
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _first_nameController.dispose();
+    _last_nameController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
     _subjectController.dispose();
+    _cityController.dispose();
+    _stateController.dispose();
+    _pincodeController.dispose();
+    _aboutController.dispose();
+    _feeController.dispose();
+    _emailController.dispose();
     super.dispose();
+  }
+
+  void _getSubjects() {
+    print(_subjects);
+    _subjects.forEach((subject) => subject_map[subject] = subject);
+  }
+
+  void _getClasses() {
+    print(_values);
+    _values.forEach((classes) => class_map[classes] = classes);
   }
 
   void filterSearchResults(String query) {
@@ -96,16 +131,22 @@ class _ListingState extends State<Listing> {
 
   void _printLatestValue() {
     print('Address field: ${_addressController.text}');
-    print('Name field: ${_nameController.text}');
+    print('Name field: ${_first_nameController.text}'+'${_last_nameController.text}');
     print('Phone field: ${_phoneController.text}');
-    print('subject field: ${_subjectController.text}');
+    print('Subject field: ${_subjectController.text}');
+    print('City field: ${_cityController.text}');
+    print('State field: ${_stateController.text}');
+    print('Pincode field: ${_pincodeController.text}');
+    print('About field: ${_aboutController.text}');
+    print('Fee field: ${_feeController.text}');
+    print('Email field: ${_emailController.text}');
     subjectSearch();
     print(_values);
     print(_subjects);
   }
 
   void _getlocation() async{
-    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text);
+    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text+_cityController.text+_stateController.text);
     var first = addresses.first;
     var location = first.coordinates.toMap();
     setState(() {
@@ -320,7 +361,46 @@ class _ListingState extends State<Listing> {
                     ),
                   ),
                   style: TextStyle(fontSize: 14,),
-                  controller: _nameController,
+                  controller: _first_nameController,
+                  //maxLines: 3,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "name",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _last_nameController,
+                  //maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Email",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "email",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _emailController,
                   //maxLines: 3,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
@@ -347,6 +427,54 @@ class _ListingState extends State<Listing> {
                   controller: _addressController,
                   //maxLines: 3,
                 ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "city/area",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _cityController,
+                  //maxLines: 3,
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "state",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _stateController,
+                  //maxLines: 3,
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter. digitsOnly],
+                  decoration: InputDecoration(
+                    hintText: "pincode",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _pincodeController,
+                  //maxLines: 3,
+                ),
                   SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -357,7 +485,6 @@ class _ListingState extends State<Listing> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                   DropdownButtonFormField(
                     dropdownColor: Colors.white,
                     icon: Icon(
@@ -366,7 +493,6 @@ class _ListingState extends State<Listing> {
                   items: [
                     "Online",
                     "Offline",
-
                   ].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -397,12 +523,58 @@ class _ListingState extends State<Listing> {
                 Align(
                   alignment: Alignment.centerLeft,
                   //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Type",
+                    style: TextStyle(color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DropdownButtonFormField(
+                  dropdownColor: Colors.white,
+                  icon: Icon(
+                    Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
+                  hint: Text("Choose a Mode"),
+                  items: [
+                    "Individual",
+                    "Group",
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value,
+                        style: TextStyle(fontSize: 14, color: Colors.black),),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    print(newValue);
+                    _typeValue = newValue;
+                  },
+                  decoration: const InputDecoration(
+                    enabled: true,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    disabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                        width: 2,
+                        style: BorderStyle.solid,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
                   child: Text("Phone number",
                     style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                 ),
-                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                 TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter. digitsOnly],
                   decoration: InputDecoration(
                     hintText: "ph no",
                     hintStyle: TextStyle(fontSize: 14),
@@ -528,6 +700,55 @@ class _ListingState extends State<Listing> {
                     },
                   ),
                 ) : Container(),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("About",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: "about yourself",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _aboutController,
+                  maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                  child: Text("Fee",
+                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter. digitsOnly],
+                  decoration: InputDecoration(
+                    hintText: "fee",
+                    hintStyle: TextStyle(fontSize: 14),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  style: TextStyle(fontSize: 14,),
+                  controller: _feeController,
+                  //maxLines: 3,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 SizedBox(
                   width: 120,
@@ -539,10 +760,30 @@ class _ListingState extends State<Listing> {
                           _getlocation();
                           _loadingWidget = true;
                           _onLoading();
+                          _getSubjects();
+                          _getClasses();
                           Future.delayed(Duration(seconds: 3), (){
                             _database.child('Teachers').child(_phoneController.text).set({
-                              'name': _nameController.text,
-                              'coordinates': {'latitude': _latitude,'longitude':_longitude}
+                              'first_name' : _first_nameController.text,
+                              'last_name' : _last_nameController.text,
+                              'coordinates': {'latitude': _latitude,'longitude':_longitude},
+                              'subjects' : subject_map,
+                              'classes' : class_map,
+                              'fee' : _feeController.text,
+                              'about' : _aboutController.text,
+                              'address' : {
+                                'area' : _cityController.text,
+                                'main' : _addressController.text,
+                                'pincode' : _pincodeController.text,
+                                'state' : _stateController.text,
+                              },
+                              'mode' : {'online' : 'Online'},
+                              'email_id' : _emailController.text,
+                              'rating' : 3.5,
+                              'type' : {'group' : 'Group'},
+                            });
+                            _database.child('Teachers_ID').set({
+                              _phoneController.text : _phoneController.text,
                             });
                             showDialog<String>(
                               context: context,
@@ -614,7 +855,6 @@ class _ListingState extends State<Listing> {
                   Spacer(),
                   IconButton(
                     onPressed: () {
-
                     },
                     hoverColor: Colors.black,
                     color: Colors.white,

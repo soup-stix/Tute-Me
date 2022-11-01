@@ -228,7 +228,7 @@ class Details extends StatefulWidget {
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      widget.child['mode'].keys.length == 2?
+                      widget.child['mode'].length == 2?
                       Text(widget.child['mode']['online'].toString()+", "+widget.child['mode']['offline'].toString(),
                         style: TextStyle(fontSize: 14,),
                         maxLines: 3,
@@ -256,7 +256,7 @@ class Details extends StatefulWidget {
                         ),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                      widget.child['type'].keys.length == 2?
+                      widget.child['type'].length == 2?
                       Text(widget.child['type']['individual'].toString()+", "+widget.child['type']['group'].toString(),
                         style: TextStyle(fontSize: 14,),
                         maxLines: 3,
