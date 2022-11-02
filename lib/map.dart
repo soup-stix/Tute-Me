@@ -48,37 +48,37 @@ class _MapState extends State<Map> {
 
   Set<Marker> getmarkers() {
     print(data);
-    for (dynamic items in data){
-      //print("marker maker:");
-      //print(items);
-      setState(() {
-        markers.add(Marker(
-          markerId: MarkerId(items[0]),
-          position: LatLng(items[3],items[4]),
-          infoWindow: InfoWindow(
-            onTap: (){
+      for (dynamic items in data) {
+        setState(() {
+          markers.add(Marker(
+            markerId: MarkerId(items[0]),
+            position: LatLng(items[3], items[4]),
+            infoWindow: InfoWindow(
+              onTap: () {
+                setState(() {
+                  _cardImage = items[2];
+                  _cardName = items[0];
+                  _cardData = items[1];
+                  _isSelected = true;
+                });
+              },
+              title: items[0],
+              snippet: items[1],
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+            onTap: () {
               setState(() {
                 _cardImage = items[2];
                 _cardName = items[0];
                 _cardData = items[1];
-                _isSelected = true;});
-            },
-            title: items[0],
-            snippet: items[1],
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-          onTap: () {
-            setState(() {
-              _cardImage = items[2];
-              _cardName = items[0];
-              _cardData = items[1];
-              _isSelected = true;});
-          },//Icon for Marker
-        ));
-      });
-    }
-    //print(markers);
-    return markers;
+                _isSelected = true;
+              });
+            }, //Icon for Marker
+          ));
+        });
+      }
+      //print(markers);
+      return markers;
   }
 
   Future<Position> getUserCurrentLocation() async {
@@ -103,19 +103,12 @@ class _MapState extends State<Map> {
 
   void _activateListeners() {
     _dataStream = _database.child('Teachers').onValue.listen((event) {
+      getmarkers();
       final dynamic teacher = event.snapshot.value;
       setState(() {
-        /*
-        for(int i=1;i<teacher;i++) {
-          //print(teacher[i]['coordinates']);
-          print([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
-          data.add([teacher[i]['name'],teacher[i]['name'],"assets/gajju.jpg",teacher[i]['coordinates']['latitude'],teacher[i]['coordinates']['longitude']]);
-          //print(data);
-          //getmarkers();
-        }*/
         teacher.forEach((k, v){
-          //print("[v['name']","","assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
-          data.add(["[v['name']","v['name']","assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          print([v['first_name'],v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          data.add([v['first_name'],v['last_name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
         });
       });
   });

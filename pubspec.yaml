@@ -64,6 +64,7 @@ dependencies:
   geocoder: ^0.2.1
   dropdown_search: ^5.0.3
   flutter_rating_bar: ^4.0.1
+  validators: ^3.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.10.0

@@ -4,6 +4,7 @@ import 'package:tute_me/map.dart';
 import 'package:tute_me/profile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
+import 'package:validators/validators.dart';
 
 class Listing extends StatefulWidget {
   const Listing({Key? key}) : super(key: key);
@@ -15,17 +16,27 @@ class Listing extends StatefulWidget {
 class _ListingState extends State<Listing> {
 
   final _database = FirebaseDatabase.instance.reference();
-
+  final _formKey = GlobalKey<FormState>();
+  bool _showTypeButtons = false;
+  bool _showModeButtons = false;
   bool _showSubjectList = false;
+  bool _showChipButtons = false;
   bool _chipClassMade = false;
   bool _chipSubjectMade = false;
-  bool _showChipButtons = false;
+  bool _chipModeMade = false;
+  bool _chipTypeMade = false;
   bool _loadingWidget = false;
   List<String> _values = [];
   List<bool> _selected = [];
+  List<bool> _selectedMode = [];
+  List<bool> _selectedType = [];
   List<dynamic> _subjects = [];
-  final subject_map = {};
-  final class_map = {};
+  List<dynamic> _mode = [];
+  List<dynamic> _type = [];
+  var subject_map = {};
+  var class_map = {};
+  var mode_map = {};
+  var type_map = {};
   dynamic _latitude;
   dynamic _longitude;
   dynamic _modeValue;
@@ -44,6 +55,8 @@ class _ListingState extends State<Listing> {
   List _searchResult = [];
   List<dynamic> _allSubjects = ["Math","Science","English","History","Civics","Economics"];
   List<dynamic> items = [];
+  List<dynamic> _modes = ['Online','Offline'];
+  List<dynamic> _types = ['Group','Individual'];
 
   @override
   void setState(VoidCallback fn) {
@@ -57,6 +70,14 @@ class _ListingState extends State<Listing> {
       _chipSubjectMade = true;
     else
       _chipSubjectMade = false;
+    if(_mode.length > 0)
+      _chipModeMade = true;
+    else
+      _chipModeMade = false;
+    if(_type.length > 0)
+      _chipTypeMade = true;
+    else
+      _chipTypeMade = false;
   }
 
   @override
@@ -96,6 +117,16 @@ class _ListingState extends State<Listing> {
   void _getSubjects() {
     print(_subjects);
     _subjects.forEach((subject) => subject_map[subject] = subject);
+  }
+
+  void _getMode() {
+    print(_mode);
+    _mode.forEach((mode) => mode_map[mode] = mode);
+  }
+
+  void _getType() {
+    print(_type);
+    _type.forEach((type) => type_map[type] = type);
   }
 
   void _getClasses() {
@@ -143,6 +174,8 @@ class _ListingState extends State<Listing> {
     subjectSearch();
     print(_values);
     print(_subjects);
+    print(_mode);
+    print(_type);
   }
 
   void _getlocation() async{
@@ -195,6 +228,42 @@ class _ListingState extends State<Listing> {
         _searchResult.add(item);
         //print(_searchResult);
       }
+    });
+  }
+
+  void clearAllText(){
+    _first_nameController.clear();
+    _last_nameController.clear();
+    _addressController.clear();
+    _phoneController.clear();
+    _subjectController.clear();
+    _cityController.clear();
+    _stateController.clear();
+    _pincodeController.clear();
+    _aboutController.clear();
+    _feeController.clear();
+    _emailController.clear();
+    setState(() {
+      _showTypeButtons = false;
+      _showModeButtons = false;
+      _showSubjectList = false;
+      _showChipButtons = false;
+      _chipClassMade = false;
+      _chipSubjectMade = false;
+      _chipModeMade = false;
+      _chipTypeMade = false;
+      _loadingWidget = false;
+      _values = [];
+      _selected = [];
+      _selectedMode = [];
+      _selectedType = [];
+      _subjects = [];
+      _mode = [];
+      _type = [];
+      subject_map = {};
+      class_map = {};
+      mode_map = {};
+      type_map = {};
     });
   }
 
@@ -269,6 +338,72 @@ class _ListingState extends State<Listing> {
     );
   }
 
+  Widget buildModeChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _mode.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_mode[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove mode",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _chipModeMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _mode.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+
+  Widget buildTypeChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _type.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_type[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove mode",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _chipTypeMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _type.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+
   Widget buildClassButtons() {
     List<Widget> buttons = [];
 
@@ -294,7 +429,7 @@ class _ListingState extends State<Listing> {
     );
   }
 
-  Widget buildSubjectButtons() {
+  /*Widget buildSubjectButtons() {
     List<Widget> buttons = [];
 
     for (int i = 1; i < _searchResult.length; i++) {
@@ -302,13 +437,63 @@ class _ListingState extends State<Listing> {
           style: ButtonStyle(enableFeedback: true,),
           onPressed: () {
             setState(() {
-              if (_values.contains('class $i') == false) {
-                _values.add('class $i');
+              if (_values.contains('$i') == false) {
+                _values.add('$i');
                 _selected.add(true);
               }
             });
           },
           child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }*/
+
+  Widget buildModeButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 0; i < 2; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_mode.contains(_modes[i]) == false) {
+                _mode.add(_modes[i]);
+                _selectedMode.add(true);
+              }
+            });
+          },
+          child: Text(_modes[i], style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
+
+  Widget buildTypeButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 0; i < 2; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_type.contains(_types[i]) == false) {
+                _type.add(_types[i]);
+                _selectedType.add(true);
+              }
+            });
+          },
+          child: Text(_types[i], style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
       );
       buttons.add(buttonChip);
       buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
@@ -338,504 +523,601 @@ class _ListingState extends State<Listing> {
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: SingleChildScrollView(
-          child: Column(
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Name",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "name",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _first_nameController,
-                  //maxLines: 3,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "name",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _last_nameController,
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Email",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "email",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _emailController,
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Address",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "address",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _addressController,
-                  //maxLines: 3,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "city/area",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _cityController,
-                  //maxLines: 3,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "state",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _stateController,
-                  //maxLines: 3,
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter. digitsOnly],
-                  decoration: InputDecoration(
-                    hintText: "pincode",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _pincodeController,
-                  //maxLines: 3,
-                ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+                children: [
                   SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                   Align(
                     alignment: Alignment.centerLeft,
                     //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                    child: Text("Mode",
+                    child: Text("Name",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "first name",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _first_nameController,
+                    validator: (first_name) {
+                      final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (first_name!.isNotEmpty && nameRegExp.hasMatch(first_name!))
+                        return null;
+                      else
+                        return 'Enter a valid first name';
+                    },
+                    //maxLines: 3,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "last name",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _last_nameController,
+                    validator: (last_name) {
+                      final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (last_name!.isNotEmpty && nameRegExp.hasMatch(last_name!))
+                        return null;
+                      else
+                        return 'Enter a valid first name';
+                    },
+                    //maxLines: 3,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Email",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                  TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                      hintText: "email",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _emailController,
+                    validator: (email) {
+                      final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if(emailRegExp.hasMatch(email!))
+                        return null;
+                      else
+                        return "Enter a valid email Id";
+                    },
+                    //maxLines: 3,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Address",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "address",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _addressController,
+                    validator: (address) {
+                      final addressRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (address!.isNotEmpty && addressRegExp.hasMatch(address!))
+                        return null;
+                      else
+                        return 'Enter a valid address';
+                    },
+                    //maxLines: 3,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "city/area",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _cityController,
+                    validator: (city) {
+                      final cityRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (city!.isNotEmpty && cityRegExp.hasMatch(city!))
+                        return null;
+                      else
+                        return 'Enter a valid city';
+                    },
+                    //maxLines: 3,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "state",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _stateController,
+                    validator: (state) {
+                      final stateRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (state!.isNotEmpty && stateRegExp.hasMatch(state!))
+                        return null;
+                      else
+                        return 'Enter a valid state';
+                    },
+                    //maxLines: 3,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter. digitsOnly],
+                    decoration: InputDecoration(
+                      hintText: "pincode",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _pincodeController,
+                    validator: (pincode) {
+                      final pincodeRegExp = RegExp(r"^\+?0[0-9]{10}$");
+                      if(pincodeRegExp.hasMatch(pincode!))
+                        return null;
+                      else
+                        return "Enter a valid phone number";
+                    },
+                    //maxLines: 3,
+                  ),
+                    SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                      child: Text("Mode",
+                        style: TextStyle(color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  _chipModeMade ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildModeChips(),
+                  ) : Container(),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "mode",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    onTap: () {
+                      setState(() {
+                        _showModeButtons = true;
+                        _chipModeMade = true;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      setState(() { _showModeButtons = false;});
+                    },
+                  ),
+                  _showModeButtons ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildModeButtons(),
+                  ) : Container(),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Type",
                       style: TextStyle(color: Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  DropdownButtonFormField(
-                    dropdownColor: Colors.white,
-                    icon: Icon(
-                    Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
-                  hint: Text("Choose a Mode"),
-                  items: [
-                    "Online",
-                    "Offline",
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,
-                        style: TextStyle(fontSize: 14, color: Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    print(newValue);
-                    _modeValue = newValue;
-                  },
-                  decoration: const InputDecoration(
-                    enabled: true,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                        style: BorderStyle.solid,
+                  _chipTypeMade ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildTypeChips(),
+                  ) : Container(),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "type",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Type",
-                    style: TextStyle(color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DropdownButtonFormField(
-                  dropdownColor: Colors.white,
-                  icon: Icon(
-                    Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
-                  hint: Text("Choose a Mode"),
-                  items: [
-                    "Individual",
-                    "Group",
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,
-                        style: TextStyle(fontSize: 14, color: Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    print(newValue);
-                    _typeValue = newValue;
-                  },
-                  decoration: const InputDecoration(
-                    enabled: true,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 2,
-                        style: BorderStyle.solid,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Phone number",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter. digitsOnly],
-                  decoration: InputDecoration(
-                    hintText: "ph no",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _phoneController,
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Classes",
-                    style: TextStyle(color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                _chipClassMade ? Container(
-                  height: MediaQuery.of(context).size.height*0.08,
-                  child: buildClassChips(),
-                ) : Container(),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "class",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  onTap: () {
-                    setState(() {
-                      _showChipButtons = true;
-                      _chipClassMade = true;
-                    });
-                  },
-                  onSubmitted: (value) {
-                    setState(() { _showChipButtons = false;});
-                  },
-                ),
-                _showChipButtons ? Container(
-                  height: MediaQuery.of(context).size.height*0.08,
-                  child: buildClassButtons(),
-                ) : Container(),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Subjects",
-                    style: TextStyle(color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                _chipSubjectMade ? Container(
-                  height: MediaQuery.of(context).size.height*0.08,
-                  child: buildSubjectChips(),
-                ) : Container(),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "subjects",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _subjectController,
-                  onTap: () {
-                    setState(() {
-                      _showSubjectList = true;
-                    });
-                  },
-                  onChanged: (value) {
-                    filterSearchResults(value);
-                  },
-                  onSubmitted: (value) {
-                    setState(() {
-                      _showSubjectList = false;
-                    });
-                  },
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                _showSubjectList ?
-                Container(
-                  color: Colors.white,
-                  height: MediaQuery.of(context).size.height*0.3,
-                  child: ListView.builder(
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width*0.8,
-                          height: 40,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                if(_subjects.contains(items[index]) == false)
-                                  _subjects.add(items[index]);
-                                print(_subjects);
-                                _chipSubjectMade = true;
-                              });
-                            },
-                              child: Text('${items[index]}'),
-                              style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          )
-                      ),
-                      );
+                    style: TextStyle(fontSize: 14,),
+                    onTap: () {
+                      setState(() {
+                        _showTypeButtons = true;
+                        _chipTypeMade = true;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      setState(() { _showTypeButtons = false;});
                     },
                   ),
-                ) : Container(),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("About",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: "about yourself",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
+                  _showTypeButtons ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildTypeButtons(),
+                  ) : Container(),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Phone number",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
                     ),
                   ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _aboutController,
-                  maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                  child: Text("Fee",
-                    style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter. digitsOnly],
-                  decoration: InputDecoration(
-                    hintText: "fee",
-                    hintStyle: TextStyle(fontSize: 14),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  style: TextStyle(fontSize: 14,),
-                  controller: _feeController,
-                  //maxLines: 3,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                SizedBox(
-                  width: 120,
-                  height: 40,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        print(_values);
-                        setState(() {
-                          _getlocation();
-                          _loadingWidget = true;
-                          _onLoading();
-                          _getSubjects();
-                          _getClasses();
-                          Future.delayed(Duration(seconds: 3), (){
-                            _database.child('Teachers').child(_phoneController.text).set({
-                              'first_name' : _first_nameController.text,
-                              'last_name' : _last_nameController.text,
-                              'coordinates': {'latitude': _latitude,'longitude':_longitude},
-                              'subjects' : subject_map,
-                              'classes' : class_map,
-                              'fee' : _feeController.text,
-                              'about' : _aboutController.text,
-                              'address' : {
-                                'area' : _cityController.text,
-                                'main' : _addressController.text,
-                                'pincode' : _pincodeController.text,
-                                'state' : _stateController.text,
-                              },
-                              'mode' : {'online' : 'Online'},
-                              'email_id' : _emailController.text,
-                              'rating' : 3.5,
-                              'type' : {'group' : 'Group'},
-                            });
-                            _database.child('Teachers_ID').set({
-                              _phoneController.text : _phoneController.text,
-                            });
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                                title: Icon(Icons.check_circle, size: MediaQuery.of(context).size.height*0.125, color: Colors.lightBlue, shadows: [BoxShadow(
-                                  color: Colors.black38,
-                                  spreadRadius: 1,
-                                  blurRadius: 10,
-                                  offset: Offset(0,4),
-                                )],
-                                ),
-                                actions: <Widget>[
-                                  Column(
-                                    children: [
-                                      Text('Tutor Added Successfully !', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
-                                      Row(
-                                        children: [
-                                          Spacer(),
-                                          TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text("Click here", style: TextStyle(fontSize: 14, fontFamily: 'poppins', color: Colors.lightBlue),)
-                                          ),
-                                          Text("to continue", style: TextStyle(fontSize: 14, fontFamily: 'poppins'),),
-                                          Spacer(),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          });
-                        });
-                      },
-                      style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Colors.lightBlue)
-                              )
-                          )
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter. digitsOnly],
+                    decoration: InputDecoration(
+                      hintText: "ph no",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
                       ),
-                      child: Text("Add", style: TextStyle(fontSize: 14),)
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _phoneController,
+                    validator: (ph_no) {
+                      final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+                      if(phoneRegExp.hasMatch(ph_no!))
+                        return null;
+                      else
+                        return "Enter a valid phone number";
+                    },
+                    //maxLines: 3,
                   ),
-                ),
-              ]
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Classes",
+                      style: TextStyle(color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  _chipClassMade ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildClassChips(),
+                  ) : Container(),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "class",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    onTap: () {
+                      setState(() {
+                        _showChipButtons = true;
+                        _chipClassMade = true;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      setState(() { _showChipButtons = false;});
+                    },
+                  ),
+                  _showChipButtons ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildClassButtons(),
+                  ) : Container(),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Subjects",
+                      style: TextStyle(color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  _chipSubjectMade ? Container(
+                    height: MediaQuery.of(context).size.height*0.08,
+                    child: buildSubjectChips(),
+                  ) : Container(),
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: "subjects",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _subjectController,
+                    onTap: () {
+                      setState(() {
+                        _showSubjectList = true;
+                      });
+                    },
+                    onChanged: (value) {
+                      filterSearchResults(value);
+                    },
+                    onSubmitted: (value) {
+                      setState(() {
+                        _showSubjectList = false;
+                      });
+                    },
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  _showSubjectList ?
+                  Container(
+                    color: Colors.white,
+                    height: MediaQuery.of(context).size.height*0.3,
+                    child: ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          width: MediaQuery.of(context).size.width*0.8,
+                            height: 40,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  if(_subjects.contains(items[index]) == false)
+                                    _subjects.add(items[index]);
+                                  print(_subjects);
+                                  _chipSubjectMade = true;
+                                });
+                              },
+                                child: Text('${items[index]}'),
+                                style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            )
+                        ),
+                        );
+                      },
+                    ),
+                  ) : Container(),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("About",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "about yourself",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _aboutController,
+                    maxLines: 3,
+                    validator: (about) {
+                      if(about!.isNotEmpty)
+                        return null;
+                      else
+                        return "Enter a valid about";
+                    },
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Fee",
+                      style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter. digitsOnly],
+                    decoration: InputDecoration(
+                      hintText: "fee",
+                      hintStyle: TextStyle(fontSize: 14),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                    style: TextStyle(fontSize: 14,),
+                    controller: _feeController,
+                    validator: (fee) {
+                      final feeRegExp = RegExp(r"^\+?0[0-9]{10}$");
+                      if(feeRegExp.hasMatch(fee!))
+                        return null;
+                      else
+                        return "Enter a valid fee";
+                    },
+                    //maxLines: 3,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  SizedBox(
+                    width: 120,
+                    height: 40,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          if(_formKey.currentState!.validate()){
+                            print(_values);
+                            setState(() {
+                              _getlocation();
+                              _loadingWidget = true;
+                              _onLoading();
+                              _getSubjects();
+                              _getClasses();
+                              _getMode();
+                              _getType();
+                              Future.delayed(Duration(seconds: 3), () {
+                                _database.child('Teachers').child(
+                                    _phoneController.text).set({
+                                  'first_name': _first_nameController.text,
+                                  'last_name': _last_nameController.text,
+                                  'coordinates': {
+                                    'latitude': _latitude,
+                                    'longitude': _longitude
+                                  },
+                                  'subjects': subject_map,
+                                  'classes': class_map,
+                                  'fee': _feeController.text,
+                                  'about': _aboutController.text,
+                                  'address': {
+                                    'area': _cityController.text,
+                                    'main': _addressController.text,
+                                    'pincode': _pincodeController.text,
+                                    'state': _stateController.text,
+                                  },
+                                  'mode': mode_map,
+                                  'email_id': _emailController.text,
+                                  'rating': 3.5,
+                                  'type': type_map,
+                                });
+                                _database.child('Teachers_ID').child(
+                                    _phoneController.text).set(
+                                    _phoneController.text);
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8.0))),
+                                        title: Icon(
+                                          Icons.check_circle, size: MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height * 0.125,
+                                          color: Colors.lightBlue,
+                                          shadows: [BoxShadow(
+                                            color: Colors.black38,
+                                            spreadRadius: 1,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 4),
+                                          )
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          Column(
+                                            children: [
+                                              Text('Tutor Added Successfully !',
+                                                style: TextStyle(fontSize: 16,
+                                                    fontWeight: FontWeight
+                                                        .bold),
+                                                textAlign: TextAlign.center,),
+                                              Row(
+                                                children: [
+                                                  Spacer(),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Click here",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily: 'poppins',
+                                                            color: Colors
+                                                                .lightBlue),)
+                                                  ),
+                                                  Text("to continue",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontFamily: 'poppins'),),
+                                                  Spacer(),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                );
+                              });
+                            });
+                          }
+                        },
+                        style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    side: BorderSide(color: Colors.lightBlue)
+                                )
+                            )
+                        ),
+                        child: Text("Add", style: TextStyle(fontSize: 14),)
+                    ),
+                  ),
+                ]
+            ),
           ),
         ),
       ),
