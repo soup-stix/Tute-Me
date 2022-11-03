@@ -92,22 +92,16 @@ class _MyFavouritesState extends State<MyFavourites> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width * 0.35,
+                                      width: MediaQuery.of(context).size.width * 0.35,
                                       child: Text(
                                         snapshot.data.value['first_name'] + " " +
                                             snapshot.data.value['last_name'],
-                                        style: TextStyle(fontSize: 25,),
+                                        style: TextStyle(fontSize: 20,),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    SizedBox(height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height * 0.005,),
+                                    SizedBox(height: MediaQuery.of(context).size.height * 0.005,),
                                     Row(
                                       children: [
                                         RatingBarIndicator(
@@ -118,30 +112,33 @@ class _MyFavouritesState extends State<MyFavourites> {
                                                 color: Colors.amber,
                                               ),
                                           itemCount: 5,
-                                          itemSize: 20.0,
+                                          itemSize: 15.0,
                                           direction: Axis.horizontal,
                                         ),
                                         Text("/ 300 reviews",
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: false,
-                                          style: TextStyle(fontSize: 15,),),
+                                          style: TextStyle(fontSize: 10,),),
                                       ],
                                     ),
-                                    SizedBox(height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height * 0.01,),
+                                    SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
                                     SizedBox(
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width * 0.5,
+                                      width: MediaQuery.of(context).size.width * 0.5,
+                                      child: Text(snapshot.data.value['about'].toString(),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: false,
+                                        style: TextStyle(fontSize: 12,),),
+                                    ),
+                                    SizedBox(height: MediaQuery.of(context).size.height * 0.01,),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.5,
                                       child: Text("Rs. "+snapshot.data.value['fee'].toString(),
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                         softWrap: false,
-                                        style: TextStyle(fontSize: 20,),),
+                                        style: TextStyle(fontSize: 15,),),
                                     ),
                                   ],
                                 ),

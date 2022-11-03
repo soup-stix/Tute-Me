@@ -1,9 +1,15 @@
-import 'package:tute_me/profile.dart';
+import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:tute_me/cards.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:tute_me/books.dart';
+import 'package:tute_me/favourites.dart';
 import 'package:tute_me/map.dart';
-import 'package:tute_me/homepage.dart';
-
+import 'package:tute_me/favourites_expanded.dart';
+import 'package:tute_me/listingnew.dart';
+import 'package:tute_me/profile.dart';
+import 'package:tute_me/student_register.dart';
 class Favourites_Expanded extends StatefulWidget {
   const Favourites_Expanded({Key? key}) : super(key: key);
 
@@ -12,43 +18,94 @@ class Favourites_Expanded extends StatefulWidget {
 }
 
 class _Favourites_ExpandedState extends State<Favourites_Expanded> {
-  final List _posts = [
-    ["Kaichou wa Maid-Sama!","For Sale!!","https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1342630688l/15758313.jpg","300","Anand","123456798"],
-    ["Da Vinci Code","Dan Brown","https://m.media-amazon.com/images/I/5171w-4D2FL.jpg","500","Anand","123456798"],
-    ["IKIGAI","Japanese","https://images-na.ssl-images-amazon.com/images/I/81l3rZK4lnL.jpg","400","Anand","123456798"],
-    ["Harry Potter and The Chamber of Secrets","JK Rowling","https://images-na.ssl-images-amazon.com/images/I/91HHqVTAJQL.jpg","700","Anand","123456798"],
-    ["Rich Dad, Poor Dad","Robert T Kiyosaki","https://images-na.ssl-images-amazon.com/images/I/81bsw6fnUiL.jpg","1000","Anand","123456798"],
-  ];
+  final List _categories = [];
+  final _database = FirebaseDatabase.instance.reference();
+  dynamic _data;
+
+  @override
+  void initState(){
+    super.initState();
+    _activeListners();
+    _get_Teachers_ID();
+  }
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    _get_Teachers_ID();
+  }
+
+  void _activeListners(){
+    _database.child('Teachers_ID').onValue.listen((event) {
+      _get_Teachers_ID();
+      //print(teacher);
+    });
+  }
+
+  void _get_Teachers_ID() async {
+    _data = await _database.child('Teachers_ID').get();
+    if (_data.exists) {
+      _data.value.forEach((k, v) {
+        print(k);
+        if (_categories.contains(v) == false){
+          setState(() {
+            _categories.add(v);
+          });
+
+          //print(_categories);
+        }
+      });
+    } else {
+      print('No data available.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Favourites", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Colors.lightBlue),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.lightBlue,),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
+      body: Container(
+        child: Column(
           children: [
+            SizedBox(height: MediaQuery.of(context).size.height*0.02,),
+            Container(
+              height: MediaQuery.of(context).size.height*0.06,
+              width: MediaQuery.of(context).size.width*0.95,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Icon(Icons.search_rounded),
+                  ),
+                  Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
+                ],
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height*0.005,),
             Expanded(
               child: ListView.builder(
-                  itemCount: _posts.length,
+                  itemCount: _categories.length,
                   physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                   itemBuilder: (context, index){
-                    return MyCards(child: _posts[index]);
+                    return MyFavourites(child: _categories[index]);
                   }
               ),
-
             ),
-          ]
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlueAccent,
@@ -66,7 +123,6 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                   Spacer(),
                   IconButton(
                     onPressed: () {
-
                     },
                     hoverColor: Colors.black,
                     color: Colors.white,

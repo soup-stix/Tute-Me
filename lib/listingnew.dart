@@ -53,7 +53,7 @@ class _ListingState extends State<Listing> {
   final _feeController = TextEditingController();
   final _emailController = TextEditingController();
   List _searchResult = [];
-  List<dynamic> _allSubjects = ["Math","Science","English","History","Civics","Economics"];
+  List<dynamic> _allSubjects = ["math","science","english","history","civics","economics"];
   List<dynamic> items = [];
   List<dynamic> _modes = ['Online','Offline'];
   List<dynamic> _types = ['Group','Individual'];
@@ -121,12 +121,12 @@ class _ListingState extends State<Listing> {
 
   void _getMode() {
     print(_mode);
-    _mode.forEach((mode) => mode_map[mode] = mode);
+    _mode.forEach((mode) => mode_map[mode.toString().toLowerCase()] = mode);
   }
 
   void _getType() {
     print(_type);
-    _type.forEach((type) => type_map[type] = type);
+    _type.forEach((type) => type_map[type.toString().toLowerCase()] = type);
   }
 
   void _getClasses() {
@@ -171,7 +171,7 @@ class _ListingState extends State<Listing> {
     print('About field: ${_aboutController.text}');
     print('Fee field: ${_feeController.text}');
     print('Email field: ${_emailController.text}');
-    subjectSearch();
+    //subjectSearch();
     print(_values);
     print(_subjects);
     print(_mode);
@@ -224,7 +224,7 @@ class _ListingState extends State<Listing> {
     _allSubjects.forEach((item) {
       //print("test");
       print(_subjectController.text);
-      if(item.contains(_subjectController.text) == true){
+      if(item.contains(_subjectController.text.toLowerCase()) == true){
         _searchResult.add(item);
         //print(_searchResult);
       }
@@ -429,31 +429,6 @@ class _ListingState extends State<Listing> {
     );
   }
 
-  /*Widget buildSubjectButtons() {
-    List<Widget> buttons = [];
-
-    for (int i = 1; i < _searchResult.length; i++) {
-      TextButton buttonChip = TextButton(
-          style: ButtonStyle(enableFeedback: true,),
-          onPressed: () {
-            setState(() {
-              if (_values.contains('$i') == false) {
-                _values.add('$i');
-                _selected.add(true);
-              }
-            });
-          },
-          child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
-      );
-      buttons.add(buttonChip);
-      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
-    }
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: buttons,
-    );
-  }*/
-
   Widget buildModeButtons() {
     List<Widget> buttons = [];
 
@@ -550,11 +525,11 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _first_nameController,
                     validator: (first_name) {
-                      final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                      if (first_name!.isNotEmpty && nameRegExp.hasMatch(first_name!))
-                        return null;
-                      else
-                        return 'Enter a valid first name';
+                          final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                          if (_first_nameController.text.isNotEmpty && nameRegExp.hasMatch(_first_nameController.text) == false)
+                          return null;
+                          else
+                          return 'Enter a valid last name';
                     },
                     //maxLines: 3,
                   ),
@@ -574,10 +549,10 @@ class _ListingState extends State<Listing> {
                     controller: _last_nameController,
                     validator: (last_name) {
                       final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                      if (last_name!.isNotEmpty && nameRegExp.hasMatch(last_name!))
+                      if (_last_nameController.text.isNotEmpty && nameRegExp.hasMatch(_last_nameController.text) == false)
                         return null;
                       else
-                        return 'Enter a valid first name';
+                        return 'Enter a valid last name';
                     },
                     //maxLines: 3,
                   ),
@@ -637,11 +612,10 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _addressController,
                     validator: (address) {
-                      final addressRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                      if (address!.isNotEmpty && addressRegExp.hasMatch(address!))
-                        return null;
-                      else
+                      if (_addressController.text!.isEmpty)
                         return 'Enter a valid address';
+                      else
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -660,11 +634,10 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _cityController,
                     validator: (city) {
-                      final cityRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                      if (city!.isNotEmpty && cityRegExp.hasMatch(city!))
-                        return null;
-                      else
+                      if (_cityController.text!.isEmpty)
                         return 'Enter a valid city';
+                      else
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -683,11 +656,10 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _stateController,
                     validator: (state) {
-                      final stateRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                      if (state!.isNotEmpty && stateRegExp.hasMatch(state!))
-                        return null;
-                      else
+                      if (_stateController.text!.isEmpty)
                         return 'Enter a valid state';
+                      else
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -709,10 +681,10 @@ class _ListingState extends State<Listing> {
                     controller: _pincodeController,
                     validator: (pincode) {
                       final pincodeRegExp = RegExp(r"^\+?0[0-9]{10}$");
-                      if(pincodeRegExp.hasMatch(pincode!))
-                        return null;
+                      if(pincodeRegExp.hasMatch(pincode!) || pincode.isEmpty || pincode.length != 6)
+                        return "Enter a valid pincode";
                       else
-                        return "Enter a valid phone number";
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -821,11 +793,11 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _phoneController,
                     validator: (ph_no) {
-                      final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
-                      if(phoneRegExp.hasMatch(ph_no!))
-                        return null;
-                      else
+                      final numberExp = RegExp(r"^\+?0[0-9]{10}$");
+                      if((numberExp.hasMatch(ph_no!) || ph_no.isEmpty) || ph_no.length != 10)
                         return "Enter a valid phone number";
+                      else
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -913,13 +885,15 @@ class _ListingState extends State<Listing> {
                   SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                   _showSubjectList ?
                   Container(
-                    color: Colors.white,
+                    color: Colors.transparent,
                     height: MediaQuery.of(context).size.height*0.3,
                     child: ListView.builder(
+                      scrollDirection: Axis.vertical,
                       itemCount: items.length,
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          width: MediaQuery.of(context).size.width*0.8,
+                        return Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                          width: MediaQuery.of(context).size.width*06,
                             height: 40,
                             child: ElevatedButton(
                               onPressed: () {
@@ -992,11 +966,11 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _feeController,
                     validator: (fee) {
-                      final feeRegExp = RegExp(r"^\+?0[0-9]{10}$");
-                      if(feeRegExp.hasMatch(fee!))
-                        return null;
-                      else
+                      final numberExp = RegExp(r"^\+?0[0-9]{10}$");
+                      if(numberExp.hasMatch(fee!) || fee.isEmpty)
                         return "Enter a valid fee";
+                      else
+                        return null;
                     },
                     //maxLines: 3,
                   ),
@@ -1024,7 +998,7 @@ class _ListingState extends State<Listing> {
                                   'last_name': _last_nameController.text,
                                   'coordinates': {
                                     'latitude': _latitude,
-                                    'longitude': _longitude
+                                    'longitude': _longitude,
                                   },
                                   'subjects': subject_map,
                                   'classes': class_map,
