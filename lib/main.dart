@@ -12,6 +12,7 @@ import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tute_me/map.dart';
+import 'package:tute_me/review.dart';
 
 void main(){
 
@@ -31,6 +32,7 @@ void main(){
       'profile':(context) => MyProfile(),
       'favourites_expanded':(context) => Favourites_Expanded(),
       'map':(context) => Map(),
+      'review':(context)=>review(),
       //'details':(context) => Details(),
 
     },

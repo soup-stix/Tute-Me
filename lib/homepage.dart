@@ -9,6 +9,7 @@ import 'package:tute_me/listingnew.dart';
 import 'package:flutter_svg/avd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tute_me/profile.dart';
+import 'package:tute_me/review.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -140,7 +141,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Spacer(),
                     IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => Listing())),
-                        icon: Icon(Icons.add_box))
+                        icon: Icon(Icons.add_box)),
+                    Spacer(),
+                    IconButton(onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => review())),
+                        icon: Icon(Icons.reviews))
                   ],
                 ),
           ],
