@@ -12,6 +12,7 @@ import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tute_me/map.dart';
+import 'package:tute_me/review.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();

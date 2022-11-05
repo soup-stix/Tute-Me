@@ -3,11 +3,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/map.dart';
+import 'package:tute_me/review.dart';
 
 
 class Details extends StatefulWidget {
   final child;
-  const Details({Key? key, required this.child}) : super(key: key);
+  final id;
+  const Details({Key? key, required this.child, this.id}) : super(key: key);
 
   @override
   DetailsState createState() => DetailsState();
@@ -77,7 +79,7 @@ class Details extends StatefulWidget {
     return Scaffold(
     backgroundColor: Colors.lightBlueAccent,
     appBar: AppBar(
-      title: Text(widget.child['first_name'],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+      title: Text(widget.child['first_name']+" "+widget.child['last_name'],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
     leading: Builder(
     builder: (context) =>
     IconButton(
@@ -178,7 +180,7 @@ class Details extends StatefulWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                        child: Text(widget.child['first_name'],
+                        child: Text(widget.child['first_name']+" "+widget.child['last_name'],
                           style: TextStyle(color: Colors.black,fontSize: 26,fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -186,15 +188,27 @@ class Details extends StatefulWidget {
                         thickness: 1,
                         color: Colors.black,
                       ),
-                      RatingBarIndicator(
-                        rating: 5,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemCount: 5,
-                        itemSize: 20.0,
-                        direction: Axis.horizontal,
+                      Row(
+                        children: [
+                          RatingBarIndicator(
+                            rating: 5,
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            itemCount: 5,
+                            itemSize: 20.0,
+                            direction: Axis.horizontal,
+                          ),
+                          VerticalDivider(
+                            color: Colors.black,
+                            thickness: 2,
+                          ),
+                          IconButton(
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Review(child: widget.child,id: widget.id,))),
+                              icon: Icon(Icons.rate_review_rounded)
+                          ),
+                        ],
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                       Align(
