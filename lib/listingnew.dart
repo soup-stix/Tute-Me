@@ -178,7 +178,7 @@ class _ListingState extends State<Listing> {
     print(_type);
   }
 
-  void _getlocation() async{
+  Future<bool> _getlocation() async{
     var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text+_cityController.text+_stateController.text);
     var first = addresses.first;
     var location = first.coordinates.toMap();
@@ -187,6 +187,7 @@ class _ListingState extends State<Listing> {
       _longitude = location['longitude'];
     });
     print(first.coordinates.toMap());
+    return true;
   }
 
   void _onLoading() {
@@ -612,7 +613,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _addressController,
                     validator: (address) {
-                      if (_addressController.text!.isEmpty)
+                      if (address!.isEmpty)
                         return 'Enter a valid address';
                       else
                         return null;
@@ -634,7 +635,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _cityController,
                     validator: (city) {
-                      if (_cityController.text!.isEmpty)
+                      if (city!.isEmpty)
                         return 'Enter a valid city';
                       else
                         return null;
@@ -656,7 +657,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _stateController,
                     validator: (state) {
-                      if (_stateController.text!.isEmpty)
+                      if (state!.isEmpty)
                         return 'Enter a valid state';
                       else
                         return null;
@@ -984,7 +985,8 @@ class _ListingState extends State<Listing> {
                           if(_formKey.currentState!.validate()){
                             print(_values);
                             setState(() {
-                              _getlocation();
+                              Future.wait([_getlocation()]);
+                              print(_latitude+_longitude);
                               _loadingWidget = true;
                               _onLoading();
                               _getSubjects();

@@ -77,7 +77,7 @@ class _MapState extends State<Map> {
           ));
         });
       }
-      //print(markers);
+      print(markers);
       return markers;
   }
 
@@ -101,9 +101,9 @@ class _MapState extends State<Map> {
       ));
   }
 
-  void _activateListeners() {
+  Future<Set<Marker>> _activateListeners() async {
     _dataStream = _database.child('Teachers').onValue.listen((event) {
-      getmarkers();
+      //getmarkers();
       final dynamic teacher = event.snapshot.value;
       setState(() {
         teacher.forEach((k, v){
@@ -112,6 +112,38 @@ class _MapState extends State<Map> {
         });
       });
   });
+    print(data);
+    for (dynamic items in data) {
+      setState(() {
+        markers.add(Marker(
+          markerId: MarkerId(items[0]),
+          position: LatLng(items[3], items[4]),
+          infoWindow: InfoWindow(
+            onTap: () {
+              setState(() {
+                _cardImage = items[2];
+                _cardName = items[0];
+                _cardData = items[1];
+                _isSelected = true;
+              });
+            },
+            title: items[0],
+            snippet: items[1],
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _cardImage = items[2];
+              _cardName = items[0];
+              _cardData = items[1];
+              _isSelected = true;
+            });
+          }, //Icon for Marker
+        ));
+      });
+    }
+    print(markers);
+    return markers;
 }
 
   @override
@@ -150,16 +182,24 @@ class _MapState extends State<Map> {
       ),
       body: Stack(
         children: [
-          GoogleMap(
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-            initialCameraPosition: _kGoogle,
-          mapType: currentMapType,
-            myLocationEnabled: true,
-            compassEnabled: true,
-            markers: getmarkers(),
-        ),
+          FutureBuilder(
+          future: _activateListeners(),
+      builder: (BuildContext ctx, AsyncSnapshot<dynamic> snapshot) =>
+      snapshot.hasData
+          ?
+      GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+                initialCameraPosition: _kGoogle,
+              mapType: currentMapType,
+                myLocationEnabled: true,
+                compassEnabled: true,
+                markers: snapshot.data,
+        ): const Center(
+        // render the loading indicator
+        child: CircularProgressIndicator(),)
+    ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
