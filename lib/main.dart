@@ -5,6 +5,7 @@ import 'package:tute_me/profile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/resetpassword.dart';
 import 'package:tute_me/homepage.dart';
+import 'package:tute_me/review.dart';
 import 'package:tute_me/student_register.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/cycles.dart';
@@ -35,6 +36,7 @@ Future<void> main() async{
       'profile':(context) => MyProfile(),
       'favourites_expanded':(context) => Favourites_Expanded(),
       'map':(context) => Map(),
+      'review':(context)=>review(),
       //'details':(context) => Details(),
 
     },

@@ -59,6 +59,7 @@ dependencies:
   google_maps_flutter: ^2.1.1
   firebase_core: ^1.19.0
   firebase_database: ^9.0.17
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.10.0
