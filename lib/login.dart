@@ -1,9 +1,37 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tute_me/homepage2.dart';
+import 'package:tute_me/profile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/homepage.dart';
+
+
+class newvalue {
+  static const String FirstItem = 'Teacher';
+  static const String SecondItem = 'Student';
+
+
+  static const List<String> choices = <String>[
+    FirstItem,
+    SecondItem,
+
+  ];
+}
+
+void choiceAction(String choice) {
+  if (choice == newvalue.FirstItem) {
+
+
+
+  } else if (choice == newvalue.SecondItem) {
+
+  }
+  }
+
 
 class MyLogin extends StatefulWidget{
   const MyLogin({Key?key}): super(key: key);
@@ -53,6 +81,12 @@ class _MyLoginState extends State<MyLogin>{
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*0.01,),
+                    SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+
+
+
+
+
                     Align(
                       alignment: Alignment.centerLeft,
                       //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.35),
@@ -107,13 +141,62 @@ class _MyLoginState extends State<MyLogin>{
                       ),
                     ),
                     SizedBox(height:MediaQuery.of(context).size.height*0.02,),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Login As',
+                        style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    DropdownButtonFormField(
+                      dropdownColor: Colors.white,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
+                      hint: Text("Choose a Mode"),
+                      items: [
+                        "Teacher",
+                        "Student",
+                      ].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,
+                            style: TextStyle(fontSize: 14, color: Colors.black),),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue == 'Teacher'){
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                        }
+                        else{
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
+                        }
+                        print(newValue);
+
+                      },
+                      decoration: const InputDecoration(
+                        enabled: true,
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black)),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black)),
+                        disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 2,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                      ),
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         SizedBox(
                           width: 120,
                           height: 40,
-                          child: ElevatedButton(
+                          /*child: ElevatedButton(
+
+
                               onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
 
                               style: ButtonStyle(
@@ -127,7 +210,7 @@ class _MyLoginState extends State<MyLogin>{
                                   )
                               ),
                               child: Text("Log In", style: TextStyle(fontSize: 14),)
-                          ),
+                          ),*/
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,

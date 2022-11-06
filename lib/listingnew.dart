@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/profile.dart';
-import 'package:geocoder/geocoder.dart';
+
 import 'package:flutter/services.dart';
 import 'package:validators/validators.dart';
 
@@ -178,16 +178,7 @@ class _ListingState extends State<Listing> {
     print(_type);
   }
 
-  void _getlocation() async{
-    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text+_cityController.text+_stateController.text);
-    var first = addresses.first;
-    var location = first.coordinates.toMap();
-    setState(() {
-      _latitude = location['latitude'];
-      _longitude = location['longitude'];
-    });
-    print(first.coordinates.toMap());
-  }
+
 
   void _onLoading() {
     showDialog(
@@ -984,7 +975,7 @@ class _ListingState extends State<Listing> {
                           if(_formKey.currentState!.validate()){
                             print(_values);
                             setState(() {
-                              _getlocation();
+
                               _loadingWidget = true;
                               _onLoading();
                               _getSubjects();
