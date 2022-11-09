@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -17,7 +18,13 @@ class _ReviewState extends State<Review> {
   double rating2=0;
   double rating3=0;
   double rating4=0;
+  final _database = FirebaseDatabase.instance.reference();
 
+  void add_review() async{
+    _database.child('Reviews/${widget.id}/userReviews').update({
+      "user3":_ratingController.text,
+    });
+  }
 
   void _onLoading() {
     showDialog(
@@ -212,6 +219,7 @@ class _ReviewState extends State<Review> {
                   ),
                   style: TextStyle(fontSize: 14,),
                   maxLines: 3,
+                  controller: _ratingController,
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
@@ -220,7 +228,9 @@ class _ReviewState extends State<Review> {
                 height: 40,
                 child: ElevatedButton(
                     onPressed: () {
+                      add_review();
                       _onLoading();
+                      _ratingController.clear();
                       Future.delayed(Duration(seconds: 3), ()
                       {
                         showDialog<String>(

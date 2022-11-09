@@ -13,6 +13,7 @@ import 'package:tute_me/favourites_expanded.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/review.dart';
+import 'package:tute_me/viewreviews.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ Future<void> main() async{
       'profile':(context) => MyProfile(),
       'favourites_expanded':(context) => Favourites_Expanded(),
       'map':(context) => Map(),
+      'viewreviews':(context) => MyReview(id: null,),
       //'details':(context) => Details(),
 
     },

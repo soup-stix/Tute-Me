@@ -4,6 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/review.dart';
+import 'package:tute_me/viewreviews.dart';
 
 
 class Details extends StatefulWidget {
@@ -200,10 +201,11 @@ class Details extends StatefulWidget {
                             itemSize: 20.0,
                             direction: Axis.horizontal,
                           ),
-                          VerticalDivider(
-                            color: Colors.black,
-                            thickness: 2,
-                          ),
+                          Text("  |"),
+                          TextButton(
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyReview(id: widget.id))),
+                              child: Text("Reviews", style: TextStyle(fontStyle: FontStyle.italic),)),
+                          Spacer(),
                           IconButton(
                               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Review(child: widget.child,id: widget.id,))),
                               icon: Icon(Icons.rate_review_rounded)
