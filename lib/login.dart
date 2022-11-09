@@ -8,8 +8,13 @@ import 'package:tute_me/profile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/homepage.dart';
+import 'package:tute_me/teacherprofile.dart';
 
-
+String dropdownvalue = 'Teacher';
+var items = [
+  'Teacher',
+  'student'
+];
 class newvalue {
   static const String FirstItem = 'Teacher';
   static const String SecondItem = 'Student';
@@ -147,70 +152,42 @@ class _MyLoginState extends State<MyLogin>{
                         style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),
                       ),
                     ),
-                    DropdownButtonFormField(
-                      dropdownColor: Colors.white,
-                      icon: Icon(
-                        Icons.keyboard_arrow_down_rounded, color: Colors.lightBlue,),
-                      hint: Text("Choose a Mode"),
-                      items: [
-                        "Teacher",
-                        "Student",
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value,
-                            style: TextStyle(fontSize: 14, color: Colors.black),),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        if (newValue == 'Teacher'){
 
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                        }
-                        else{
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
-                        }
-                        print(newValue);
-
-                      },
-                      decoration: const InputDecoration(
-                        enabled: true,
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        disabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                      ),
-                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(
-                          width: 120,
-                          height: 40,
-                          /*child: ElevatedButton(
 
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.blue), //Elevated Button Background
+                          onPressed: (){
 
-                              onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
+                            if (dropdownvalue == "Teacher"){
 
-                              style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25.0),
-                                          side: BorderSide(color: Colors.lightBlueAccent)
-                                          )
-                                  )
-                              ),
-                              child: Text("Log In", style: TextStyle(fontSize: 14),)
-                          ),*/
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
+                            }
+                            else {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
+                            }
+                          }, //make onPressed callback empty
+                          child:DropdownButton(
+                            style: TextStyle(color: Colors.white), //Dropdown font color
+                            dropdownColor: Colors.blueAccent, //dropdown menu background color
+                            icon: Icon(Icons.arrow_forward_ios_sharp, color:Colors.white), //dropdown indicator icon
+                            underline: Container(), //make underline empty
+                            value: dropdownvalue,
+                            onChanged: (value){
+                              setState(() {
+                                dropdownvalue = value.toString();
+                              });
+                            },
+                            items: items.map((itemone){
+                              return DropdownMenuItem(
+                                  value: itemone,
+                                  child: Text(itemone)
+                              );
+                            }).toList(),
+                          ),
+
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
