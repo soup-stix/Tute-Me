@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/favourites.dart';
+import 'package:tute_me/filters.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
@@ -80,19 +81,36 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-            Container(
-              height: MediaQuery.of(context).size.height*0.06,
-              width: MediaQuery.of(context).size.width*0.95,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Icon(Icons.search_rounded),
+            Row(
+              children: [
+                Spacer(),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.06,
+                  width: MediaQuery.of(context).size.width*0.7,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Icon(Icons.search_rounded),
+                      ),
+                      Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
+                    ],
                   ),
-                  Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
-                ],
-              ),
+                ),
+                Spacer(),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent,foregroundColor: Colors.black),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Filters())),
+                  child: Row(
+                    children: [
+                      Text("Filters  "),
+                      Icon(Icons.file_copy_rounded, size: 10,),
+                    ],
+                  ),
+                ),
+                Spacer(),
+              ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height*0.005,),
             Expanded(
