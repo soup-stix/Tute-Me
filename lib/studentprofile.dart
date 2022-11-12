@@ -45,7 +45,18 @@ pickImage(ImageSource imageType) async {
         child: Builder(
           builder: (context) =>
               Scaffold(
-                appBar: AppBar(title: Text('Edit your information'),
+                appBar: AppBar(
+                    flexibleSpace: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+                          gradient: LinearGradient(
+                            colors: [Color(int.parse("0xFF00ACC1")),
+                              Color(int.parse("0xFF64FFDA")),
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,)
+                      ),),
+                    title: Text('Edit your information'),
                     centerTitle: true),
                 body: ListView(
                   padding: EdgeInsets.all(10),

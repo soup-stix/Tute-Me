@@ -77,9 +77,23 @@ class Details extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    backgroundColor: Colors.lightBlueAccent,
+
     appBar: AppBar(
-      title: Text(widget.child['first_name']+" "+widget.child['last_name'],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+            gradient: LinearGradient(
+              colors: [Color(int.parse("0xFF00ACC1")),
+                Color(int.parse("0xFF64FFDA")),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,)
+        ),),
+
+      title: Text(widget.child['first_name']+" "+widget.child['last_name'],
+
+        style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+
     leading: Builder(
     builder: (context) =>
     IconButton(
@@ -347,8 +361,13 @@ class Details extends StatefulWidget {
           margin: EdgeInsets.only(bottom: 5),
           height: 50,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
           ),
           child: Stack(
             children: [

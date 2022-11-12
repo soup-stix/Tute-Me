@@ -41,6 +41,16 @@ class _MyProfileState extends State<MyProfile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
+          ),),
         title: Text("Profile", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
@@ -171,8 +181,13 @@ class _MyProfileState extends State<MyProfile> {
           margin: EdgeInsets.only(bottom: 5),
           height: 50,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
           ),
           child: Stack(
             children: [

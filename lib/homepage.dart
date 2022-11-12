@@ -67,6 +67,16 @@ class _HomePageState extends State<HomePage>{
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+        decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+    gradient: LinearGradient(
+    colors: [Color(int.parse("0xFF00ACC1")),
+    Color(int.parse("0xFF64FFDA")),
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,)
+    ),),
         backgroundColor: Colors.lightBlueAccent,
         title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
         centerTitle: true,
@@ -82,12 +92,16 @@ class _HomePageState extends State<HomePage>{
       ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor:Colors.teal.shade300,
+
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
+
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
@@ -185,6 +199,7 @@ class _HomePageState extends State<HomePage>{
                   ],
                 ),
               ),
+
               Container(
                 height: MediaQuery.of(context).size.height*0.25,
                 padding: EdgeInsets.all(10),
@@ -229,9 +244,15 @@ class _HomePageState extends State<HomePage>{
             margin: EdgeInsets.only(bottom: 5),
             height: 50,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Colors.transparent,
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+                gradient: LinearGradient(
+                  colors: [Color(int.parse("0xFF00ACC1")),
+                    Color(int.parse("0xFF64FFDA")),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,)
             ),
+
             child: Stack(
               children: [
                 Row(
@@ -272,6 +293,7 @@ class _HomePageState extends State<HomePage>{
               ),
         ],
             ),
+
           ),
       ),
     );

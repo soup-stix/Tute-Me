@@ -40,8 +40,18 @@ class _Student_RegisterState extends State<Student_Register> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+                gradient: LinearGradient(
+                  colors: [Color(int.parse("0xFF00ACC1")),
+                    Color(int.parse("0xFF64FFDA")),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,)
+            ),),
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.lightBlueAccent,
+
           title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
           centerTitle: true,
           leading: Builder(builder: (context) =>
@@ -157,13 +167,18 @@ class _Student_RegisterState extends State<Student_Register> {
           ),
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.lightBlueAccent,
+
           child: Container(
             margin: EdgeInsets.only(bottom: 5),
             height: 50,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Colors.transparent,
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+                gradient: LinearGradient(
+                  colors: [Color(int.parse("0xFF00ACC1")),
+                    Color(int.parse("0xFF64FFDA")),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,)
             ),
             child: Stack(
               children: [

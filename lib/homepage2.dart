@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/favourites.dart';
+
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
@@ -67,7 +68,18 @@ class _HomePage2State extends State<HomePage2>{
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+          Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
+          ),
+
+        ),
         title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
         centerTitle: true,
         leading: Builder(builder: (context) =>
@@ -82,12 +94,13 @@ class _HomePage2State extends State<HomePage2>{
         ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.teal.shade300,
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
@@ -135,14 +148,18 @@ class _HomePage2State extends State<HomePage2>{
               ),
 
 
+
+
             ],
           ),
         ),
       ),
-      body: Container(
+      body:
+      Container(
         child: SingleChildScrollView(
           child: Column(
             children: [
+
               Container(
                 padding: EdgeInsets.all(10),
                 color: Color.fromARGB(255, 73, 189, 246),
@@ -200,6 +217,7 @@ class _HomePage2State extends State<HomePage2>{
                   ],
                 ),
               ),
+
               Container(
                 height: MediaQuery.of(context).size.height*0.75,
                 child: ListView.builder(
@@ -215,13 +233,18 @@ class _HomePage2State extends State<HomePage2>{
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           height: 50,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
           ),
           child: Stack(
             children: [
@@ -258,6 +281,8 @@ class _HomePage2State extends State<HomePage2>{
                     icon: Icon(Icons.person_outline_rounded,),
                     iconSize: 35,
                   ),
+
+
                   Spacer(),
                 ],
               ),

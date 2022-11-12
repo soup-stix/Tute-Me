@@ -51,11 +51,12 @@ class _MyLoginState extends State<MyLogin>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
+
         //decoration: BoxDecoration(
             //image: DecorationImage(
                 //image: AssetImage('assets/loginresale.jpeg'),fit: BoxFit.fill)),
@@ -158,12 +159,25 @@ class _MyLoginState extends State<MyLogin>{
                       children: [
 
                         ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: Colors.blue), //Elevated Button Background
+
+                         style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            minimumSize: MaterialStateProperty.all(Size(20, 20)),
+                            backgroundColor:
+                            MaterialStateProperty.all(Colors.blue),
+                            // elevation: MaterialStateProperty.all(3),
+                            shadowColor:
+                            MaterialStateProperty.all(Colors.white ),
+                          ), //Elevated Button Background
                           onPressed: (){
 
                             if (dropdownvalue == "Teacher"){
 
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
                             }
                             else {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));

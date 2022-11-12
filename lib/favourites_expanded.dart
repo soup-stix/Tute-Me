@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/favourites.dart';
+import 'package:tute_me/filterpage.dart';
+import 'package:tute_me/filters.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/student_register.dart';
+String filterText="";
 class Favourites_Expanded extends StatefulWidget {
   const Favourites_Expanded({Key? key}) : super(key: key);
 
@@ -65,11 +68,23 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Colors.lightBlue),),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
+          ),
+
+        ),
+        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Colors.white),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.lightBlue,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
@@ -80,19 +95,47 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
         child: Column(
           children: [
             SizedBox(height: MediaQuery.of(context).size.height*0.02,),
-            Container(
-              height: MediaQuery.of(context).size.height*0.06,
-              width: MediaQuery.of(context).size.width*0.95,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Icon(Icons.search_rounded),
+            Row(
+              children: [
+                Spacer(),
+                Container(
+                  height: MediaQuery.of(context).size.height*0.06,
+                  width: MediaQuery.of(context).size.width*0.7,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Icon(Icons.search_rounded),
+                      ),
+                      Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
+                    ],
                   ),
-                  Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
-                ],
-              ),
+                ),
+                Spacer(
+                ),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent,foregroundColor: Colors.black,),
+
+                  onPressed: () {},
+
+                  child:Center(
+                    child: MaterialButton(onPressed: () async{
+                      var result = await Navigator.push(context, MaterialPageRoute(builder: (ctx){
+                        return FilterScreen(
+                        );
+                      }));
+                      setState(() {filterText="Filter values in previous Screen\n${result}" ;});
+                      print(result);
+                    },
+                    child:Text("Filters"),
+                    ),
+
+                  )
+                ),
+                Spacer(),
+              ],
             ),
             SizedBox(height: MediaQuery.of(context).size.height*0.005,),
             Expanded(
@@ -112,10 +155,19 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
-          ),
+
+            decoration: BoxDecoration(
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+                gradient: LinearGradient(
+                  colors: [Color(int.parse("0xFF00ACC1")),
+                    Color(int.parse("0xFF64FFDA")),
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,)
+            ),
+
+
+
           child: Stack(
             children: [
               Row(
@@ -152,7 +204,7 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                     iconSize: 35,
                   ),
                   Spacer(),
-                ],
+                   ],
               ),
             ],
           ),
