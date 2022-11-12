@@ -12,7 +12,7 @@ class _FiltersState extends State<Filters> {
   var _subjectController = TextEditingController();
   var _areaController = TextEditingController();
   final List _categories = [];
-  final List _appliedFilters = [];
+  final List<dynamic> _appliedFilters = ["test","test","test","test","test","test","test","test","test","test"];
   List<bool> _modeCheck = List.filled(2, false);
   List<bool> _typeCheck = List.filled(2, false);
   List<bool> _priceCheck = List.filled(5, false);
@@ -41,6 +41,39 @@ class _FiltersState extends State<Filters> {
     super.initState();
     items.addAll(_allSubjects);
     areaItems.addAll(_allArea);
+  }
+
+  Widget buildFilterChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _appliedFilters.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_appliedFilters[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove mode",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            //_chipTypeMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _appliedFilters.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
   }
 
   void filterSubjectSearchResults(String query) {
@@ -113,551 +146,560 @@ class _FiltersState extends State<Filters> {
       ),
       body: Row(
         children: [
-          Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = true;
-                    _subjectPressed = false;
-                    _typePressed = false;
-                    _pricePressed = false;
-                    _classPressed = false;
-                    _areaPressed = false;
-                  });
-                }, child: Text("Mode")),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = false;
-                    _subjectPressed = true;
-                    _typePressed = false;
-                    _pricePressed = false;
-                    _classPressed = false;
-                    _areaPressed = false;
-                  });
-                }, child: Text("Subjects")),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = false;
-                    _subjectPressed = false;
-                    _typePressed = true;
-                    _pricePressed = false;
-                    _classPressed = false;
-                    _areaPressed = false;
-                  });
-                }, child: Text("Type")),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = false;
-                    _subjectPressed = false;
-                    _typePressed = false;
-                    _pricePressed = true;
-                    _classPressed = false;
-                    _areaPressed = false;
-                  });
-                }, child: Text("Price")),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = false;
-                    _subjectPressed = false;
-                    _typePressed = false;
-                    _pricePressed = false;
-                    _classPressed = true;
-                    _areaPressed = false;
-                  });
-                }, child: Text("Class")),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.3,
-                child: TextButton(onPressed: () {
-                  setState(() {
-                    _modePressed = false;
-                    _subjectPressed = false;
-                    _typePressed = false;
-                    _pricePressed = false;
-                    _classPressed = false;
-                    _areaPressed = true;
-                  });
-                }, child: Text("Area")),
-              ),
-              //SizedBox(width: MediaQuery.of(context).size.width*0.3,),
-            ],
+          Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = true;
+                      _subjectPressed = false;
+                      _typePressed = false;
+                      _pricePressed = false;
+                      _classPressed = false;
+                      _areaPressed = false;
+                    });
+                  }, child: Text("Mode")),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = false;
+                      _subjectPressed = true;
+                      _typePressed = false;
+                      _pricePressed = false;
+                      _classPressed = false;
+                      _areaPressed = false;
+                    });
+                  }, child: Text("Subjects")),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = false;
+                      _subjectPressed = false;
+                      _typePressed = true;
+                      _pricePressed = false;
+                      _classPressed = false;
+                      _areaPressed = false;
+                    });
+                  }, child: Text("Type")),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = false;
+                      _subjectPressed = false;
+                      _typePressed = false;
+                      _pricePressed = true;
+                      _classPressed = false;
+                      _areaPressed = false;
+                    });
+                  }, child: Text("Price")),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = false;
+                      _subjectPressed = false;
+                      _typePressed = false;
+                      _pricePressed = false;
+                      _classPressed = true;
+                      _areaPressed = false;
+                    });
+                  }, child: Text("Class")),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width*0.3,
+                  child: TextButton(onPressed: () {
+                    setState(() {
+                      _modePressed = false;
+                      _subjectPressed = false;
+                      _typePressed = false;
+                      _pricePressed = false;
+                      _classPressed = false;
+                      _areaPressed = true;
+                    });
+                  }, child: Text("Area")),
+                ),
+                //SizedBox(width: MediaQuery.of(context).size.width*0.3,),
+              ],
+            ),
           ),
           VerticalDivider(thickness: 0.5,color: Colors.black,),
-          Column(
-            children: [
-              _modePressed == true ? Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      height: MediaQuery.of(context).size.height*0.7,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: _mode.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                            height: 40,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if(_modeCheck[index] == true)
-                                      _modeCheck[index] = false;
-                                    else
-                                      _modeCheck[index] = true;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Text('${_mode[index]}'),
-                                    Spacer(),
-                                    Checkbox(value: _modeCheck[index], onChanged: (value) {
-                                      setState(() {
-                                        if(_modeCheck[index] == true)
-                                          _modeCheck[index] = false;
-                                        else
-                                          _modeCheck[index] = true;
-                                      });
-                                    })
-                                  ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  foregroundColor: Colors.lightBlue,
-                                  backgroundColor: Colors.white,
-                                )
-                            ),
-                          );
-                        },
-                      ),/*Row(
-                        children: [
-                          Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[0], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[0] == true)
-                                _modeCheck[0] = false;
-                              else
-                                _modeCheck[0] = true;
-                            });
-                          }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      child: Row(
-                        children: [
-                          Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[1], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[1] == true)
-                                _modeCheck[1] = false;
-                              else
-                                _modeCheck[1] = true;
-                            });
-                          }),
-                        ],
-                      ),*/
-                    )
-                  ],
-                ),
-              ) : Container(),
-              _subjectPressed == true ? SizedBox(
-                width: MediaQuery.of(context).size.width*0.65,
-                height: MediaQuery.of(context).size.height*0.8,
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: " search subjects",
-                        hintStyle: TextStyle(fontSize: 14),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                      style: TextStyle(fontSize: 14,),
-                      controller: _subjectController,
-                      onChanged: (value) {
-                        filterSubjectSearchResults(value);
-                      },
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      width: MediaQuery.of(context).size.width*0.65,
-                      color: Colors.transparent,
-                      height: MediaQuery.of(context).size.height*0.72,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                            height: 40,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if(itemsCheckbox[index] == false) {
-                                      if (_subjects.contains(items[index]) ==
-                                          false)
-                                        _subjects.add(items[index]);
-                                      print(_subjects);
-                                    }
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Text('${items[index]}'),
-                                    Spacer(),
-                                    Checkbox(value: false, onChanged: (value) {})
-                                  ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  foregroundColor: Colors.lightBlue,
-                                  backgroundColor: Colors.white,
-                                )
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ) : Container(),
-              _typePressed == true ? Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      height: MediaQuery.of(context).size.height*0.7,
-                      child: ListView.builder(
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _appliedFilters.isNotEmpty ? Container(
+                  height: MediaQuery.of(context).size.height*0.08,
+                  width: MediaQuery.of(context).size.width*0.65,
+                  child: buildFilterChips(),
+                ) : Container(),
+                _modePressed == true ? Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        height: MediaQuery.of(context).size.height*0.7,
+                        child: ListView.builder(
                           scrollDirection: Axis.vertical,
-                          itemCount: _type.length,
+                          itemCount: _mode.length,
                           itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(bottom: 10),
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
                               height: 40,
                               child: ElevatedButton(
                                   onPressed: () {
-                                  setState(() {
-                                  if(_typeCheck[index] == true)
-                                  _typeCheck[index] = false;
-                                  else
-                                  _typeCheck[index] = true;
-                                  });
+                                    setState(() {
+                                      if(_modeCheck[index] == true)
+                                        _modeCheck[index] = false;
+                                      else
+                                        _modeCheck[index] = true;
+                                    });
                                   },
                                   child: Row(
-                                      children: [
-                                      Text('${_type[index]}'),
+                                    children: [
+                                      Text('${_mode[index]}'),
                                       Spacer(),
-                                      Checkbox(value: _typeCheck[index], onChanged: (value) {
+                                      Checkbox(value: _modeCheck[index], onChanged: (value) {
                                         setState(() {
-                                          if(_typeCheck[index] == true)
-                                            _typeCheck[index] = false;
+                                          if(_modeCheck[index] == true)
+                                            _modeCheck[index] = false;
                                           else
-                                            _typeCheck[index] = true;
+                                            _modeCheck[index] = true;
                                         });
                                       })
-                                      ],
+                                    ],
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  foregroundColor: Colors.lightBlue,
-                                  backgroundColor: Colors.white,
+                                    shadowColor: Colors.white,
+                                    foregroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white,
                                   )
                               ),
-                              );
-                        },
-                      ),/*Row(
-                        children: [
-                          Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _typeCheck[0], onChanged: (value) {
-                            setState(() {
-                              if(_typeCheck[0] == true)
-                                _typeCheck[0] = false;
-                              else
-                                _typeCheck[0] = true;
-                            });
-                          }),
-                        ],
+                            );
+                          },
+                        ),/*Row(
+                          children: [
+                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[0], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[0] == true)
+                                  _modeCheck[0] = false;
+                                else
+                                  _modeCheck[0] = true;
+                              });
+                            }),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      child: Row(
-                        children: [
-                          Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _typeCheck[1], onChanged: (value) {
-                            setState(() {
-                              if(_typeCheck[1] == true)
-                                _typeCheck[1] = false;
-                              else
-                                _typeCheck[1] = true;
-                            });
-                          }),
-                        ],
-                      ),*/
-                    )
-                  ],
-                ),
-              ) : Container(),
-              _pricePressed == true ? Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      height: MediaQuery.of(context).size.height*0.8,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: _price.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                            height: 40,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if(_priceCheck[index] == true)
-                                      _priceCheck[index] = false;
-                                    else
-                                      _priceCheck[index] = true;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Text('${_price[index]}'),
-                                    Spacer(),
-                                    Checkbox(value: _priceCheck[index], onChanged: (value) {
-                                      setState(() {
-                                        if(_priceCheck[index] == true)
-                                          _priceCheck[index] = false;
-                                        else
-                                          _priceCheck[index] = true;
-                                      });
-                                    })
-                                  ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  foregroundColor: Colors.lightBlue,
-                                  backgroundColor: Colors.white,
-                                )
-                            ),
-                          );
-                        },
-                      ),/*Row(
-                        children: [
-                          Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[0], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[0] == true)
-                                _modeCheck[0] = false;
-                              else
-                                _modeCheck[0] = true;
-                            });
-                          }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      child: Row(
-                        children: [
-                          Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[1], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[1] == true)
-                                _modeCheck[1] = false;
-                              else
-                                _modeCheck[1] = true;
-                            });
-                          }),
-                        ],
-                      ),*/
-                    )
-                  ],
-                ),
-              ) : Container(),
-              _classPressed == true ? Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      height: MediaQuery.of(context).size.height*0.8,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: 12,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                            height: 40,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    if(_classCheck[index] == true)
-                                      _classCheck[index] = false;
-                                    else
-                                      _classCheck[index] = true;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Text('Class ${index + 1}'),
-                                    Spacer(),
-                                    Checkbox(value: _classCheck[index], onChanged: (value) {
-                                      setState(() {
-                                        if(_classCheck[index] == true)
-                                          _classCheck[index] = false;
-                                        else
-                                          _classCheck[index] = true;
-                                      });
-                                    })
-                                  ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  foregroundColor: Colors.lightBlue,
-                                  backgroundColor: Colors.white,
-                                )
-                            ),
-                          );
-                        },
-                      ),/*Row(
-                        children: [
-                          Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[0], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[0] == true)
-                                _modeCheck[0] = false;
-                              else
-                                _modeCheck[0] = true;
-                            });
-                          }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      child: Row(
-                        children: [
-                          Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                          Spacer(),
-                          Checkbox(value: _modeCheck[1], onChanged: (value) {
-                            setState(() {
-                              if(_modeCheck[1] == true)
-                                _modeCheck[1] = false;
-                              else
-                                _modeCheck[1] = true;
-                            });
-                          }),
-                        ],
-                      ),*/
-                    )
-                  ],
-                ),
-              ) : Container(),
-              _areaPressed == true ? Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.65,
-                      height: MediaQuery.of(context).size.height*0.8,
-                      child: Column(
-                        children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: " search area",
-                              hintStyle: TextStyle(fontSize: 14),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black),
-                              ),
-                            ),
-                            style: TextStyle(fontSize: 14,),
-                            controller: _areaController,
-                            onChanged: (value) {
-                              filterAreaSearchResults(value);
-                            },
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        child: Row(
+                          children: [
+                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[1], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[1] == true)
+                                  _modeCheck[1] = false;
+                                else
+                                  _modeCheck[1] = true;
+                              });
+                            }),
+                          ],
+                        ),*/
+                      )
+                    ],
+                  ),
+                ) : Container(),
+                _subjectPressed == true ? SizedBox(
+                  width: MediaQuery.of(context).size.width*0.65,
+                  height: MediaQuery.of(context).size.height*0.8,
+                  child: Column(
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: " search subjects",
+                          hintStyle: TextStyle(fontSize: 14),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            width: MediaQuery.of(context).size.width*0.65,
-                            color: Colors.transparent,
-                            height: MediaQuery.of(context).size.height*0.72,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: areaItems.length,
-                              itemBuilder: (context, index) {
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        style: TextStyle(fontSize: 14,),
+                        controller: _subjectController,
+                        onChanged: (value) {
+                          filterSubjectSearchResults(value);
+                        },
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        width: MediaQuery.of(context).size.width*0.65,
+                        color: Colors.transparent,
+                        height: MediaQuery.of(context).size.height*0.72,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                              height: 40,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if(itemsCheckbox[index] == false) {
+                                        if (_subjects.contains(items[index]) ==
+                                            false)
+                                          _subjects.add(items[index]);
+                                        print(_subjects);
+                                      }
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text('${items[index]}'),
+                                      Spacer(),
+                                      Checkbox(value: false, onChanged: (value) {})
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shadowColor: Colors.white,
+                                    foregroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white,
+                                  )
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ) : Container(),
+                _typePressed == true ? Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        height: MediaQuery.of(context).size.height*0.7,
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: _type.length,
+                            itemBuilder: (context, index) {
                                 return Container(
                                   margin: EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                                  height: 40,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          if(areaItemsCheckbox[index] == false) {
-                                            if (_area.contains(areaItems[index]) ==
-                                                false)
-                                              _area.add(areaItems[index]);
-                                            print(_area);
-                                          }
-                                        });
-                                      },
-                                      child: Row(
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                                height: 40,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                    setState(() {
+                                    if(_typeCheck[index] == true)
+                                    _typeCheck[index] = false;
+                                    else
+                                    _typeCheck[index] = true;
+                                    });
+                                    },
+                                    child: Row(
                                         children: [
-                                          Text('${areaItems[index]}'),
-                                          Spacer(),
-                                          Checkbox(value: false, onChanged: (value) {})
+                                        Text('${_type[index]}'),
+                                        Spacer(),
+                                        Checkbox(value: _typeCheck[index], onChanged: (value) {
+                                          setState(() {
+                                            if(_typeCheck[index] == true)
+                                              _typeCheck[index] = false;
+                                            else
+                                              _typeCheck[index] = true;
+                                          });
+                                        })
                                         ],
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        shadowColor: Colors.white,
-                                        foregroundColor: Colors.lightBlue,
-                                        backgroundColor: Colors.white,
-                                      )
-                                  ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                    shadowColor: Colors.white,
+                                    foregroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white,
+                                    )
+                                ),
                                 );
+                          },
+                        ),/*Row(
+                          children: [
+                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _typeCheck[0], onChanged: (value) {
+                              setState(() {
+                                if(_typeCheck[0] == true)
+                                  _typeCheck[0] = false;
+                                else
+                                  _typeCheck[0] = true;
+                              });
+                            }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        child: Row(
+                          children: [
+                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _typeCheck[1], onChanged: (value) {
+                              setState(() {
+                                if(_typeCheck[1] == true)
+                                  _typeCheck[1] = false;
+                                else
+                                  _typeCheck[1] = true;
+                              });
+                            }),
+                          ],
+                        ),*/
+                      )
+                    ],
+                  ),
+                ) : Container(),
+                _pricePressed == true ? Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        height: MediaQuery.of(context).size.height*0.8,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: _price.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                              height: 40,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if(_priceCheck[index] == true)
+                                        _priceCheck[index] = false;
+                                      else
+                                        _priceCheck[index] = true;
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text('${_price[index]}'),
+                                      Spacer(),
+                                      Checkbox(value: _priceCheck[index], onChanged: (value) {
+                                        setState(() {
+                                          if(_priceCheck[index] == true)
+                                            _priceCheck[index] = false;
+                                          else
+                                            _priceCheck[index] = true;
+                                        });
+                                      })
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shadowColor: Colors.white,
+                                    foregroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white,
+                                  )
+                              ),
+                            );
+                          },
+                        ),/*Row(
+                          children: [
+                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[0], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[0] == true)
+                                  _modeCheck[0] = false;
+                                else
+                                  _modeCheck[0] = true;
+                              });
+                            }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        child: Row(
+                          children: [
+                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[1], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[1] == true)
+                                  _modeCheck[1] = false;
+                                else
+                                  _modeCheck[1] = true;
+                              });
+                            }),
+                          ],
+                        ),*/
+                      )
+                    ],
+                  ),
+                ) : Container(),
+                _classPressed == true ? Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        height: MediaQuery.of(context).size.height*0.8,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: 12,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                              height: 40,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      if(_classCheck[index] == true)
+                                        _classCheck[index] = false;
+                                      else
+                                        _classCheck[index] = true;
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text('Class ${index + 1}'),
+                                      Spacer(),
+                                      Checkbox(value: _classCheck[index], onChanged: (value) {
+                                        setState(() {
+                                          if(_classCheck[index] == true)
+                                            _classCheck[index] = false;
+                                          else
+                                            _classCheck[index] = true;
+                                        });
+                                      })
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    shadowColor: Colors.white,
+                                    foregroundColor: Colors.lightBlue,
+                                    backgroundColor: Colors.white,
+                                  )
+                              ),
+                            );
+                          },
+                        ),/*Row(
+                          children: [
+                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[0], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[0] == true)
+                                  _modeCheck[0] = false;
+                                else
+                                  _modeCheck[0] = true;
+                              });
+                            }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        child: Row(
+                          children: [
+                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
+                            Spacer(),
+                            Checkbox(value: _modeCheck[1], onChanged: (value) {
+                              setState(() {
+                                if(_modeCheck[1] == true)
+                                  _modeCheck[1] = false;
+                                else
+                                  _modeCheck[1] = true;
+                              });
+                            }),
+                          ],
+                        ),*/
+                      )
+                    ],
+                  ),
+                ) : Container(),
+                _areaPressed == true ? Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.65,
+                        height: MediaQuery.of(context).size.height*0.8,
+                        child: Column(
+                          children: [
+                            TextField(
+                              decoration: InputDecoration(
+                                hintText: " search area",
+                                hintStyle: TextStyle(fontSize: 14),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                              style: TextStyle(fontSize: 14,),
+                              controller: _areaController,
+                              onChanged: (value) {
+                                filterAreaSearchResults(value);
                               },
                             ),
-                          ),
-                        ],
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              width: MediaQuery.of(context).size.width*0.65,
+                              color: Colors.transparent,
+                              height: MediaQuery.of(context).size.height*0.72,
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: areaItems.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                                    height: 40,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            if(areaItemsCheckbox[index] == false) {
+                                              if (_area.contains(areaItems[index]) ==
+                                                  false)
+                                                _area.add(areaItems[index]);
+                                              print(_area);
+                                            }
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text('${areaItems[index]}'),
+                                            Spacer(),
+                                            Checkbox(value: false, onChanged: (value) {})
+                                          ],
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          shadowColor: Colors.white,
+                                          foregroundColor: Colors.lightBlue,
+                                          backgroundColor: Colors.white,
+                                        )
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ) : Container(),
-            ],
+                    ],
+                  ),
+                ) : Container(),
+              ],
+            ),
           ),
         ],
       ),
