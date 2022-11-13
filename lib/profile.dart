@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tute_me/cards.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites.dart';

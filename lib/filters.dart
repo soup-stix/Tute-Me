@@ -11,8 +11,7 @@ class Filters extends StatefulWidget {
 class _FiltersState extends State<Filters> {
   var _subjectController = TextEditingController();
   var _areaController = TextEditingController();
-  final List _categories = [];
-  final List<dynamic> _appliedFilters = ["test","test","test","test","test","test","test","test","test","test"];
+  final List<dynamic> _appliedFilters = [];
   List<bool> _modeCheck = List.filled(2, false);
   List<bool> _typeCheck = List.filled(2, false);
   List<bool> _priceCheck = List.filled(5, false);
@@ -21,8 +20,6 @@ class _FiltersState extends State<Filters> {
   List<dynamic> areaItems = [];
   List<dynamic> areaItemsCheckbox = [];
   List<dynamic> itemsCheckbox = [];
-  List<dynamic> _subjects = [];
-  List<dynamic> _area = [];
   List<dynamic> _allSubjects = ["math","science","english","history","civics","economics"];
   List<dynamic> _allArea = ["Alapakkam", "Alwarpet", "Alwarthirunagar", "Ambattur", "Aminjikarai", "Anna Nagar", "Annanur", "Arumbakkam", "Ashok Nagar", "Avadi", "Ayanavaram", "Besant Nagar", "Basin Bridge", "Chepauk", "Chetput", "Chintadripet", "Chitlapakkam", "Choolai", "Choolaimedu", "Chrompet", "Egmore", "Ekkaduthangal", "Eranavur", "Ennore", "Foreshore Estate", "Fort St. George", "George Town", "Gopalapuram", "Government Estate", "Guindy", "Guduvancheri", "IIT Madras", "Injambakkam", "ICF", "Iyyapanthangal", "Jafferkhanpet", "Karapakkam", "Kattivakkam", "Kattupakkam", "Kazhipattur", "K.K. Nagar", "Keelkattalai", "Kattivakkam", "Kilpauk", "Kodambakkam", "Kodungaiyur", "Kolathur", "Korattur", "Korukkupet", "Kottivakkam", "Kotturpuram", "Kottur", "Kovilambakkam", "Koyambedu", "Kundrathur", "Madhavaram", "Madhavaram Milk Colony", "Madipakkam", "Madambakkam", "Maduravoyal", "Manali", "Manali New Town", "Manapakkam", "Mandaveli", "Mangadu", "Mannady", "Mathur", "Medavakkam", "Meenambakkam", "MGR Nagar", "Minjur", "Mogappair", "MKB Nagar", "Mount Road", "Moolakadai", "Moulivakkam", "Mugalivakkam", "Mudichur", "Mylapore", "Nandanam", "Nanganallur", "Nanmangalam", "Neelankarai", "Nemilichery", "Nesapakkam", "Nolambur", "Noombal", "Nungambakkam", "Otteri", "Padi", "Pakkam", "Palavakkam", "Pallavaram", "Pallikaranai", "Pammal", "Park Town", "Parry's Corner", "Pattabiram", "Pattaravakkam", "Pazhavanthangal", "Peerkankaranai", "Perambur", "Peravallur", "Perumbakkam", "Perungalathur", "Perungudi", "Pozhichalur", "Poonamallee", "Porur", "Pudupet", "Pulianthope", "Purasaiwalkam", "Puthagaram", "Puzhal", "Puzhuthivakkam/ Ullagaram", "Raj Bhavan", "Ramavaram", "Red Hills", "Royapettah", "Royapuram", "Saidapet", "Saligramam", "Santhome", "Sembakkam", "Selaiyur", "Shenoy Nagar", "Sholavaram", "Sholinganallur", "Sithalapakkam", "Sowcarpet", "St.Thomas Mount", "Surapet", "Tambaram", "Teynampet", "Tharamani", "T. Nagar", "Thirumangalam", "Thirumullaivoyal", "Thiruneermalai", "Thiruninravur", "Thiruvanmiyur", "Tiruverkadu", "Thiruvotriyur", "Thuraipakkam", "Tirusulam", "Tiruvallikeni", "Tondiarpet", "United India Colony", "Vandalur", "Vadapalani", "Valasaravakkam", "Vallalar Nagar", "Vanagaram", "Velachery", "Velappanchavadi", "Villivakkam", "Virugambakkam", "Vyasarpadi", "Washermanpet", "West Mambalam",];
   List<dynamic> _mode = ["Online", "Offline"];
@@ -36,11 +33,33 @@ class _FiltersState extends State<Filters> {
   bool _areaPressed = false;
 
   @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    buildFilterChips();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    itemsCheckbox = List.filled(_allSubjects.length, false);
+    areaItemsCheckbox = List.filled(_allArea.length, false);
     items.addAll(_allSubjects);
     areaItems.addAll(_allArea);
+  }
+
+  void clearFilters() {
+    print(_appliedFilters);
+    setState(() {
+      _appliedFilters.clear();
+      _modeCheck = List.filled(2, false);
+      _typeCheck = List.filled(2, false);
+      _priceCheck = List.filled(5, false);
+      _classCheck = List.filled(12, false);
+      itemsCheckbox = List.filled(_allSubjects.length, false);
+      areaItemsCheckbox = List.filled(_allArea.length, false);
+    });
   }
 
   Widget buildFilterChips() {
@@ -54,16 +73,6 @@ class _FiltersState extends State<Filters> {
         selectedColor: Colors.lightBlue,
         deleteButtonTooltipMessage: "Remove mode",
         deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
-        onPressed: () {
-          setState(() {
-            //_chipTypeMade = true;
-          });
-        },
-        onDeleted: () {
-          setState(() {
-            _appliedFilters.removeAt(i);
-          });
-        },
         showCheckmark: false,
       );
       chips.add(actionChip);
@@ -141,6 +150,11 @@ class _FiltersState extends State<Filters> {
                 onPressed: () => Navigator.pop(context),
               ),
         ),
+        actions: [
+          TextButton(onPressed: () {
+            clearFilters();
+          }, child: Text("Clear Filters"))
+        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -257,10 +271,19 @@ class _FiltersState extends State<Filters> {
                               child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      if(_modeCheck[index] == true)
-                                        _modeCheck[index] = false;
-                                      else
+                                      if(_modeCheck[index] == true){
+                                          _modeCheck[index] = false;
+                                          if(_appliedFilters.contains(_mode[index]))
+                                              _appliedFilters.remove(_mode[index]);
+                                      }
+                                      else {
                                         _modeCheck[index] = true;
+                                        if (_appliedFilters.contains(
+                                            _mode[index]))
+                                          print(_modeCheck[index]);
+                                        else
+                                          _appliedFilters.add(_mode[index]);
+                                      }
                                     });
                                   },
                                   child: Row(
@@ -269,10 +292,19 @@ class _FiltersState extends State<Filters> {
                                       Spacer(),
                                       Checkbox(value: _modeCheck[index], onChanged: (value) {
                                         setState(() {
-                                          if(_modeCheck[index] == true)
+                                          if(_modeCheck[index] == true){
                                             _modeCheck[index] = false;
-                                          else
+                                            if(_appliedFilters.contains(_mode[index]))
+                                              _appliedFilters.remove(_mode[index]);
+                                          }
+                                          else {
                                             _modeCheck[index] = true;
+                                            if (_appliedFilters.contains(
+                                                _mode[index]))
+                                              print(_modeCheck[index]);
+                                            else
+                                              _appliedFilters.add(_mode[index]);
+                                          }
                                         });
                                       })
                                     ],
@@ -285,37 +317,7 @@ class _FiltersState extends State<Filters> {
                               ),
                             );
                           },
-                        ),/*Row(
-                          children: [
-                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[0], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[0] == true)
-                                  _modeCheck[0] = false;
-                                else
-                                  _modeCheck[0] = true;
-                              });
-                            }),
-                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width*0.65,
-                        child: Row(
-                          children: [
-                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[1], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[1] == true)
-                                  _modeCheck[1] = false;
-                                else
-                                  _modeCheck[1] = true;
-                              });
-                            }),
-                          ],
-                        ),*/
                       )
                     ],
                   ),
@@ -358,11 +360,18 @@ class _FiltersState extends State<Filters> {
                               child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      if(itemsCheckbox[index] == false) {
-                                        if (_subjects.contains(items[index]) ==
-                                            false)
-                                          _subjects.add(items[index]);
-                                        print(_subjects);
+                                      if(itemsCheckbox[index] == true){
+                                        itemsCheckbox[index] = false;
+                                        if(_appliedFilters.contains(items[index]))
+                                          _appliedFilters.remove(items[index]);
+                                      }
+                                      else {
+                                        itemsCheckbox[index] = true;
+                                        if (_appliedFilters.contains(
+                                            items[index]))
+                                          print(itemsCheckbox[index]);
+                                        else
+                                          _appliedFilters.add(items[index]);
                                       }
                                     });
                                   },
@@ -370,7 +379,23 @@ class _FiltersState extends State<Filters> {
                                     children: [
                                       Text('${items[index]}'),
                                       Spacer(),
-                                      Checkbox(value: false, onChanged: (value) {})
+                                      Checkbox(value: itemsCheckbox[index], onChanged: (value) {
+                                        setState(() {
+                                          if(itemsCheckbox[index] == true){
+                                            itemsCheckbox[index] = false;
+                                            if(_appliedFilters.contains(items[index]))
+                                              _appliedFilters.remove(items[index]);
+                                          }
+                                          else {
+                                            itemsCheckbox[index] = true;
+                                            if (_appliedFilters.contains(
+                                                items[index]))
+                                              print(itemsCheckbox[index]);
+                                            else
+                                              _appliedFilters.add(items[index]);
+                                          }
+                                        });
+                                      })
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
@@ -402,12 +427,21 @@ class _FiltersState extends State<Filters> {
                                 height: 40,
                                 child: ElevatedButton(
                                     onPressed: () {
-                                    setState(() {
-                                    if(_typeCheck[index] == true)
-                                    _typeCheck[index] = false;
-                                    else
-                                    _typeCheck[index] = true;
-                                    });
+                                      setState(() {
+                                        if(_typeCheck[index] == true){
+                                          _typeCheck[index] = false;
+                                          if(_appliedFilters.contains(_type[index]))
+                                            _appliedFilters.remove(_type[index]);
+                                        }
+                                        else {
+                                          _typeCheck[index] = true;
+                                          if (_appliedFilters.contains(
+                                              _type[index]))
+                                            print(_typeCheck[index]);
+                                          else
+                                            _appliedFilters.add(_type[index]);
+                                        }
+                                      });
                                     },
                                     child: Row(
                                         children: [
@@ -415,10 +449,19 @@ class _FiltersState extends State<Filters> {
                                         Spacer(),
                                         Checkbox(value: _typeCheck[index], onChanged: (value) {
                                           setState(() {
-                                            if(_typeCheck[index] == true)
+                                            if(_typeCheck[index] == true){
                                               _typeCheck[index] = false;
-                                            else
+                                              if(_appliedFilters.contains(_type[index]))
+                                                _appliedFilters.remove(_type[index]);
+                                            }
+                                            else {
                                               _typeCheck[index] = true;
+                                              if (_appliedFilters.contains(
+                                                  _type[index]))
+                                                print(_typeCheck[index]);
+                                              else
+                                                _appliedFilters.add(_type[index]);
+                                            }
                                           });
                                         })
                                         ],
@@ -431,37 +474,7 @@ class _FiltersState extends State<Filters> {
                                 ),
                                 );
                           },
-                        ),/*Row(
-                          children: [
-                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _typeCheck[0], onChanged: (value) {
-                              setState(() {
-                                if(_typeCheck[0] == true)
-                                  _typeCheck[0] = false;
-                                else
-                                  _typeCheck[0] = true;
-                              });
-                            }),
-                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width*0.65,
-                        child: Row(
-                          children: [
-                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _typeCheck[1], onChanged: (value) {
-                              setState(() {
-                                if(_typeCheck[1] == true)
-                                  _typeCheck[1] = false;
-                                else
-                                  _typeCheck[1] = true;
-                              });
-                            }),
-                          ],
-                        ),*/
                       )
                     ],
                   ),
@@ -483,10 +496,19 @@ class _FiltersState extends State<Filters> {
                               child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      if(_priceCheck[index] == true)
+                                      if(_priceCheck[index] == true){
                                         _priceCheck[index] = false;
-                                      else
+                                        if(_appliedFilters.contains(_price[index]))
+                                          _appliedFilters.remove(_price[index]);
+                                      }
+                                      else {
                                         _priceCheck[index] = true;
+                                        if (_appliedFilters.contains(
+                                            _price[index]))
+                                          print(_priceCheck[index]);
+                                        else
+                                          _appliedFilters.add(_price[index]);
+                                      }
                                     });
                                   },
                                   child: Row(
@@ -495,10 +517,19 @@ class _FiltersState extends State<Filters> {
                                       Spacer(),
                                       Checkbox(value: _priceCheck[index], onChanged: (value) {
                                         setState(() {
-                                          if(_priceCheck[index] == true)
+                                          if(_priceCheck[index] == true){
                                             _priceCheck[index] = false;
-                                          else
+                                            if(_appliedFilters.contains(_price[index]))
+                                              _appliedFilters.remove(_price[index]);
+                                          }
+                                          else {
                                             _priceCheck[index] = true;
+                                            if (_appliedFilters.contains(
+                                                _price[index]))
+                                              print(_priceCheck[index]);
+                                            else
+                                              _appliedFilters.add(_price[index]);
+                                          }
                                         });
                                       })
                                     ],
@@ -511,37 +542,7 @@ class _FiltersState extends State<Filters> {
                               ),
                             );
                           },
-                        ),/*Row(
-                          children: [
-                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[0], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[0] == true)
-                                  _modeCheck[0] = false;
-                                else
-                                  _modeCheck[0] = true;
-                              });
-                            }),
-                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width*0.65,
-                        child: Row(
-                          children: [
-                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[1], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[1] == true)
-                                  _modeCheck[1] = false;
-                                else
-                                  _modeCheck[1] = true;
-                              });
-                            }),
-                          ],
-                        ),*/
                       )
                     ],
                   ),
@@ -563,10 +564,19 @@ class _FiltersState extends State<Filters> {
                               child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      if(_classCheck[index] == true)
+                                      if(_classCheck[index] == true){
                                         _classCheck[index] = false;
-                                      else
+                                        if(_appliedFilters.contains('Class ${index + 1}'))
+                                          _appliedFilters.remove('Class ${index + 1}');
+                                      }
+                                      else {
                                         _classCheck[index] = true;
+                                        if (_appliedFilters.contains(
+                                            'Class ${index + 1}'))
+                                          print(_classCheck[index]);
+                                        else
+                                          _appliedFilters.add('Class ${index + 1}');
+                                      }
                                     });
                                   },
                                   child: Row(
@@ -575,10 +585,19 @@ class _FiltersState extends State<Filters> {
                                       Spacer(),
                                       Checkbox(value: _classCheck[index], onChanged: (value) {
                                         setState(() {
-                                          if(_classCheck[index] == true)
+                                          if(_classCheck[index] == true){
                                             _classCheck[index] = false;
-                                          else
+                                            if(_appliedFilters.contains('Class ${index + 1}'))
+                                              _appliedFilters.remove('Class ${index + 1}');
+                                          }
+                                          else {
                                             _classCheck[index] = true;
+                                            if (_appliedFilters.contains(
+                                                'Class ${index + 1}'))
+                                              print(_classCheck[index]);
+                                            else
+                                              _appliedFilters.add('Class ${index + 1}');
+                                          }
                                         });
                                       })
                                     ],
@@ -591,37 +610,7 @@ class _FiltersState extends State<Filters> {
                               ),
                             );
                           },
-                        ),/*Row(
-                          children: [
-                            Text("Online", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[0], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[0] == true)
-                                  _modeCheck[0] = false;
-                                else
-                                  _modeCheck[0] = true;
-                              });
-                            }),
-                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width*0.65,
-                        child: Row(
-                          children: [
-                            Text("Offline", style: TextStyle(color: Colors.lightBlue, fontSize: 20),),
-                            Spacer(),
-                            Checkbox(value: _modeCheck[1], onChanged: (value) {
-                              setState(() {
-                                if(_modeCheck[1] == true)
-                                  _modeCheck[1] = false;
-                                else
-                                  _modeCheck[1] = true;
-                              });
-                            }),
-                          ],
-                        ),*/
                       )
                     ],
                   ),
@@ -667,11 +656,18 @@ class _FiltersState extends State<Filters> {
                                     child: ElevatedButton(
                                         onPressed: () {
                                           setState(() {
-                                            if(areaItemsCheckbox[index] == false) {
-                                              if (_area.contains(areaItems[index]) ==
-                                                  false)
-                                                _area.add(areaItems[index]);
-                                              print(_area);
+                                            if(areaItemsCheckbox[index] == true){
+                                              areaItemsCheckbox[index] = false;
+                                              if(_appliedFilters.contains(areaItems[index]))
+                                                _appliedFilters.remove(areaItems[index]);
+                                            }
+                                            else {
+                                              areaItemsCheckbox[index] = true;
+                                              if (_appliedFilters.contains(
+                                                  areaItems[index]))
+                                                print(areaItemsCheckbox[index]);
+                                              else
+                                                _appliedFilters.add(areaItems[index]);
                                             }
                                           });
                                         },
@@ -679,7 +675,23 @@ class _FiltersState extends State<Filters> {
                                           children: [
                                             Text('${areaItems[index]}'),
                                             Spacer(),
-                                            Checkbox(value: false, onChanged: (value) {})
+                                            Checkbox(value: areaItemsCheckbox[index], onChanged: (value) {
+                                              setState(() {
+                                                if(areaItemsCheckbox[index] == true){
+                                                  areaItemsCheckbox[index] = false;
+                                                  if(_appliedFilters.contains(areaItems[index]))
+                                                    _appliedFilters.remove(areaItems[index]);
+                                                }
+                                                else {
+                                                  areaItemsCheckbox[index] = true;
+                                                  if (_appliedFilters.contains(
+                                                      areaItems[index]))
+                                                    print(areaItemsCheckbox[index]);
+                                                  else
+                                                    _appliedFilters.add(areaItems[index]);
+                                                }
+                                              });
+                                            })
                                           ],
                                         ),
                                         style: ElevatedButton.styleFrom(
