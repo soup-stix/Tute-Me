@@ -1098,13 +1098,17 @@ class _ListingState extends State<Listing> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

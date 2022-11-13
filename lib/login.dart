@@ -41,7 +41,8 @@ class _MyLoginState extends State<MyLogin>{
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width*0.6,
                         height: MediaQuery.of(context).size.height*0.12,
-                        child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Colors.lightBlueAccent),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
+                        child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Color.fromARGB(
+                            232, 18, 215, 241),),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*0.05,),
@@ -118,11 +119,13 @@ class _MyLoginState extends State<MyLogin>{
 
                               style: ButtonStyle(
                                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                      232, 18, 215, 241),),
                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(25.0),
-                                          side: BorderSide(color: Colors.lightBlueAccent)
+                                          side: BorderSide(color: Color.fromARGB(
+                                              232, 18, 215, 241),)
                                           )
                                   )
                               ),
@@ -136,7 +139,7 @@ class _MyLoginState extends State<MyLogin>{
                               TextButton(
                                 style: TextButton.styleFrom(
                                   textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                  primary: Colors.lightBlueAccent,
+                                  primary: Color.fromARGB(232, 18, 241, 222),
                                 ),
                                 onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const MyRegister())),
                                 child: Text('Sign Up', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
@@ -158,7 +161,8 @@ class _MyLoginState extends State<MyLogin>{
 
         onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
 
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(
+            232, 18, 215, 241),
         child: const Icon(Icons.house_rounded),
       ),
     );

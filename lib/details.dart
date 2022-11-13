@@ -78,7 +78,8 @@ class Details extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    backgroundColor: Colors.lightBlueAccent,
+    backgroundColor: Color.fromARGB(
+        232, 18, 215, 241),
     appBar: AppBar(
       title: Text(widget.child['first_name']+" "+widget.child['last_name'],style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
     leading: Builder(
@@ -344,13 +345,17 @@ class Details extends StatefulWidget {
       ),
     ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

@@ -163,8 +163,21 @@ class _MapState extends State<Map> {
   Widget build(BuildContext context) {
     mylocationMarker();
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
         title: Text("Map", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
@@ -176,7 +189,7 @@ class _MapState extends State<Map> {
         actions: [
           IconButton(onPressed: _onMapTypeChanged, icon: Icon(Icons.map_rounded,),)
         ],
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Stack(
@@ -280,13 +293,17 @@ class _MapState extends State<Map> {
         onPressed: _onMapTypeChanged,
       ),*/
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

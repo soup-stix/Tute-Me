@@ -65,11 +65,13 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Colors.lightBlue),),
+        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Color.fromARGB(
+            232, 18, 215, 241),),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.lightBlue,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color:Color.fromARGB(
+                    232, 18, 215, 241),),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
@@ -86,7 +88,8 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                 Container(
                   height: MediaQuery.of(context).size.height*0.06,
                   width: MediaQuery.of(context).size.width*0.7,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromARGB(
+                      188, 18, 215, 241),),
                   child: Row(
                     children: [
                       Padding(
@@ -99,12 +102,13 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                 ),
                 Spacer(),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent,foregroundColor: Colors.black),
+                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(
+                      232, 18, 215, 241), shadowColor: Colors.transparent,foregroundColor: Colors.black),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Filters())),
                   child: Row(
                     children: [
                       Text("Filters  "),
-                      Icon(Icons.file_copy_rounded, size: 10,),
+                      Icon(Icons.file_copy_rounded, size: 15,),
                     ],
                   ),
                 ),
@@ -125,13 +129,17 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

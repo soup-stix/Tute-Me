@@ -39,6 +39,19 @@ class _MyProfileState extends State<MyProfile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
         title: Text("Profile", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
@@ -79,11 +92,13 @@ class _MyProfileState extends State<MyProfile> {
                       onPressed: () {},
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                              232, 18, 215, 241),),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Colors.lightBlueAccent)
+                                  side: BorderSide(color: Color.fromARGB(
+                                      232, 18, 215, 241),)
                               )
                           )
                       ),
@@ -100,9 +115,11 @@ class _MyProfileState extends State<MyProfile> {
                       SizedBox(width: MediaQuery.of(context).size.width*0.02,),
                       ChoiceChip(label: Text("My Teachers"),
                         backgroundColor: Colors.grey.shade200,
-                          selectedColor: Colors.lightBlueAccent,
+                          selectedColor: Color.fromARGB(
+                              232, 18, 215, 241),
                           labelStyle: TextStyle(
-                            color: _isSelected ? Colors.white : Colors.lightBlueAccent,
+                            color: _isSelected ? Colors.white : Color.fromARGB(
+                                232, 18, 215, 241),
                           ),
                         selected: _isSelected,
                         onSelected: (newboolValue){
@@ -117,9 +134,11 @@ class _MyProfileState extends State<MyProfile> {
                       ChoiceChip(label: Text("My Subjects"),
                           backgroundColor: Colors.grey.shade200,
                           labelStyle: TextStyle(
-                              color: _isSelected2 ? Colors.white : Colors.lightBlueAccent,
+                              color: _isSelected2 ? Colors.white : Color.fromARGB(
+                                  232, 18, 215, 241),
                           ),
-                          selectedColor: Colors.lightBlueAccent,
+                          selectedColor: Color.fromARGB(
+                              232, 18, 215, 241),
                           selected: _isSelected2,
                           onSelected: (newboolValue){
                             setState(() {
@@ -162,13 +181,17 @@ class _MyProfileState extends State<MyProfile> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

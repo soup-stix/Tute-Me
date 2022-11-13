@@ -65,7 +65,20 @@ class _HomePageState extends State<HomePage>{
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
+                ],
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
+        backgroundColor: Colors.tealAccent,
         title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
         centerTitle: true,
         leading: Builder(builder: (context) =>
@@ -80,7 +93,8 @@ class _HomePageState extends State<HomePage>{
       ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Color.fromARGB(
+            232, 18, 215, 241),
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Column(
@@ -93,6 +107,7 @@ class _HomePageState extends State<HomePage>{
                       foregroundColor: Colors.white,
                   ),
                   child: Container(
+
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("My Profile", style: TextStyle(fontSize: 20),)
@@ -151,8 +166,15 @@ class _HomePageState extends State<HomePage>{
           child: Column(
             children: [
               Container(
+                decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                      colors: [
+                        const Color(0xFF00E1FF),
+                        const Color(0xFF00FFEA),
+                      ],
+                ),
+                ),
                 padding: EdgeInsets.all(10),
-                color: Color.fromARGB(255, 73, 189, 246),
                 child: 
                   Container(
                     height: MediaQuery.of(context).size.height*0.06,
@@ -169,8 +191,14 @@ class _HomePageState extends State<HomePage>{
                     ),
                   ),
               ),
-              Container(
-                color: Color.fromARGB(255, 73, 189, 246),
+              Container(decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),
+              ),
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.04),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +214,12 @@ class _HomePageState extends State<HomePage>{
               Container(
                 height: MediaQuery.of(context).size.height*0.25,
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),color: Color.fromARGB(255, 73, 189, 246),),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),),
                 child: Column(
                   children: [
                     Container(
@@ -222,13 +255,17 @@ class _HomePageState extends State<HomePage>{
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
           child: Container(
             margin: EdgeInsets.only(bottom: 5),
-            height: 50,
             decoration: BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
+                ],
+              ),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Colors.transparent,
             ),
             child: Stack(
               children: [

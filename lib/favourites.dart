@@ -56,7 +56,8 @@ class _MyFavouritesState extends State<MyFavourites> {
                           blurRadius: 10,
                           spreadRadius: 2)
                     ],
-                    color: Colors.white,
+                    color: Color.fromARGB(
+                        232, 18, 215, 241),
                   ),
                   child: Row(
                     children: [
