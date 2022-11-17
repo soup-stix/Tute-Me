@@ -36,7 +36,7 @@ class _MyReviewState extends State<MyReview>{
       //getmarkers();
       final dynamic _data = event.snapshot.value;
         _data.forEach((k, v) {
-          print("yes");
+          print(_categories);
             if (_categories.contains([k, v]) == false) {
               _categories.add([k, v]);
             }
@@ -59,18 +59,24 @@ class _MyReviewState extends State<MyReview>{
           itemCount: projectSnap.data!.length,
           itemBuilder: (context, index) {
             return Container(
-              height: 60,
+              height: 120,
               padding: EdgeInsets.all(10),
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.lightBlue,
+                color: Color.fromARGB(
+                    91, 39, 211, 241),
               ),
               child: Column(
                 children: [
-                  Text(projectSnap.data![index][0].toString()),
-                  Text(projectSnap.data![index][1].toString()),
+                  Align(
+                    alignment: Alignment.topLeft,
+                      child: Text(projectSnap.data![index][0].toString(), style: TextStyle(fontSize: 20),)),
+                  Divider(thickness: 1,),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(projectSnap.data![index][1].toString())),
                 ],
               ),
             );
@@ -88,12 +94,14 @@ class _MyReviewState extends State<MyReview>{
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
-        title: Text("Reviews", style: TextStyle(fontSize: 30, color: Colors.white),),
+        backgroundColor: Colors.white,
+        title: Text("Reviews", style: TextStyle(fontSize: 30, color: Color.fromARGB(
+            225, 39, 211, 241),),),
         centerTitle: true,
         leading: Builder(builder: (context) =>
             IconButton(
-              icon: Icon(Icons.arrow_back_ios_rounded),
+              icon: Icon(Icons.arrow_back_ios_rounded, color: Color.fromARGB(
+                  225, 39, 211, 241),),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -101,40 +109,19 @@ class _MyReviewState extends State<MyReview>{
 
         ),
       ),
-      body: projectWidget(),/*SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              child: FutureBuilder(
-                        future: _get_reviews(),
-                        builder: (BuildContext ctx, AsyncSnapshot<dynamic> snapshot) =>
-                          snapshot.hasData
-                              ?Expanded(
-                                child: ListView.builder(
-                                itemCount: snapshot.data?.length,
-                                physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                itemBuilder: (context, index){
-                                  return ListTile(
-                                    title: Text(snapshot.data![index][0], style: TextStyle(fontSize: 15, color: Colors.lightBlue),),
-                                    subtitle: Text(snapshot.data![index][1]),
-                                  );
-                                }
-                            ),
-                            ) : const Center(
-                                  child: CircularProgressIndicator(),)
-                        ),
-              )
-          ],
-        ),
-      ),*/
+      body: projectWidget(),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

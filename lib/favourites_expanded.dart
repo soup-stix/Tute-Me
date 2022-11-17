@@ -66,12 +66,12 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("All teachers", style: TextStyle(fontSize: 25, color: Color.fromARGB(
-            232, 18, 215, 241),),),
+            225, 39, 211, 241),),),
         leading: Builder(
           builder: (context) =>
               IconButton(
                 icon: Icon(Icons.arrow_back_ios_rounded, color:Color.fromARGB(
-                    232, 18, 215, 241),),
+                    225, 39, 211, 241),),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
@@ -89,7 +89,7 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                   height: MediaQuery.of(context).size.height*0.06,
                   width: MediaQuery.of(context).size.width*0.7,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromARGB(
-                      188, 18, 215, 241),),
+                      91, 39, 211, 241),),
                   child: Row(
                     children: [
                       Padding(
@@ -103,7 +103,7 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                 Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(
-                      232, 18, 215, 241), shadowColor: Colors.transparent,foregroundColor: Colors.black),
+                      225, 39, 211, 241), shadowColor: Colors.transparent,foregroundColor: Colors.black),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Filters())),
                   child: Row(
                     children: [

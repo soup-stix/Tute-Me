@@ -62,15 +62,17 @@ class _ReviewState extends State<Review> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Feedback for: "+widget.child["first_name"]+" "+widget.child["last_name"],
-          style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
+          style: TextStyle(fontSize: 24, color: Color.fromARGB(
+              225, 39, 211, 241), fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color: Color.fromARGB(
+                    225, 39, 211, 241),),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Center(
@@ -97,7 +99,8 @@ class _ReviewState extends State<Review> {
                   itemPadding: EdgeInsets.all(8.0),
                   updateOnDrag: true,
                   itemBuilder: (context,_)=>
-                      Icon(Icons.star,color: Colors.lightBlue,),onRatingUpdate:(rating)=>setState(() {
+                      Icon(Icons.star,color: Color.fromARGB(
+                          225, 39, 211, 241),),onRatingUpdate:(rating)=>setState(() {
                 this.rating1=rating; })
               ),
               //Text('Your Rating: $rating1', style: TextStyle(fontSize: 20),),
@@ -121,7 +124,8 @@ class _ReviewState extends State<Review> {
                   itemPadding: EdgeInsets.all(8.0),
                   updateOnDrag: true,
                   itemBuilder: (context,_)=>
-                      Icon(Icons.star,color: Colors.lightBlue,),onRatingUpdate:(rating)=>setState(() {
+                      Icon(Icons.star,color: Color.fromARGB(
+                          225, 39, 211, 241),),onRatingUpdate:(rating)=>setState(() {
                 this.rating2=rating; })
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.005),
@@ -144,7 +148,8 @@ class _ReviewState extends State<Review> {
                   itemPadding: EdgeInsets.all(8.0),
                   updateOnDrag: true,
                   itemBuilder: (context,_)=>
-                      Icon(Icons.star,color: Colors.lightBlue,),onRatingUpdate:(rating)=>setState(() {
+                      Icon(Icons.star,color: Color.fromARGB(
+                          225, 39, 211, 241),),onRatingUpdate:(rating)=>setState(() {
                 this.rating3=rating; })
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.005),
@@ -167,7 +172,8 @@ class _ReviewState extends State<Review> {
                   itemPadding: EdgeInsets.all(8.0),
                   updateOnDrag: true,
                   itemBuilder: (context,_)=>
-                      Icon(Icons.star,color: Colors.lightBlue,),onRatingUpdate:(rating)=>setState(() {
+                      Icon(Icons.star,color: Color.fromARGB(
+                          225, 39, 211, 241),),onRatingUpdate:(rating)=>setState(() {
                 this.rating4=rating; })
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.005),
@@ -190,7 +196,8 @@ class _ReviewState extends State<Review> {
                   itemPadding: EdgeInsets.all(8.0),
                   updateOnDrag: true,
                   itemBuilder: (context,_)=>
-                      Icon(Icons.star,color: Colors.lightBlue,),onRatingUpdate:(rating)=>setState(() {
+                      Icon(Icons.star,color: Color.fromARGB(
+                          225, 39, 211, 241),),onRatingUpdate:(rating)=>setState(() {
                 this.rating=rating; })
               ),
               SizedBox(height: MediaQuery.of(context).size.height*0.005),
@@ -214,7 +221,8 @@ class _ReviewState extends State<Review> {
                       borderSide: BorderSide(color: Colors.black),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.lightBlue),
+                      borderSide: BorderSide(color: Color.fromARGB(
+                          225, 39, 211, 241),),
                     ),
                   ),
                   style: TextStyle(fontSize: 14,),
@@ -245,7 +253,8 @@ class _ReviewState extends State<Review> {
                                     .of(context)
                                     .size
                                     .height * 0.125,
-                                  color: Colors.lightBlue,
+                                  color: Color.fromARGB(
+                                      225, 39, 211, 241),
                                   shadows: [BoxShadow(
                                     color: Colors.black38,
                                     spreadRadius: 1,
@@ -273,8 +282,8 @@ class _ReviewState extends State<Review> {
                                                 style: TextStyle(
                                                     fontSize: 14,
                                                     fontFamily: 'poppins',
-                                                    color: Colors
-                                                        .lightBlue),)
+                                                    color: Color.fromARGB(
+                                                        225, 39, 211, 241),),)
                                           ),
                                           Text("to continue",
                                             style: TextStyle(
@@ -292,15 +301,17 @@ class _ReviewState extends State<Review> {
                     },
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                        backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                            225, 39, 211, 241),),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25.0),
-                                side: BorderSide(color: Colors.lightBlue)
+                                side: BorderSide(color: Color.fromARGB(
+                                    225, 39, 211, 241),)
                             )
                         )
                     ),
-                    child: Text("Rate", style: TextStyle(fontSize: 14),)
+                    child: Text("Rate", style: TextStyle(fontSize: 14, color: Colors.white),)
                 ),
               ),
             ],

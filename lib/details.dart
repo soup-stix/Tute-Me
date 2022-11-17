@@ -205,7 +205,8 @@ class Details extends StatefulWidget {
                           Text("  |"),
                           TextButton(
                               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyReview(id: widget.id))),
-                              child: Text("Reviews", style: TextStyle(fontStyle: FontStyle.italic),)),
+                              child: Text("Reviews", style: TextStyle(fontStyle: FontStyle.italic, color: Color.fromARGB(
+                                  225, 39, 211, 241),),)),
                           Spacer(),
                           IconButton(
                               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Review(child: widget.child,id: widget.id,))),

@@ -70,7 +70,8 @@ class _FiltersState extends State<Filters> {
         selected: true,
         label: Text(_appliedFilters[i],style: TextStyle(fontSize: 15,color: Colors.black),),
         backgroundColor: Colors.white,
-        selectedColor: Colors.lightBlue,
+        selectedColor: Color.fromARGB(
+            225, 39, 211, 241),
         deleteButtonTooltipMessage: "Remove mode",
         deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
         showCheckmark: false,
@@ -91,10 +92,10 @@ class _FiltersState extends State<Filters> {
     if(query.isNotEmpty) {
       List<String> dummyListData = <String>[];
       dummySearchList.forEach((item) {
-        if(item.contains(query.toLowerCase())) {
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))){
           dummyListData.add(item);
         }
-        if(item.contains(query.toUpperCase())) {
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))){
           dummyListData.add(item);
         }
       });
@@ -111,16 +112,17 @@ class _FiltersState extends State<Filters> {
     }
   }
 
+
   void filterAreaSearchResults(String query) {
     List<dynamic> dummySearchList = <dynamic>[];
     dummySearchList.addAll(_allArea);
     if(query.isNotEmpty) {
       List<String> dummyListData = <String>[];
       dummySearchList.forEach((item) {
-        if(item.contains(query.toLowerCase())) {
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))) {
           dummyListData.add(item);
         }
-        if(item.contains(query.toUpperCase())) {
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))) {
           dummyListData.add(item);
         }
       });
@@ -142,18 +144,21 @@ class _FiltersState extends State<Filters> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Filters", style: TextStyle(fontSize: 25, color: Colors.lightBlue),),
+        title: Text("Filters", style: TextStyle(fontSize: 25, color: Color.fromARGB(
+            225, 39, 211, 241),),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.lightBlue,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color: Color.fromARGB(
+                    225, 39, 211, 241),),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
         actions: [
           TextButton(onPressed: () {
             clearFilters();
-          }, child: Text("Clear Filters"))
+          }, child: Text("Clear Filters", style: TextStyle(color: Color.fromARGB(
+              225, 39, 211, 241),),)),
         ],
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -174,7 +179,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = false;
                       _areaPressed = false;
                     });
-                  }, child: Text("Mode")),
+                  }, child: Text("Mode", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*0.3,
@@ -187,7 +193,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = false;
                       _areaPressed = false;
                     });
-                  }, child: Text("Subjects")),
+                  }, child: Text("Subjects", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*0.3,
@@ -200,7 +207,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = false;
                       _areaPressed = false;
                     });
-                  }, child: Text("Type")),
+                  }, child: Text("Type", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*0.3,
@@ -213,7 +221,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = false;
                       _areaPressed = false;
                     });
-                  }, child: Text("Price")),
+                  }, child: Text("Price", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*0.3,
@@ -226,7 +235,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = true;
                       _areaPressed = false;
                     });
-                  }, child: Text("Class")),
+                  }, child: Text("Class", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*0.3,
@@ -239,7 +249,8 @@ class _FiltersState extends State<Filters> {
                       _classPressed = false;
                       _areaPressed = true;
                     });
-                  }, child: Text("Area")),
+                  }, child: Text("Area", style: TextStyle(color: Color.fromARGB(
+                      225, 39, 211, 241),),)),
                 ),
                 //SizedBox(width: MediaQuery.of(context).size.width*0.3,),
               ],
@@ -288,7 +299,8 @@ class _FiltersState extends State<Filters> {
                                   },
                                   child: Row(
                                     children: [
-                                      Text('${_mode[index]}'),
+                                      Text('${_mode[index]}', style: TextStyle(color: Color.fromARGB(
+                                          225, 39, 211, 241),),),
                                       Spacer(),
                                       Checkbox(value: _modeCheck[index], onChanged: (value) {
                                         setState(() {
@@ -306,12 +318,15 @@ class _FiltersState extends State<Filters> {
                                               _appliedFilters.add(_mode[index]);
                                           }
                                         });
-                                      })
+                                      },
+                                        activeColor: Color.fromARGB(
+                                            225, 39, 211, 241),)
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     shadowColor: Colors.white,
-                                    foregroundColor: Colors.lightBlue,
+                                    foregroundColor: Color.fromARGB(
+                                        225, 39, 211, 241),
                                     backgroundColor: Colors.white,
                                   )
                               ),
@@ -377,7 +392,8 @@ class _FiltersState extends State<Filters> {
                                   },
                                   child: Row(
                                     children: [
-                                      Text('${items[index]}'),
+                                      Text('${items[index]}', style: TextStyle(color: Color.fromARGB(
+                                          225, 39, 211, 241),),),
                                       Spacer(),
                                       Checkbox(value: itemsCheckbox[index], onChanged: (value) {
                                         setState(() {
@@ -395,12 +411,15 @@ class _FiltersState extends State<Filters> {
                                               _appliedFilters.add(items[index]);
                                           }
                                         });
-                                      })
+                                      },
+                                        activeColor: Color.fromARGB(
+                                            225, 39, 211, 241),)
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     shadowColor: Colors.white,
-                                    foregroundColor: Colors.lightBlue,
+                                    foregroundColor: Color.fromARGB(
+                                        225, 39, 211, 241),
                                     backgroundColor: Colors.white,
                                   )
                               ),
@@ -445,7 +464,8 @@ class _FiltersState extends State<Filters> {
                                     },
                                     child: Row(
                                         children: [
-                                        Text('${_type[index]}'),
+                                        Text('${_type[index]}', style: TextStyle(color: Color.fromARGB(
+                                            225, 39, 211, 241),),),
                                         Spacer(),
                                         Checkbox(value: _typeCheck[index], onChanged: (value) {
                                           setState(() {
@@ -463,12 +483,15 @@ class _FiltersState extends State<Filters> {
                                                 _appliedFilters.add(_type[index]);
                                             }
                                           });
-                                        })
+                                        },
+                                          activeColor: Color.fromARGB(
+                                              225, 39, 211, 241),)
                                         ],
                                     ),
                                     style: ElevatedButton.styleFrom(
                                     shadowColor: Colors.white,
-                                    foregroundColor: Colors.lightBlue,
+                                    foregroundColor: Color.fromARGB(
+                                        225, 39, 211, 241),
                                     backgroundColor: Colors.white,
                                     )
                                 ),
@@ -513,7 +536,8 @@ class _FiltersState extends State<Filters> {
                                   },
                                   child: Row(
                                     children: [
-                                      Text('${_price[index]}'),
+                                      Text('${_price[index]}', style: TextStyle(color: Color.fromARGB(
+                                          225, 39, 211, 241),),),
                                       Spacer(),
                                       Checkbox(value: _priceCheck[index], onChanged: (value) {
                                         setState(() {
@@ -531,12 +555,15 @@ class _FiltersState extends State<Filters> {
                                               _appliedFilters.add(_price[index]);
                                           }
                                         });
-                                      })
+                                      },
+                                        activeColor: Color.fromARGB(
+                                            225, 39, 211, 241),)
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     shadowColor: Colors.white,
-                                    foregroundColor: Colors.lightBlue,
+                                    foregroundColor: Color.fromARGB(
+                                        225, 39, 211, 241),
                                     backgroundColor: Colors.white,
                                   )
                               ),
@@ -581,7 +608,8 @@ class _FiltersState extends State<Filters> {
                                   },
                                   child: Row(
                                     children: [
-                                      Text('Class ${index + 1}'),
+                                      Text('Class ${index + 1}', style: TextStyle(color: Color.fromARGB(
+                                          225, 39, 211, 241),),),
                                       Spacer(),
                                       Checkbox(value: _classCheck[index], onChanged: (value) {
                                         setState(() {
@@ -599,12 +627,15 @@ class _FiltersState extends State<Filters> {
                                               _appliedFilters.add('Class ${index + 1}');
                                           }
                                         });
-                                      })
+                                      },
+                                        activeColor: Color.fromARGB(
+                                            225, 39, 211, 241),)
                                     ],
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     shadowColor: Colors.white,
-                                    foregroundColor: Colors.lightBlue,
+                                    foregroundColor: Color.fromARGB(
+                                        225, 39, 211, 241),
                                     backgroundColor: Colors.white,
                                   )
                               ),
@@ -673,7 +704,8 @@ class _FiltersState extends State<Filters> {
                                         },
                                         child: Row(
                                           children: [
-                                            Text('${areaItems[index]}'),
+                                            Text('${areaItems[index]}', style: TextStyle(color: Color.fromARGB(
+                                                225, 39, 211, 241),),),
                                             Spacer(),
                                             Checkbox(value: areaItemsCheckbox[index], onChanged: (value) {
                                               setState(() {
@@ -691,12 +723,16 @@ class _FiltersState extends State<Filters> {
                                                     _appliedFilters.add(areaItems[index]);
                                                 }
                                               });
-                                            })
+                                            },
+                                            activeColor: Color.fromARGB(
+                                                225, 39, 211, 241),
+                                            )
                                           ],
                                         ),
                                         style: ElevatedButton.styleFrom(
                                           shadowColor: Colors.white,
-                                          foregroundColor: Colors.lightBlue,
+                                          foregroundColor: Color.fromARGB(
+                                              225, 39, 211, 241),
                                           backgroundColor: Colors.white,
                                         )
                                     ),
@@ -716,13 +752,17 @@ class _FiltersState extends State<Filters> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [
