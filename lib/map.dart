@@ -37,7 +37,7 @@ class _MapState extends State<Map> {
   late StreamSubscription _dataStream;
 
   MapType currentMapType = MapType.normal;
-  CameraPosition _kGoogle = CameraPosition(
+  late CameraPosition _kGoogle = CameraPosition(
     target: LatLng(20.42796133580664, 80.885749655962),
     zoom: 14.4746,
   );
@@ -297,18 +297,18 @@ class _MapState extends State<Map> {
                                     _showSubjectList = true;
                                     filterAreaSearchResults(value);
                                   },
-                                  onSubmitted: (value) {
-                                    setState(() async {
+                                  onSubmitted: (value) async{
+                                    await _getlocation();
+                                    GoogleMapController controller = await _controller.future;
+                                    controller.animateCamera(CameraUpdate.newCameraPosition(
+                                        CameraPosition(
+                                          target: LatLng(location['latitude'], location['longitude']),
+                                          zoom: 14,
+                                        )
+                                    ));
+                                    setState(() {
                                       _showSubjectList = false;
                                       searchText.clear();
-                                      await _getlocation();
-                                      GoogleMapController controller = await _controller.future;
-                                      controller.animateCamera(CameraUpdate.newCameraPosition(
-                                          CameraPosition(
-                                            target: LatLng(location['latitude'], location['longitude']),
-                                            zoom: 14,
-                                          )
-                                      ));
                                     });
                                   },
                                 ),
