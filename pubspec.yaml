@@ -65,6 +65,10 @@ dependencies:
   dropdown_search: ^5.0.3
   flutter_rating_bar: ^4.0.1
   validators: ^3.0.0
+  editable_image: ^1.1.0
+  image_cropper: ^2.0.3
+  image_picker: ^0.8.5+3
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_launcher_icons: ^0.10.0

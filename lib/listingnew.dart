@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:validators/validators.dart';

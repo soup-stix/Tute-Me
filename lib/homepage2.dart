@@ -3,7 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+
 import 'package:tute_me/favourites.dart';
+
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
@@ -11,54 +14,54 @@ import 'package:tute_me/teacherprofile.dart';
 import 'package:tute_me/student_register.dart';
 import 'package:tute_me/studentprofile.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage2 extends StatefulWidget {
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePage2State createState() => _HomePage2State();
 }
 
-class _HomePageState extends State<HomePage>{
+class _HomePage2State extends State<HomePage2>{
   final List _categories = [];
   final _database = FirebaseDatabase.instance.reference();
   dynamic _data;
 
   @override
-    void initState(){
-      super.initState();
-      _activeListners();
-      _get_Teachers_ID();
-    }
-    @override
+  void initState(){
+    super.initState();
+    _activeListners();
+    _get_Teachers_ID();
+  }
+  @override
   void setState(VoidCallback fn) {
     // TODO: implement setState
     super.setState(fn);
     _get_Teachers_ID();
   }
 
-    void _activeListners(){
-      _database.child('Teachers_ID').onValue.listen((event) {
-        _get_Teachers_ID();
-        //print(teacher);
-      });
-    }
+  void _activeListners(){
+    _database.child('Teachers_ID').onValue.listen((event) {
+      _get_Teachers_ID();
+      //print(teacher);
+    });
+  }
 
-    void _get_Teachers_ID() async {
-      _data = await _database.child('Teachers_ID').get();
-      if (_data.exists) {
-        _data.value.forEach((k, v) {
-          print(k);
-          if (_categories.contains(v) == false){
-            setState(() {
-              _categories.add(v);
-            });
+  void _get_Teachers_ID() async {
+    _data = await _database.child('Teachers_ID').get();
+    if (_data.exists) {
+      _data.value.forEach((k, v) {
+        print(k);
+        if (_categories.contains(v) == false){
+          setState(() {
+            _categories.add(v);
+          });
 
-            //print(_categories);
+          //print(_categories);
         }
-        });
-      } else {
-        print('No data available.');
-      }
+      });
+    } else {
+      print('No data available.');
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,107 +70,118 @@ class _HomePageState extends State<HomePage>{
       appBar: AppBar(
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                colors: [
-                  const Color(0xFF00E1FF),
-                  const Color(0xFF00FFEA),
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+          Color(int.parse("0xFF64FFDA")),
                 ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
-                tileMode: TileMode.clamp),
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
           ),
+
         ),
-        backgroundColor: Colors.tealAccent,
         title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
         centerTitle: true,
         leading: Builder(builder: (context) =>
             IconButton(
-          icon: Icon(Icons.menu_rounded),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-            //print(faculty);
-          },
-        ),
+              icon: Icon(Icons.menu_rounded),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+                //print(faculty);
+              },
+            ),
 
-      ),
+        ),
       ),
       drawer: Drawer(
-        backgroundColor: Color.fromARGB(
-            232, 18, 215, 241),
+        backgroundColor: Colors.teal.shade300,
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
-                  style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                  ),
-                  child: Container(
-
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width*1,
-                      child: Text("My Profile", style: TextStyle(fontSize: 20),)
-                  )
-              ),
-              TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                   ),
                   child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
-                      child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
+                      child: Text("My Profile", style: TextStyle(fontSize: 20),)
                   )
               ),
+              TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Map())),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Locator", style: TextStyle(fontSize: 20),)
+                  )
+              ),
+              TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Student_Register())),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Find Tutor", style: TextStyle(fontSize: 20),)
+                  )
+              ),
+              TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Homepage", style: TextStyle(fontSize: 20),)
+                  )
+              ),
+
+
+
 
             ],
           ),
         ),
       ),
-      body: Container(
+      body:
+      Container(
         child: SingleChildScrollView(
           child: Column(
             children: [
+
               Container(
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                      colors: [
-                        const Color(0xFF00E1FF),
-                        const Color(0xFF00FFEA),
-                      ],
-                ),
-                ),
                 padding: EdgeInsets.all(10),
-                child: 
-                  Container(
-                    height: MediaQuery.of(context).size.height*0.06,
-                    width: MediaQuery.of(context).size.width*0.95,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Icon(Icons.search_rounded),
-                        ),
-                        Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
-                      ],
-                    ),
+                color: Color.fromARGB(255, 73, 189, 246),
+                child:
+                Container(
+                  height: MediaQuery.of(context).size.height*0.06,
+                  width: MediaQuery.of(context).size.width*0.95,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Icon(Icons.search_rounded),
+                      ),
+                      Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
+                    ],
                   ),
-              ),
-              Container(decoration: new BoxDecoration(
-                gradient: new LinearGradient(
-                  colors: [
-                    const Color(0xFF00E1FF),
-                    const Color(0xFF00FFEA),
-                  ],
                 ),
               ),
+              Container(
+                color: Color.fromARGB(255, 73, 189, 246),
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.04),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,18 +197,13 @@ class _HomePageState extends State<HomePage>{
               Container(
                 height: MediaQuery.of(context).size.height*0.25,
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),gradient: new LinearGradient(
-                  colors: [
-                    const Color(0xFF00E1FF),
-                    const Color(0xFF00FFEA),
-                  ],
-                ),),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),color: Color.fromARGB(255, 73, 189, 246),),
                 child: Column(
                   children: [
                     Container(
                       height: MediaQuery.of(context).size.height*0.18,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
+                          scrollDirection: Axis.horizontal,
                           itemCount: _categories.length,
                           physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                           itemBuilder: (context, index){
@@ -209,6 +218,7 @@ class _HomePageState extends State<HomePage>{
                   ],
                 ),
               ),
+
               Container(
                 height: MediaQuery.of(context).size.height*0.75,
                 child: ListView.builder(
@@ -224,31 +234,32 @@ class _HomePageState extends State<HomePage>{
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.tealAccent,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 5),
-            decoration: BoxDecoration(
-              gradient: new LinearGradient(
-                colors: [
-                  const Color(0xFF00E1FF),
-                  const Color(0xFF00FFEA),
+
+        child: Container(
+          margin: EdgeInsets.only(bottom: 5),
+          height: 50,
+          decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
+              gradient: LinearGradient(
+                colors: [Color(int.parse("0xFF00ACC1")),
+                  Color(int.parse("0xFF64FFDA")),
                 ],
-              ),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Stack(
-              children: [
-                Row(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,)
+          ),
+          child: Stack(
+            children: [
+              Row(
                 children: [
                   Spacer(),
                   IconButton(
-                      onPressed: () {
-                      },
-                      hoverColor: Colors.black,
-                      color: Colors.white,
-                      highlightColor: Colors.black12,
-                      tooltip: "Home",
-                      icon: Icon(Icons.home_rounded),
+                    onPressed: () {
+                    },
+                    hoverColor: Colors.black,
+                    color: Colors.white,
+                    highlightColor: Colors.black12,
+                    tooltip: "Home",
+                    icon: Icon(Icons.home_rounded),
                     iconSize: 35,
                   ),
                   Spacer(),
@@ -271,12 +282,14 @@ class _HomePageState extends State<HomePage>{
                     icon: Icon(Icons.person_outline_rounded,),
                     iconSize: 35,
                   ),
+
+
                   Spacer(),
                 ],
               ),
-        ],
-            ),
+            ],
           ),
+        ),
       ),
     );
   }

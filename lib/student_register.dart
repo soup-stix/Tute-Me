@@ -7,7 +7,7 @@ import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
 import 'package:flutter_svg/avd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 
 class Student_Register extends StatefulWidget {
 

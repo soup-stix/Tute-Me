@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 class Filters extends StatefulWidget {
   const Filters({Key? key}) : super(key: key);
 

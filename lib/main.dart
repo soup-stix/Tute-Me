@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/login.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/resetpassword.dart';
 import 'package:tute_me/homepage.dart';

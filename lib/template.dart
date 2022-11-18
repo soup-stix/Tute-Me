@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tute_me/homepage.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 
 class Books extends StatefulWidget {
   const Books({Key? key}) : super(key: key);

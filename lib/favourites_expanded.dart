@@ -8,7 +8,7 @@ import 'package:tute_me/filters.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
-import 'package:tute_me/profile.dart';
+import 'package:tute_me/teacherprofile.dart';
 import 'package:tute_me/student_register.dart';
 class Favourites_Expanded extends StatefulWidget {
   const Favourites_Expanded({Key? key}) : super(key: key);
