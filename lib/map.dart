@@ -11,6 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:tute_me/cards.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:google_api_headers/google_api_headers.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -20,14 +24,19 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
+  String googleApikey = "AIzaSyAtwO_2scYE7tC--P_CeSobUCgnX1_Q_Wg";
+  GoogleMapController? mapController; //contrller for Google map
+  CameraPosition? cameraPosition;
+  LatLng startLocation = LatLng(27.2046, 77.4977);
   late final Completer<GoogleMapController> _controller = Completer();
   var _searchText;
   var _cardImage;
-  dynamic location;
+  dynamic location = "test";
   var _isSelected = false;
   var _cardName;
   var _cardData;
   dynamic data = [];
+  //String location="search";
 
   final _database = FirebaseDatabase.instance.reference();
   late StreamSubscription _dataStream;
@@ -161,16 +170,86 @@ class _MapState extends State<Map> {
       body: Stack(
         children: [
           GoogleMap(
-          onMapCreated: (GoogleMapController controller) {
+            zoomGesturesEnabled: true, //enable Zoom in, out on map
+            initialCameraPosition: CameraPosition( //innital position in map
+              target: startLocation, //initial position
+              zoom: 14.0, //initial zoom level
+            ),
+            mapType: MapType.normal, //map type
+            onMapCreated: (controller) { //method called when map is created
+              setState(() {
+                mapController = controller;
+              });
+            },
+          /*onMapCreated: (GoogleMapController controller) {
+              setState(() {
+                mapController=controller;
+              });
             _controller.complete(controller);
           },
-            initialCameraPosition: _kGoogle,
+
           mapType: currentMapType,
             myLocationEnabled: true,
             compassEnabled: true,
-            markers: getmarkers(),
+            markers: getmarkers(),*/
         ),
-          Column(
+          Positioned(  //search input bar
+              top:10,
+              child: InkWell(
+                  onTap: () async {
+                    var place = await PlacesAutocomplete.show(
+                        context: context,
+                        apiKey: googleApikey,
+                        mode: Mode.overlay,
+                        types: [],
+                        strictbounds: false,
+                        components: [Component(Component.country, 'np')],
+                        //google_map_webservice package
+                        onError: (err){
+                          print(err);
+                        }
+                    );
+
+                    if(place != null){
+                      setState(() {
+                        location = place.description.toString();
+                      });
+
+                      //form google_maps_webservice package
+                      final plist = GoogleMapsPlaces(apiKey:googleApikey,
+                        apiHeaders: await GoogleApiHeaders().getHeaders(),
+                        //from google_api_headers package
+                      );
+                      String placeid = place.placeId ?? "0";
+                      final detail = await plist.getDetailsByPlaceId(placeid);
+                      final geometry = detail.result.geometry!;
+                      final lat = geometry.location.lat;
+                      final lang = geometry.location.lng;
+                      var newlatlang = LatLng(lat, lang);
+
+
+                      //move map camera to selected place with animation
+                      mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                    }
+                  },
+                  child:Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Card(
+                      child: Container(
+                          padding: EdgeInsets.all(0),
+                          width: MediaQuery.of(context).size.width - 40,
+                          child: ListTile(
+                            title:Text(location!, style: TextStyle(fontSize: 18),),
+                            trailing: Icon(Icons.search),
+                            dense: true,
+                          )
+                      ),
+                    ),
+                  )
+              )
+          ),
+
+          /*Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -242,7 +321,7 @@ class _MapState extends State<Map> {
                 ),
               ) : Container(),
             ],
-          ),
+          ),*/
 
       ],
       ),

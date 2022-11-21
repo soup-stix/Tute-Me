@@ -734,6 +734,7 @@ class _ListingState extends State<Listing> {
                     child: buildTypeChips(),
                   ) : Container(),
                   TextField(
+
                     decoration: InputDecoration(
                       hintText: "type",
                       hintStyle: TextStyle(fontSize: 14),

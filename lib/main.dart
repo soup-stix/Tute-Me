@@ -30,14 +30,14 @@ Future<void> main() async{
     debugShowCheckedModeBanner: false,
     //initialRoute: 'details',
 
-    initialRoute: 'login',
+    initialRoute: 'homepage',
     routes: {
       'register':(context) => MyRegister(),
       'login':(context) => MyLogin(),
       'forgotpassword':(context) => ForgotPassword(),
       'resetpassword':(context) => ResetPassword(),
       'homepage':(context) => HomePage(),
-      'homepage':(context) => Student_Register(),
+      'homepage2':(context) => Student_Register(),
       'books':(context) => Books(),
       'cycles':(context) => Cycles(),
       'listingnew':(context) => Listing(),

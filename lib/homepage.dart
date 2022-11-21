@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tute_me/books.dart';
 import 'package:tute_me/favourites.dart';
+import 'package:tute_me/login.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/student_register.dart';
+import 'package:tute_me/teacherprofile.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -66,8 +69,32 @@ class _HomePageState extends State<HomePage>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+       actions: [
+         Material(
+           borderRadius: BorderRadius.circular(90),
+           clipBehavior: Clip.antiAlias,
+           elevation: 8,
+           child: InkWell(
+             onTap: () {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
+             },
+             child: Ink.image(
+                 image: NetworkImage(
+
+                   'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
+                 ),
+                 height: 45,
+                 width: 53,
+                 fit: BoxFit.fill
+             ),
+           ),
+         ),
+       ],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
+          
+
+
         decoration: BoxDecoration(
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
     gradient: LinearGradient(
@@ -77,8 +104,10 @@ class _HomePageState extends State<HomePage>{
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,)
     ),),
+
         backgroundColor: Colors.lightBlueAccent,
-        title: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
+        title:
+        Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 30, color: Colors.white),),
         centerTitle: true,
         leading: Builder(builder: (context) =>
             IconButton(
@@ -89,8 +118,11 @@ class _HomePageState extends State<HomePage>{
           },
         ),
 
+
       ),
+
       ),
+
       drawer: Drawer(
         backgroundColor:Colors.teal.shade300,
 
@@ -158,6 +190,18 @@ class _HomePageState extends State<HomePage>{
                       child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
                   )
               ),
+              TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin())),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Login", style: TextStyle(fontSize: 20),)
+                  )
+              ),
+
             ],
           ),
         ),

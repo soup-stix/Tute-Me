@@ -67,6 +67,27 @@ class _HomePage2State extends State<HomePage2>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          Material(
+            borderRadius: BorderRadius.circular(90),
+            clipBehavior: Clip.antiAlias,
+            elevation: 8,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
+              },
+              child: Ink.image(
+                  image: NetworkImage(
+
+                    'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
+                  ),
+                  height: 45,
+                  width: 53,
+                  fit: BoxFit.fill
+              ),
+            ),
+          ),
+        ],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
           decoration: BoxDecoration(
