@@ -115,13 +115,13 @@ class _HomePage2State extends State<HomePage2>{
         ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.teal.shade300,
+        backgroundColor: Color.fromARGB(
+            232, 18, 215, 241),
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
@@ -129,6 +129,7 @@ class _HomePage2State extends State<HomePage2>{
                     foregroundColor: Colors.white,
                   ),
                   child: Container(
+
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("My Profile", style: TextStyle(fontSize: 20),)
@@ -167,23 +168,35 @@ class _HomePage2State extends State<HomePage2>{
                       child: Text("Homepage", style: TextStyle(fontSize: 20),)
                   )
               ),
-
-
-
-
+              TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
+                  )
+              ),
             ],
           ),
         ),
       ),
-      body:
-      Container(
+      body: Container(
         child: SingleChildScrollView(
           child: Column(
             children: [
-
               Container(
+                decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      const Color(0xFF00E1FF),
+                      const Color(0xFF00FFEA),
+                    ],
+                  ),
+                ),
                 padding: EdgeInsets.all(10),
-                color: Color.fromARGB(255, 73, 189, 246),
                 child:
                 Container(
                   height: MediaQuery.of(context).size.height*0.06,
@@ -200,8 +213,14 @@ class _HomePage2State extends State<HomePage2>{
                   ),
                 ),
               ),
-              Container(
-                color: Color.fromARGB(255, 73, 189, 246),
+              Container(decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),
+              ),
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.04),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -217,7 +236,12 @@ class _HomePage2State extends State<HomePage2>{
               Container(
                 height: MediaQuery.of(context).size.height*0.25,
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),color: Color.fromARGB(255, 73, 189, 246),),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),),
                 child: Column(
                   children: [
                     Container(
@@ -238,7 +262,6 @@ class _HomePage2State extends State<HomePage2>{
                   ],
                 ),
               ),
-
               Container(
                 height: MediaQuery.of(context).size.height*0.75,
                 child: ListView.builder(
@@ -254,18 +277,17 @@ class _HomePage2State extends State<HomePage2>{
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Stack(
             children: [
@@ -302,8 +324,6 @@ class _HomePage2State extends State<HomePage2>{
                     icon: Icon(Icons.person_outline_rounded,),
                     iconSize: 35,
                   ),
-
-
                   Spacer(),
                 ],
               ),

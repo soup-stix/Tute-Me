@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/profile.dart';
-
+import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:validators/validators.dart';
 
@@ -178,7 +178,17 @@ class _ListingState extends State<Listing> {
     print(_type);
   }
 
-
+  Future<bool> _getlocation() async{
+    var addresses = await Geocoder.local.findAddressesFromQuery(_addressController.text+_cityController.text+_stateController.text);
+    var first = addresses.first;
+    var location = first.coordinates.toMap();
+    setState(() {
+      _latitude = location['latitude'];
+      _longitude = location['longitude'];
+    });
+    print(first.coordinates.toMap());
+    return true;
+  }
 
   void _onLoading() {
     showDialog(
@@ -516,11 +526,11 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _first_nameController,
                     validator: (first_name) {
-                          final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
-                          if (_first_nameController.text.isNotEmpty && nameRegExp.hasMatch(_first_nameController.text) == false)
-                          return null;
-                          else
-                          return 'Enter a valid last name';
+                      final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+                      if (_first_nameController.text.isNotEmpty && nameRegExp.hasMatch(_first_nameController.text) == false)
+                        return null;
+                      else
+                        return 'Enter a valid last name';
                     },
                     //maxLines: 3,
                   ),
@@ -557,8 +567,8 @@ class _ListingState extends State<Listing> {
                   ),
                   //SizedBox(height: MediaQuery.of(context).size.height*0.02,),
                   TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
                       hintText: "email",
                       hintStyle: TextStyle(fontSize: 14),
                       enabledBorder: UnderlineInputBorder(
@@ -603,7 +613,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _addressController,
                     validator: (address) {
-                      if (_addressController.text!.isEmpty)
+                      if (address!.isEmpty)
                         return 'Enter a valid address';
                       else
                         return null;
@@ -625,7 +635,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _cityController,
                     validator: (city) {
-                      if (_cityController.text!.isEmpty)
+                      if (city!.isEmpty)
                         return 'Enter a valid city';
                       else
                         return null;
@@ -647,7 +657,7 @@ class _ListingState extends State<Listing> {
                     style: TextStyle(fontSize: 14,),
                     controller: _stateController,
                     validator: (state) {
-                      if (_stateController.text!.isEmpty)
+                      if (state!.isEmpty)
                         return 'Enter a valid state';
                       else
                         return null;
@@ -679,16 +689,16 @@ class _ListingState extends State<Listing> {
                     },
                     //maxLines: 3,
                   ),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
-                      child: Text("Mode",
-                        style: TextStyle(color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
+                  SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+                    child: Text("Mode",
+                      style: TextStyle(color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
+                  ),
                   _chipModeMade ? Container(
                     height: MediaQuery.of(context).size.height*0.08,
                     child: buildModeChips(),
@@ -734,7 +744,6 @@ class _ListingState extends State<Listing> {
                     child: buildTypeChips(),
                   ) : Container(),
                   TextField(
-
                     decoration: InputDecoration(
                       hintText: "type",
                       hintStyle: TextStyle(fontSize: 14),
@@ -886,8 +895,8 @@ class _ListingState extends State<Listing> {
                         return Container(
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
                           width: MediaQuery.of(context).size.width*06,
-                            height: 40,
-                            child: ElevatedButton(
+                          height: 40,
+                          child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
                                   if(_subjects.contains(items[index]) == false)
@@ -896,12 +905,12 @@ class _ListingState extends State<Listing> {
                                   _chipSubjectMade = true;
                                 });
                               },
-                                child: Text('${items[index]}'),
-                                style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                            )
-                        ),
+                              child: Text('${items[index]}'),
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              )
+                          ),
                         );
                       },
                     ),
@@ -944,7 +953,7 @@ class _ListingState extends State<Listing> {
                   TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter. digitsOnly],
+                      FilteringTextInputFormatter. digitsOnly],
                     decoration: InputDecoration(
                       hintText: "fee",
                       hintStyle: TextStyle(fontSize: 14),
@@ -976,7 +985,8 @@ class _ListingState extends State<Listing> {
                           if(_formKey.currentState!.validate()){
                             print(_values);
                             setState(() {
-
+                              Future.wait([_getlocation()]);
+                              print(_latitude+_longitude);
                               _loadingWidget = true;
                               _onLoading();
                               _getSubjects();
@@ -1088,13 +1098,17 @@ class _ListingState extends State<Listing> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.transparent,
           ),
           child: Stack(
             children: [

@@ -124,7 +124,8 @@ class _HomePageState extends State<HomePage>{
       ),
 
       drawer: Drawer(
-        backgroundColor:Colors.teal.shade300,
+        backgroundColor:Color.fromARGB(
+            232, 18, 215, 241),
 
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
@@ -211,26 +212,39 @@ class _HomePageState extends State<HomePage>{
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.all(10),
-                color: Color.fromARGB(255, 73, 189, 246),
-                child: 
-                  Container(
-                    height: MediaQuery.of(context).size.height*0.06,
-                    width: MediaQuery.of(context).size.width*0.95,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Icon(Icons.search_rounded),
-                        ),
-                        Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
-                      ],
-                    ),
+                decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      const Color(0xFF00E1FF),
+                      const Color(0xFF00FFEA),
+                    ],
                   ),
+                ),
+                padding: EdgeInsets.all(10),
+                child:
+                Container(
+                  height: MediaQuery.of(context).size.height*0.06,
+                  width: MediaQuery.of(context).size.width*0.95,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Icon(Icons.search_rounded),
+                      ),
+                      Text("Search", style: TextStyle(color: Colors.black, fontSize: 20),),
+                    ],
+                  ),
+                ),
               ),
-              Container(
-                color: Color.fromARGB(255, 73, 189, 246),
+              Container(decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),
+              ),
                 padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.04),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,17 +257,21 @@ class _HomePageState extends State<HomePage>{
                   ],
                 ),
               ),
-
               Container(
                 height: MediaQuery.of(context).size.height*0.25,
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),color: Color.fromARGB(255, 73, 189, 246),),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),gradient: new LinearGradient(
+                  colors: [
+                    const Color(0xFF00E1FF),
+                    const Color(0xFF00FFEA),
+                  ],
+                ),),
                 child: Column(
                   children: [
                     Container(
                       height: MediaQuery.of(context).size.height*0.18,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
+                          scrollDirection: Axis.horizontal,
                           itemCount: _categories.length,
                           physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                           itemBuilder: (context, index){
@@ -283,33 +301,31 @@ class _HomePageState extends State<HomePage>{
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
-          child: Container(
-            margin: EdgeInsets.only(bottom: 5),
-            height: 50,
-            decoration: BoxDecoration(
-                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-                gradient: LinearGradient(
-                  colors: [Color(int.parse("0xFF00ACC1")),
-                    Color(int.parse("0xFF64FFDA")),
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,)
+        color: Colors.tealAccent,
+        child: Container(
+          margin: EdgeInsets.only(bottom: 5),
+          decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
             ),
-
-            child: Stack(
-              children: [
-                Row(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: Stack(
+            children: [
+              Row(
                 children: [
                   Spacer(),
                   IconButton(
-                      onPressed: () {
-                      },
-                      hoverColor: Colors.black,
-                      color: Colors.white,
-                      highlightColor: Colors.black12,
-                      tooltip: "Home",
-                      icon: Icon(Icons.home_rounded),
+                    onPressed: () {
+                    },
+                    hoverColor: Colors.black,
+                    color: Colors.white,
+                    highlightColor: Colors.black12,
+                    tooltip: "Home",
+                    icon: Icon(Icons.home_rounded),
                     iconSize: 35,
                   ),
                   Spacer(),
@@ -335,10 +351,9 @@ class _HomePageState extends State<HomePage>{
                   Spacer(),
                 ],
               ),
-        ],
-            ),
-
+            ],
           ),
+        ),
       ),
     );
   }
