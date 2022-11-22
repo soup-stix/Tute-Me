@@ -3,18 +3,14 @@ import 'dart:async';
 import 'package:custom_marker/marker_icon.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:label_marker/label_marker.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
-
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -24,25 +20,24 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  String googleApikey = "AIzaSyAtwO_2scYE7tC--P_CeSobUCgnX1_Q_Wg";
-  GoogleMapController? mapController; //contrller for Google map
-  CameraPosition? cameraPosition;
-  LatLng startLocation = LatLng(27.2046, 77.4977);
+  List<dynamic> _allArea = ["Alapakkam", "Alwarpet", "Alwarthirunagar", "Ambattur", "Aminjikarai", "Anna Nagar", "Annanur", "Arumbakkam", "Ashok Nagar", "Avadi", "Ayanavaram", "Besant Nagar", "Basin Bridge", "Chepauk", "Chetput", "Chintadripet", "Chitlapakkam", "Choolai", "Choolaimedu", "Chrompet", "Egmore", "Ekkaduthangal", "Eranavur", "Ennore", "Foreshore Estate", "Fort St. George", "George Town", "Gopalapuram", "Government Estate", "Guindy", "Guduvancheri", "IIT Madras", "Injambakkam", "ICF", "Iyyapanthangal", "Jafferkhanpet", "Karapakkam", "Kattivakkam", "Kattupakkam", "Kazhipattur", "K.K. Nagar", "Keelkattalai", "Kattivakkam", "Kilpauk", "Kodambakkam", "Kodungaiyur", "Kolathur", "Korattur", "Korukkupet", "Kottivakkam", "Kotturpuram", "Kottur", "Kovilambakkam", "Koyambedu", "Kundrathur", "Madhavaram", "Madhavaram Milk Colony", "Madipakkam", "Madambakkam", "Maduravoyal", "Manali", "Manali New Town", "Manapakkam", "Mandaveli", "Mangadu", "Mannady", "Mathur", "Medavakkam", "Meenambakkam", "MGR Nagar", "Minjur", "Mogappair", "MKB Nagar", "Mount Road", "Moolakadai", "Moulivakkam", "Mugalivakkam", "Mudichur", "Mylapore", "Nandanam", "Nanganallur", "Nanmangalam", "Neelankarai", "Nemilichery", "Nesapakkam", "Nolambur", "Noombal", "Nungambakkam", "Otteri", "Padi", "Pakkam", "Palavakkam", "Pallavaram", "Pallikaranai", "Pammal", "Park Town", "Parry's Corner", "Pattabiram", "Pattaravakkam", "Pazhavanthangal", "Peerkankaranai", "Perambur", "Peravallur", "Perumbakkam", "Perungalathur", "Perungudi", "Pozhichalur", "Poonamallee", "Porur", "Pudupet", "Pulianthope", "Purasaiwalkam", "Puthagaram", "Puzhal", "Puzhuthivakkam/ Ullagaram", "Raj Bhavan", "Ramavaram", "Red Hills", "Royapettah", "Royapuram", "Saidapet", "Saligramam", "Santhome", "Sembakkam", "Selaiyur", "Shenoy Nagar", "Sholavaram", "Sholinganallur", "Sithalapakkam", "Sowcarpet", "St.Thomas Mount", "Surapet", "Tambaram", "Teynampet", "Tharamani", "T. Nagar", "Thirumangalam", "Thirumullaivoyal", "Thiruneermalai", "Thiruninravur", "Thiruvanmiyur", "Tiruverkadu", "Thiruvotriyur", "Thuraipakkam", "Tirusulam", "Tiruvallikeni", "Tondiarpet", "United India Colony", "Vandalur", "Vadapalani", "Valasaravakkam", "Vallalar Nagar", "Vanagaram", "Velachery", "Velappanchavadi", "Villivakkam", "Virugambakkam", "Vyasarpadi", "Washermanpet", "West Mambalam",];
   late final Completer<GoogleMapController> _controller = Completer();
+  List<dynamic> areaItems = [];
+  bool _showSubjectList = false;
   var _searchText;
   var _cardImage;
-  dynamic location = "test";
+  dynamic location;
   var _isSelected = false;
   var _cardName;
   var _cardData;
   dynamic data = [];
-  //String location="search";
+  var searchText = TextEditingController();
 
   final _database = FirebaseDatabase.instance.reference();
   late StreamSubscription _dataStream;
 
   MapType currentMapType = MapType.normal;
-  static final CameraPosition _kGoogle = const CameraPosition(
+  late CameraPosition _kGoogle = CameraPosition(
     target: LatLng(20.42796133580664, 80.885749655962),
     zoom: 14.4746,
   );
@@ -57,24 +52,12 @@ class _MapState extends State<Map> {
 
   Set<Marker> getmarkers() {
     print(data);
-      for (dynamic items in data) {
-        setState(() {
-          markers.add(Marker(
-            markerId: MarkerId(items[0]),
-            position: LatLng(items[3], items[4]),
-            infoWindow: InfoWindow(
-              onTap: () {
-                setState(() {
-                  _cardImage = items[2];
-                  _cardName = items[0];
-                  _cardData = items[1];
-                  _isSelected = true;
-                });
-              },
-              title: items[0],
-              snippet: items[1],
-            ),
-            icon: BitmapDescriptor.defaultMarker,
+    for (dynamic items in data) {
+      setState(() {
+        markers.add(Marker(
+          markerId: MarkerId(items[0]),
+          position: LatLng(items[3], items[4]),
+          infoWindow: InfoWindow(
             onTap: () {
               setState(() {
                 _cardImage = items[2];
@@ -82,12 +65,24 @@ class _MapState extends State<Map> {
                 _cardData = items[1];
                 _isSelected = true;
               });
-            }, //Icon for Marker
-          ));
-        });
-      }
-      //print(markers);
-      return markers;
+            },
+            title: items[0],
+            snippet: items[1],
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _cardImage = items[2];
+              _cardName = items[0];
+              _cardData = items[1];
+              _isSelected = true;
+            });
+          }, //Icon for Marker
+        ));
+      });
+    }
+    print(markers);
+    return markers;
   }
 
   Future<Position> getUserCurrentLocation() async {
@@ -101,18 +96,51 @@ class _MapState extends State<Map> {
 
   void mylocationMarker() async{
     dynamic value = await getUserCurrentLocation();
-      markers.addLabelMarker(LabelMarker(
-        label: "ME",
-        markerId: MarkerId("My Location"),
-        position: LatLng(value.latitude, value.longitude),
-        backgroundColor: Colors.blue,
-        visible: true,
-      ));
+    markers.addLabelMarker(LabelMarker(
+      label: "ME",
+      markerId: MarkerId("My Location"),
+      position: LatLng(value.latitude, value.longitude),
+      backgroundColor: Colors.blue,
+      visible: true,
+    ));
   }
 
-  void _activateListeners() {
+  Future<void> _getlocation() async{
+    var addresses = await Geocoder.local.findAddressesFromQuery(searchText.text);
+    var first = addresses.first;
+    location = first.coordinates.toMap();
+    print(first.coordinates.toMap());
+  }
+
+  void filterAreaSearchResults(String query) {
+    List<dynamic> dummySearchList = <dynamic>[];
+    dummySearchList.addAll(_allArea);
+    if(query.isNotEmpty) {
+      List<String> dummyListData = <String>[];
+      dummySearchList.forEach((item) {
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))) {
+          dummyListData.add(item);
+        }
+        if(item.contains(query.substring(0,1).toUpperCase() + query.substring(1))) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        areaItems.clear();
+        areaItems.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        areaItems.clear();
+        areaItems.addAll(_allArea);
+      });
+    }
+  }
+
+  Future<Set<Marker>> _activateListeners() async {
     _dataStream = _database.child('Teachers').onValue.listen((event) {
-      getmarkers();
+      //getmarkers();
       final dynamic teacher = event.snapshot.value;
       setState(() {
         teacher.forEach((k, v){
@@ -120,14 +148,57 @@ class _MapState extends State<Map> {
           data.add([v['first_name'],v['last_name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
         });
       });
-  });
-}
+    });
+    print(data);
+    for (dynamic items in data) {
+      setState(() {
+        markers.add(Marker(
+          markerId: MarkerId(items[0]),
+          position: LatLng(items[3], items[4]),
+          infoWindow: InfoWindow(
+            onTap: () {
+              setState(() {
+                _cardImage = items[2];
+                _cardName = items[0];
+                _cardData = items[1];
+                _isSelected = true;
+              });
+            },
+            title: items[0],
+            snippet: items[1],
+          ),
+          icon: BitmapDescriptor.defaultMarker,
+          onTap: () {
+            setState(() {
+              _cardImage = items[2];
+              _cardName = items[0];
+              _cardData = items[1];
+              _isSelected = true;
+            });
+          }, //Icon for Marker
+        ));
+      });
+    }
+    print(markers);
+    return markers;
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _activateListeners();
+    areaItems.addAll(_allArea);
+    //_mylocation();
+  }
+
+  void _mylocation() async{
+    dynamic value = await getUserCurrentLocation();
+    print(value);
+    _kGoogle = CameraPosition(
+      target: LatLng(value.latitude, value.longitude),
+      zoom: 14.4746,
+    );
   }
 
   @override
@@ -139,20 +210,24 @@ class _MapState extends State<Map> {
 
   @override
   Widget build(BuildContext context) {
+    _mylocation();
     mylocationMarker();
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
                 ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
-          ),),
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
         title: Text("Map", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
@@ -164,187 +239,204 @@ class _MapState extends State<Map> {
         actions: [
           IconButton(onPressed: _onMapTypeChanged, icon: Icon(Icons.map_rounded,),)
         ],
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            zoomGesturesEnabled: true, //enable Zoom in, out on map
-            initialCameraPosition: CameraPosition( //innital position in map
-              target: startLocation, //initial position
-              zoom: 14.0, //initial zoom level
-            ),
-            mapType: MapType.normal, //map type
-            onMapCreated: (controller) { //method called when map is created
-              setState(() {
-                mapController = controller;
-              });
-            },
-          /*onMapCreated: (GoogleMapController controller) {
-              setState(() {
-                mapController=controller;
-              });
-            _controller.complete(controller);
-          },
-
-          mapType: currentMapType,
-            myLocationEnabled: true,
-            compassEnabled: true,
-            markers: getmarkers(),*/
-        ),
-          Positioned(  //search input bar
-              top:10,
-              child: InkWell(
-                  onTap: () async {
-                    var place = await PlacesAutocomplete.show(
-                        context: context,
-                        apiKey: googleApikey,
-                        mode: Mode.overlay,
-                        types: [],
-                        strictbounds: false,
-                        components: [Component(Component.country, 'np')],
-                        //google_map_webservice package
-                        onError: (err){
-                          print(err);
-                        }
-                    );
-
-                    if(place != null){
-                      setState(() {
-                        location = place.description.toString();
-                      });
-
-                      //form google_maps_webservice package
-                      final plist = GoogleMapsPlaces(apiKey:googleApikey,
-                        apiHeaders: await GoogleApiHeaders().getHeaders(),
-                        //from google_api_headers package
-                      );
-                      String placeid = place.placeId ?? "0";
-                      final detail = await plist.getDetailsByPlaceId(placeid);
-                      final geometry = detail.result.geometry!;
-                      final lat = geometry.location.lat;
-                      final lang = geometry.location.lng;
-                      var newlatlang = LatLng(lat, lang);
-
-
-                      //move map camera to selected place with animation
-                      mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
-                    }
-                  },
-                  child:Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Card(
-                      child: Container(
-                          padding: EdgeInsets.all(0),
-                          width: MediaQuery.of(context).size.width - 40,
-                          child: ListTile(
-                            title:Text(location!, style: TextStyle(fontSize: 18),),
-                            trailing: Icon(Icons.search),
-                            dense: true,
-                          )
-                      ),
-                    ),
-                  )
-              )
+          FutureBuilder(
+              future: _activateListeners(),
+              builder: (BuildContext ctx, AsyncSnapshot<dynamic> snapshot) =>
+              snapshot.hasData
+                  ?
+              GoogleMap(
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                initialCameraPosition: _kGoogle,
+                mapType: currentMapType,
+                myLocationEnabled: true,
+                compassEnabled: true,
+                markers: snapshot.data,
+              ): const Center(
+                // render the loading indicator
+                child: CircularProgressIndicator(),)
           ),
-
-          /*Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(left: 8.0),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                  width: MediaQuery.of(context).size.width*0.8,
-                  child: TextField(
-                    onTap: () {
-                      setState(() {_isSelected = false; });
-                    },
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      icon: Icon(Icons.search_rounded),
-                      hintText: "Search area",
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchText = value;
-                        print(_searchText);
-                      });
-                    },
-                    onSubmitted: (value) {
-                      setState(() {
-                        _searchText = value;
-                        print(_searchText);
-                      });
-                    },
-                  ),
-                ),
-              ),
-              _isSelected ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    //padding: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height*0.12,
-                    width: MediaQuery.of(context).size.width*0.9,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white,),
-                    child: TextButton(
-                      onPressed: (){},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        foregroundColor: Colors.black,
-                      ),
-                      child: Row(
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 8.0),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                      width: MediaQuery.of(context).size.width*0.8,
+                      child: Column(
                         children: [
-                          Image.asset(_cardImage),
-                          SizedBox(width: MediaQuery.of(context).size.width*0.02,),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(_cardName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
-                                Text(_cardData, style: TextStyle(fontWeight: FontWeight.bold,),),
-                              ],
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width*1,
+                            height: _showSubjectList ? MediaQuery.of(context).size.height*0.3 : MediaQuery.of(context).size.height*0.065,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      icon: Icon(Icons.search_rounded, color: Colors.tealAccent,),
+                                      hintText: " search area",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.tealAccent),
+                                      ),
+                                    ),
+                                    style: TextStyle(fontSize: 14,),
+                                    controller: searchText,
+                                    onChanged: (value) {
+                                      _showSubjectList = true;
+                                      filterAreaSearchResults(value);
+                                    },
+                                    onSubmitted: (value) async{
+                                      await _getlocation();
+                                      GoogleMapController controller = await _controller.future;
+                                      controller.animateCamera(CameraUpdate.newCameraPosition(
+                                          CameraPosition(
+                                            target: LatLng(location['latitude'], location['longitude']),
+                                            zoom: 14,
+                                          )
+                                      ));
+                                      setState(() {
+                                        _showSubjectList = false;
+                                        searchText.clear();
+                                      });
+                                    },
+                                  ),
+                                  _showSubjectList ? Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    width: MediaQuery.of(context).size.width*0.65,
+                                    color: Colors.transparent,
+                                    height: MediaQuery.of(context).size.height*0.42,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: areaItems.length,
+                                      itemBuilder: (context, index) {
+                                        return SizedBox(
+                                          height: 40,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              searchText.text = areaItems[index];
+                                            },
+                                            child: ListTile(
+                                              leading: Text(areaItems[index]),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ): Container(),
+                                ],
+                              ),
                             ),
                           ),
-                          IconButton(onPressed: () {setState(() {_isSelected = false;});}, icon: Icon(Icons.close), iconSize: 20,)
                         ],
+                      ),
+                    )/*Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.only(left: 8.0),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
+                    width: MediaQuery.of(context).size.width*0.8,
+                    child: TextField(
+                      controller: searchText,
+                      onTap: () {
+                        setState(() {_isSelected = false; });
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        icon: Icon(Icons.search_rounded),
+                        hintText: "Search area",
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _searchText = value;
+                          print(_searchText);
+                        });
+                      },
+                      onSubmitted: (value) {
+                        setState(() async {
+                          await _getlocation();
+                          GoogleMapController controller = await _controller.future;
+                          controller.animateCamera(CameraUpdate.newCameraPosition(
+                            // on below line we have given positions of Location 5
+                              CameraPosition(
+                                target: LatLng(location['latitude'], location['longitude']),
+                                zoom: 14,
+                              )
+                          ));
+                        });
+                      },
+                    ),
+                  ),*/
+                ),
+                _isSelected ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      //padding: EdgeInsets.all(10),
+                      height: MediaQuery.of(context).size.height*0.12,
+                      width: MediaQuery.of(context).size.width*0.9,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white,),
+                      child: TextButton(
+                        onPressed: (){},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          foregroundColor: Colors.black,
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(_cardImage),
+                            SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(_cardName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
+                                  Text(_cardData, style: TextStyle(fontWeight: FontWeight.bold,),),
+                                ],
+                              ),
+                            ),
+                            IconButton(onPressed: () {setState(() {_isSelected = false;});}, icon: Icon(Icons.close), iconSize: 20,)
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ) : Container(),
-            ],
-          ),*/
+                ) : Container(),
+              ],
+            ),
+          ),
 
-      ],
+        ],
       ),
       /*floatingActionButton: FloatingActionButton(
         child: Icon(Icons.map_rounded, size: 20),
         onPressed: _onMapTypeChanged,
       ),*/
-
-
       bottomNavigationBar: BottomAppBar(
-
-
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Stack(
             children: [
