@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tute_me/cards.dart';
+
 import 'package:tute_me/editprofile.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/map.dart';
@@ -79,11 +79,11 @@ class _MyProfileState2 extends State<MyProfile2> {
                       },
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(232, 18, 241, 222)),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Colors.lightBlueAccent)
+                                  side: BorderSide(color: Color.fromARGB(232, 18, 241, 222))
                               )
                           )
                       ),
@@ -103,7 +103,7 @@ class _MyProfileState2 extends State<MyProfile2> {
                       ChoiceChip(label: Text("My Subjects"),
                           backgroundColor: Colors.grey.shade200,
                           labelStyle: TextStyle(
-                            color: _isSelected2 ? Colors.white : Colors.lightBlueAccent,
+                            color: _isSelected2 ? Colors.white : Color.fromARGB(232, 18, 241, 222),
                           ),
                           selectedColor: Colors.lightBlueAccent,
                           selected: _isSelected2,

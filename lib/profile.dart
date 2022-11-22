@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tute_me/cards.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites.dart';
@@ -42,15 +41,18 @@ class _MyProfileState extends State<MyProfile> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+                colors: [
+                  const Color(0xFF00E1FF),
+                  const Color(0xFF00FFEA),
                 ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
-          ),),
+                begin: const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0, 1.0],
+                tileMode: TileMode.clamp),
+          ),
+        ),
         title: Text("Profile", style: TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold),),
         leading: Builder(
           builder: (context) =>
@@ -76,7 +78,7 @@ class _MyProfileState extends State<MyProfile> {
                 SizedBox(height: MediaQuery.of(context).size.height*0.025,),
                 Align(
                   alignment: Alignment.center,
-                    child: Text("Anand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),
+                  child: Text("Anand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.01,),
                 Align(
@@ -93,11 +95,13 @@ class _MyProfileState extends State<MyProfile> {
                       },
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                              232, 18, 215, 241),),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Colors.lightBlueAccent)
+                                  side: BorderSide(color: Color.fromARGB(
+                                      232, 18, 215, 241),)
                               )
                           )
                       ),
@@ -113,27 +117,31 @@ class _MyProfileState extends State<MyProfile> {
                     children: [
                       SizedBox(width: MediaQuery.of(context).size.width*0.02,),
                       ChoiceChip(label: Text("My Teachers"),
-                        backgroundColor: Colors.grey.shade200,
-                          selectedColor: Colors.lightBlueAccent,
+                          backgroundColor: Colors.grey.shade200,
+                          selectedColor: Color.fromARGB(
+                              232, 18, 215, 241),
                           labelStyle: TextStyle(
-                            color: _isSelected ? Colors.white : Colors.lightBlueAccent,
+                            color: _isSelected ? Colors.white : Color.fromARGB(
+                                232, 18, 215, 241),
                           ),
-                        selected: _isSelected,
-                        onSelected: (newboolValue){
-                          setState(() {
-                            _isSelected = newboolValue;
-                            _isSelected2 = false;
-                            //_isSelected3 = false;
-                          });
-                        }
+                          selected: _isSelected,
+                          onSelected: (newboolValue){
+                            setState(() {
+                              _isSelected = newboolValue;
+                              _isSelected2 = false;
+                              //_isSelected3 = false;
+                            });
+                          }
                       ),
                       Spacer(),
                       ChoiceChip(label: Text("My Subjects"),
                           backgroundColor: Colors.grey.shade200,
                           labelStyle: TextStyle(
-                              color: _isSelected2 ? Colors.white : Colors.lightBlueAccent,
+                            color: _isSelected2 ? Colors.white : Color.fromARGB(
+                                232, 18, 215, 241),
                           ),
-                          selectedColor: Colors.lightBlueAccent,
+                          selectedColor: Color.fromARGB(
+                              232, 18, 215, 241),
                           selected: _isSelected2,
                           onSelected: (newboolValue){
                             setState(() {
@@ -149,7 +157,7 @@ class _MyProfileState extends State<MyProfile> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.01,),
                 _isSelected ? SingleChildScrollView(
-                  physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                    physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     child: Column(
                       children: [Text("No Subjects")],)/*ListView.builder(
                         itemCount: _listed.length,
@@ -176,18 +184,17 @@ class _MyProfileState extends State<MyProfile> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
           decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Stack(
             children: [

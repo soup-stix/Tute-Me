@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:tute_me/cards.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/profile.dart';
 

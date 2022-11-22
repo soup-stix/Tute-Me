@@ -1,15 +1,11 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tute_me/homepage2.dart';
-import 'package:tute_me/profile.dart';
 import 'package:tute_me/register.dart';
 import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/teacherprofile.dart';
-
 String dropdownvalue = 'Teacher';
 var items = [
   'Teacher',
@@ -35,9 +31,7 @@ void choiceAction(String choice) {
   } else if (choice == newvalue.SecondItem) {
 
   }
-  }
-
-
+}
 class MyLogin extends StatefulWidget{
   const MyLogin({Key?key}): super(key: key);
 
@@ -51,15 +45,14 @@ class _MyLoginState extends State<MyLogin>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
-
         //decoration: BoxDecoration(
-            //image: DecorationImage(
-                //image: AssetImage('assets/loginresale.jpeg'),fit: BoxFit.fill)),
+        //image: DecorationImage(
+        //image: AssetImage('assets/loginresale.jpeg'),fit: BoxFit.fill)),
         child: Stack(
           children: [
             SingleChildScrollView(
@@ -73,9 +66,10 @@ class _MyLoginState extends State<MyLogin>{
                     Container(
                       margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.08),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width*0.6,
-                        height: MediaQuery.of(context).size.height*0.12,
-                        child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Colors.lightBlueAccent),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
+                          width: MediaQuery.of(context).size.width*0.6,
+                          height: MediaQuery.of(context).size.height*0.12,
+                          child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Color.fromARGB(
+                              232, 18, 215, 241),),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*0.05,),
@@ -87,12 +81,6 @@ class _MyLoginState extends State<MyLogin>{
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*0.01,),
-                    SizedBox(height: MediaQuery.of(context).size.height*0.03,),
-
-
-
-
-
                     Align(
                       alignment: Alignment.centerLeft,
                       //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.35),
@@ -117,8 +105,8 @@ class _MyLoginState extends State<MyLogin>{
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
+                            width: 0,
+                            style: BorderStyle.none,
                           ),
                         ),
                       ),
@@ -147,77 +135,73 @@ class _MyLoginState extends State<MyLogin>{
                       ),
                     ),
                     SizedBox(height:MediaQuery.of(context).size.height*0.02,),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Login As',
-                        style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),
-                      ),
-                    ),
-
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 40,
+                            child:  ElevatedButton(
 
-                        ElevatedButton(
-
-                         style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            minimumSize: MaterialStateProperty.all(Size(20, 20)),
-                            backgroundColor:
-                            MaterialStateProperty.all(Colors.blue),
-                            // elevation: MaterialStateProperty.all(3),
-                            shadowColor:
-                            MaterialStateProperty.all(Colors.white ),
-                          ), //Elevated Button Background
-                          onPressed: (){
-
-                            if (dropdownvalue == "Teacher"){
-
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                            }
-                            else {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
-                            }
-                          }, //make onPressed callback empty
-                          child:DropdownButton(
-                            style: TextStyle(color: Colors.white), //Dropdown font color
-                            dropdownColor: Colors.blueAccent, //dropdown menu background color
-                            icon: Icon(Icons.arrow_forward_ios_sharp, color:Colors.white), //dropdown indicator icon
-                            underline: Container(), //make underline empty
-                            value: dropdownvalue,
-                            onChanged: (value){
-                              setState(() {
-                                dropdownvalue = value.toString();
-                              });
-                            },
-                            items: items.map((itemone){
-                              return DropdownMenuItem(
-                                  value: itemone,
-                                  child: Text(itemone)
-                              );
-                            }).toList(),
-                          ),
-
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Don't have an account?", style: TextStyle(color: Colors.grey.shade500,fontSize: 15, fontWeight: FontWeight.bold),),
-                              TextButton(
-                                style: TextButton.styleFrom(
-                                  textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                  primary: Colors.lightBlueAccent,
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
                                 ),
-                                onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const MyRegister())),
-                                child: Text('Sign Up', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                                minimumSize: MaterialStateProperty.all(Size(20, 20)),
+                                backgroundColor:
+                                MaterialStateProperty.all(Color.fromARGB(232, 18, 241, 222)),
+                                // elevation: MaterialStateProperty.all(3),
+                                shadowColor:
+                                MaterialStateProperty.all(Color.fromARGB(232, 18, 241, 222) ),
+                              ), //Elevated Button Background
+                              onPressed: (){
+
+                                if (dropdownvalue == "Teacher"){
+
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
+                                }
+                                else {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
+                                }
+                              }, //make onPressed callback empty
+                              child:DropdownButton(
+                                style: TextStyle(color: Colors.white), //Dropdown font color
+                                dropdownColor: Color.fromARGB(232, 18, 241, 222), //dropdown menu background color
+                                icon: Icon(Icons.arrow_forward_ios_sharp, color:Colors.white), //dropdown indicator icon
+                                underline: Container(), //make underline empty
+                                value: dropdownvalue,
+                                onChanged: (value){
+                                  setState(() {
+                                    dropdownvalue = value.toString();
+                                  });
+                                },
+                                items: items.map((itemone){
+                                  return DropdownMenuItem(
+                                      value: itemone,
+                                      child: Text(itemone)
+                                  );
+                                }).toList(),
                               ),
-                            ]
-                        ),
-                      ]
+
+                            ),
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Don't have an account?", style: TextStyle(color: Colors.grey.shade500,fontSize: 15, fontWeight: FontWeight.bold),),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                    primary: Color.fromARGB(232, 18, 241, 222),
+                                  ),
+                                  onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const MyRegister())),
+                                  child: Text('Sign Up', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                                ),
+                              ]
+                          ),
+                        ]
                     )
                   ],
 
@@ -232,7 +216,8 @@ class _MyLoginState extends State<MyLogin>{
 
         onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
 
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(
+            232, 18, 215, 241),
         child: const Icon(Icons.house_rounded),
       ),
     );

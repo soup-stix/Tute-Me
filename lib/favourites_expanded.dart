@@ -3,16 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:tute_me/books.dart';
 import 'package:tute_me/favourites.dart';
-import 'package:tute_me/filterpage.dart';
 import 'package:tute_me/filters.dart';
 import 'package:tute_me/map.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/profile.dart';
 import 'package:tute_me/student_register.dart';
-String filterText="";
 class Favourites_Expanded extends StatefulWidget {
   const Favourites_Expanded({Key? key}) : super(key: key);
 
@@ -68,23 +65,13 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-              gradient: LinearGradient(
-                colors: [Color(int.parse("0xFF00ACC1")),
-                  Color(int.parse("0xFF64FFDA")),
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,)
-          ),
-
-        ),
-        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Colors.white),),
+        title: Text("All teachers", style: TextStyle(fontSize: 25, color: Color.fromARGB(
+            225, 39, 211, 241),),),
         leading: Builder(
           builder: (context) =>
               IconButton(
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white,),
+                icon: Icon(Icons.arrow_back_ios_rounded, color:Color.fromARGB(
+                    225, 39, 211, 241),),
                 onPressed: () => Navigator.pop(context),
               ),
         ),
@@ -101,7 +88,8 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                 Container(
                   height: MediaQuery.of(context).size.height*0.06,
                   width: MediaQuery.of(context).size.width*0.7,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black12),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color.fromARGB(
+                      91, 39, 211, 241),),
                   child: Row(
                     children: [
                       Padding(
@@ -112,27 +100,17 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                     ],
                   ),
                 ),
-                Spacer(
-                ),
-
+                Spacer(),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent, shadowColor: Colors.transparent,foregroundColor: Colors.black,),
-
-                  onPressed: () {},
-
-                  child:Center(
-                    child: MaterialButton(onPressed: () async{
-                      var result = await Navigator.push(context, MaterialPageRoute(builder: (ctx){
-                        return FilterScreen(
-                        );
-                      }));
-                      setState(() {filterText="Filter values in previous Screen\n${result}" ;});
-                      print(result);
-                    },
-                    child:Text("Filters"),
-                    ),
-
-                  )
+                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(
+                      225, 39, 211, 241), shadowColor: Colors.transparent,foregroundColor: Colors.black),
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Filters())),
+                  child: Row(
+                    children: [
+                      Text("Filters  "),
+                      Icon(Icons.file_copy_rounded, size: 15,),
+                    ],
+                  ),
                 ),
                 Spacer(),
               ],
@@ -151,23 +129,18 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.lightBlueAccent,
+        color: Colors.tealAccent,
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
-          height: 50,
-
-            decoration: BoxDecoration(
-                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
-                gradient: LinearGradient(
-                  colors: [Color(int.parse("0xFF00ACC1")),
-                    Color(int.parse("0xFF64FFDA")),
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,)
+          decoration: BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                const Color(0xFF00E1FF),
+                const Color(0xFF00FFEA),
+              ],
             ),
-
-
-
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
           child: Stack(
             children: [
               Row(
@@ -204,7 +177,7 @@ class _Favourites_ExpandedState extends State<Favourites_Expanded> {
                     iconSize: 35,
                   ),
                   Spacer(),
-                   ],
+                ],
               ),
             ],
           ),

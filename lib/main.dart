@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tute_me/editprofile.dart';
-import 'package:tute_me/filterpage.dart';
+
 import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/login.dart';
 
@@ -13,8 +13,7 @@ import 'package:tute_me/register.dart';
 import 'package:tute_me/resetpassword.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/student_register.dart';
-import 'package:tute_me/books.dart';
-import 'package:tute_me/cycles.dart';
+
 import 'package:tute_me/listingnew.dart';
 import 'package:tute_me/favourites_expanded.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,8 +37,7 @@ Future<void> main() async{
       'resetpassword':(context) => ResetPassword(),
       'homepage':(context) => HomePage(),
       'homepage2':(context) => Student_Register(),
-      'books':(context) => Books(),
-      'cycles':(context) => Cycles(),
+
       'listingnew':(context) => Listing(),
       'profile':(context) => MyProfile(),
      'teacherprofile':(context)=>MyProfile2(),

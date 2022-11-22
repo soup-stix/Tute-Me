@@ -47,7 +47,7 @@ class _MyRegisterState extends State<MyRegister>{
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.only(
-                    //top: MediaQuery.of(context).size.height*0.3,
+                  //top: MediaQuery.of(context).size.height*0.3,
                     left: MediaQuery.of(context).size.width*0.05,
                     right: MediaQuery.of(context).size.width*0.05),
                 child: Column(
@@ -57,7 +57,7 @@ class _MyRegisterState extends State<MyRegister>{
                       child: SizedBox(
                           width: MediaQuery.of(context).size.width*0.6,
                           height: MediaQuery.of(context).size.height*0.12,
-                          child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Colors.lightBlueAccent),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
+                          child: Center(child: Text("𝕋𝕦𝕥𝕖-𝕄𝔼", style: TextStyle(fontSize: 60, color: Color.fromARGB(232, 18, 241, 222)),))//SvgPicture.asset("assets/Re-Sale Logo.svg"),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height*0.05,),
@@ -184,11 +184,11 @@ class _MyRegisterState extends State<MyRegister>{
 
                                 style: ButtonStyle(
                                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlueAccent),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(232, 18, 241, 222)),
                                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(25.0),
-                                            side: BorderSide(color: Colors.lightBlueAccent)
+                                            side: BorderSide(color: Color.fromARGB(232, 18, 241, 222))
                                         )
                                     )
                                 ),
@@ -202,7 +202,7 @@ class _MyRegisterState extends State<MyRegister>{
                                 TextButton(
                                   style: TextButton.styleFrom(
                                     textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                                    primary: Colors.lightBlueAccent,
+                                    primary: Color.fromARGB(232, 18, 241, 222),
                                   ),
                                   onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
                                   child: Text('Log In'),
