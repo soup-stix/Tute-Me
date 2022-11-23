@@ -14,6 +14,8 @@ import 'package:tute_me/textfield.dart';
 import 'package:tute_me/user.dart';
 import 'package:tute_me/userprefernce.dart';
 
+import 'details.dart';
+
 
 class EditProfilePage2 extends StatefulWidget {
   @override
@@ -21,6 +23,45 @@ class EditProfilePage2 extends StatefulWidget {
 }
 
 class _EditProfilePageState2 extends State<EditProfilePage2> {File? pickedImage;
+var nameEdit = TextEditingController();
+var classEdit = TextEditingController();
+
+Widget profileImage = Image.asset('assets/iconbg.png', fit: BoxFit.fill,);
+
+showAlertDialog(BuildContext context, TextEditingController _controller) {
+  Widget launchButton = TextButton(
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+    style: TextButton.styleFrom(
+      foregroundColor:  Color.fromARGB(
+          232, 18, 215, 241),
+    ),
+    child: Text(
+      'Ok',
+      style: TextStyle(fontSize: 15),
+    ),
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    actions: [
+      TextField(
+        controller: _controller,
+      ),
+      launchButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 pickImage(ImageSource imageType) async {
   try {
     final photo = await ImagePicker().pickImage(source: imageType);
@@ -62,54 +103,68 @@ pickImage(ImageSource imageType) async {
                   padding: EdgeInsets.all(10),
                   physics: BouncingScrollPhysics(),
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.indigo, width: 1),
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(10)
-                        ),
+                    /*CircleAvatar(
+                      radius:MediaQuery.of(context).size.width*0.2,
+                      backgroundColor: Colors.transparent,
+
+                      child: pickedImage != null
+                          ? Image.file(
+                        pickedImage!,
+                        fit: BoxFit.fill,
                       ),
-                      child: CircleAvatar(
-                        radius:MediaQuery.of(context).size.width*0.2,
-                        backgroundColor: Colors.transparent,
-
-                        child: pickedImage != null
-                            ? Image.file(
-                          pickedImage!,
-                          fit: BoxFit.fill,
-
-                        )
-                            : Image.network(
-                          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
-                          width:170,
-                          height: 170,
-                          fit: BoxFit.cover,
+                    ),*/
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          radius: MediaQuery.of(context).size.width*0.2,
+                          backgroundColor: Colors.transparent,
+                          child: profileImage,
                         ),
-                      ),
-
+                        IconButton(onPressed: () {
+                        }, icon: Icon(Icons.add_a_photo_rounded, color: Color.fromARGB(
+                            232, 18, 215, 241),), iconSize: 25,),
+                      ],
                     ),
 
-
-
-
                     const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Name',
-                      text: user.name,
-                      onChanged: (name) {},
+                    Text("Name: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<name>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              showAlertDialog(context, nameEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                          style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                          ))
+                      ],
                     ),
                     const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Email ID',
-                      text: user.email,
-                      onChanged: (EmailID) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Subject',
-                      text: user.Subject,
-
-                      onChanged: (Subject) {},
+                    Text("class: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<class>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            ))
+                      ],
                     ),
 
 
