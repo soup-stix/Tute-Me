@@ -271,6 +271,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
   Widget profileImage = Image.asset('assets/iconbg.png', fit: BoxFit.fill,);
   var classEdit = TextEditingController();
+  var SubjectEdit = TextEditingController();
+  var TypeEdit = TextEditingController();
+  var ModeEdit = TextEditingController();
+  var FeesEdit = TextEditingController();
+  var EmailIDEdit = TextEditingController();
+  var PhonenoEdit = TextEditingController();
+  var AreaEdit = TextEditingController();
+  var AboutEdit = TextEditingController();
+
   showAlertDialog(BuildContext context, TextEditingController _controller) {
     Widget launchButton = TextButton(
       onPressed: () {
@@ -449,7 +458,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const Text("Edit"),
                             IconButton(onPressed: () {
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, EmailIDEdit);
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
@@ -519,7 +528,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _showSubjectList = true;
                               });
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, SubjectEdit);
 
                             },
 
@@ -581,7 +590,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _chipModeMade = true;
                               });
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, ModeEdit);
                             },
                               icon: Icon(Icons.edit), iconSize: 20,),
 
@@ -622,7 +631,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _chipTypeMade = true;
                               });
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, TypeEdit);
                             },
                               icon: Icon(Icons.edit), iconSize: 20,),
                           ],
@@ -648,7 +657,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const Text("Edit"),
                             IconButton(onPressed: () {
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, FeesEdit);
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
@@ -669,7 +678,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const Text("Edit"),
                             IconButton(onPressed: () {
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, PhonenoEdit);
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
@@ -690,7 +699,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const Text("Edit"),
                             IconButton(onPressed: () {
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, AreaEdit);
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
@@ -711,7 +720,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const Text("Edit"),
                             IconButton(onPressed: () {
 
-                              showAlertDialog(context, classEdit);
+                              showAlertDialog(context, AboutEdit);
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
