@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tute_me/homepage2.dart';
 import 'package:tute_me/register.dart';
-import 'package:tute_me/forgotpassword.dart';
 import 'package:tute_me/homepage.dart';
 import 'package:tute_me/teacherprofile.dart';
 String dropdownvalue = 'Teacher';
@@ -142,7 +139,6 @@ class _MyLoginState extends State<MyLogin>{
                             width: 120,
                             height: 40,
                             child:  ElevatedButton(
-
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -151,10 +147,12 @@ class _MyLoginState extends State<MyLogin>{
                                 ),
                                 minimumSize: MaterialStateProperty.all(Size(20, 20)),
                                 backgroundColor:
-                                MaterialStateProperty.all(Color.fromARGB(232, 18, 241, 222)),
+                                MaterialStateProperty.all(Color.fromARGB(
+                                    232, 18, 215, 241),),
                                 // elevation: MaterialStateProperty.all(3),
                                 shadowColor:
-                                MaterialStateProperty.all(Color.fromARGB(232, 18, 241, 222) ),
+                                MaterialStateProperty.all(Color.fromARGB(
+                                    232, 18, 215, 241),),
                               ), //Elevated Button Background
                               onPressed: (){
 
@@ -163,12 +161,13 @@ class _MyLoginState extends State<MyLogin>{
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
                                 }
                                 else {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage2()));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(child: "Student",)));
                                 }
                               }, //make onPressed callback empty
                               child:DropdownButton(
                                 style: TextStyle(color: Colors.white), //Dropdown font color
-                                dropdownColor: Color.fromARGB(232, 18, 241, 222), //dropdown menu background color
+                                dropdownColor: Color.fromARGB(
+                                    232, 18, 215, 241), //dropdown menu background color
                                 icon: Icon(Icons.arrow_forward_ios_sharp, color:Colors.white), //dropdown indicator icon
                                 underline: Container(), //make underline empty
                                 value: dropdownvalue,
@@ -214,7 +213,7 @@ class _MyLoginState extends State<MyLogin>{
       ),
       floatingActionButton: FloatingActionButton(
 
-        onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage())),
+        onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(child: "Student",))),
 
         backgroundColor: Color.fromARGB(
             232, 18, 215, 241),

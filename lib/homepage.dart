@@ -16,7 +16,9 @@ import 'package:tute_me/student_register.dart';
 import 'package:tute_me/teacherprofile.dart';
 
 class HomePage extends StatefulWidget {
+  final child;
 
+  const HomePage({Key? key, this.child}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -177,7 +179,7 @@ class _HomePageState extends State<HomePage>{
                       child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
                   )
               ),
-              TextButton(
+              widget.child != "Student" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -187,7 +189,7 @@ class _HomePageState extends State<HomePage>{
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("Login", style: TextStyle(fontSize: 20),)
                   )
-              ),
+              ) : Container(),
 
             ],
           ),

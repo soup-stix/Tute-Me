@@ -97,13 +97,11 @@ class _MyProfileState2 extends State<MyProfile2> {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Colors.grey.shade200),
                   child: Row(
                     children: [
-                      SizedBox(width: MediaQuery.of(context).size.width*0.02,),
-
-
                       ChoiceChip(label: Text("My Subjects"),
                           backgroundColor: Colors.grey.shade200,
                           labelStyle: TextStyle(
-                            color: _isSelected2 ? Colors.white : Color.fromARGB(232, 18, 241, 222),
+                            color: _isSelected2 ? Colors.white : Color.fromARGB(
+                                232, 18, 215, 241),
                           ),
                           selectedColor: Colors.lightBlueAccent,
                           selected: _isSelected2,
@@ -115,7 +113,6 @@ class _MyProfileState2 extends State<MyProfile2> {
                             });
                           }
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width*0.02,),
                     ],
                   ),
                 ),
@@ -130,18 +127,6 @@ class _MyProfileState2 extends State<MyProfile2> {
                           return MyFavourites(child: _listed[index]);
                         }
                     ),*/
-                ) : Container(),
-                _isSelected2 ? SingleChildScrollView(
-                  physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  child: Column(
-                    children: [Text("No Subjects")],/*ListView.builder(
-                        itemCount: _listed.length,
-                        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                        itemBuilder: (context, index){
-                          return MyFavourites(child: _listed[index]);
-                        }
-                    ),*/
-                  ),
                 ) : Container(),
               ]
           ),

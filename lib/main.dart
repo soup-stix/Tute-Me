@@ -35,7 +35,7 @@ Future<void> main() async{
       'login':(context) => MyLogin(),
       'forgotpassword':(context) => ForgotPassword(),
       'resetpassword':(context) => ResetPassword(),
-      'homepage':(context) => HomePage(),
+      'homepage':(context) => HomePage(child: "Guest",),
       'homepage2':(context) => Student_Register(),
 
       'listingnew':(context) => Listing(),
