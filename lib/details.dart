@@ -7,6 +7,73 @@ import 'package:tute_me/review.dart';
 import 'package:tute_me/viewreviews.dart';
 
 
+var alerts =["Remind me later",
+"cancel","ok"];
+showAlertDialog(BuildContext context) {
+
+  // set up the buttons
+  Widget remindButton = TextButton(
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+    style: TextButton.styleFrom(
+      foregroundColor:  Color.fromARGB(
+          232, 18, 215, 241),
+    ),
+    child: Text(
+      'Remind me Later',
+      style: TextStyle(fontSize: 15),
+    ),
+  );
+  Widget cancelButton =TextButton(
+    onPressed: () {
+
+      Navigator.of(context).pop();
+    },
+    style: TextButton.styleFrom(
+      foregroundColor:  Color.fromARGB(
+          232, 18, 215, 241),
+    ),
+    child: Text(
+      'Cancel',
+      style: TextStyle(fontSize: 15),
+    ),
+  );
+  Widget launchButton = TextButton(
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+    style: TextButton.styleFrom(
+      foregroundColor:  Color.fromARGB(
+          232, 18, 215, 241),
+    ),
+    child: Text(
+      'Ok',
+      style: TextStyle(fontSize: 15),
+    ),
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Notice"),
+    content: Text("Your Request Has Been Sent.Wait for the Teacher to Contact you"),
+    actions: [
+      remindButton,
+      cancelButton,
+      launchButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+
 class Details extends StatefulWidget {
   final child;
   final id;
@@ -335,7 +402,18 @@ class DetailsState extends State<Details> {
                             ),
                           ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height*0.1,),
+                        SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+
+                      ElevatedButton(onPressed: () {
+                        showAlertDialog(context);
+                      }, child: Text("Send Enquiry"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(
+                              232, 18, 215, 241),
+                        )
+                      ),
+                        SizedBox(height: MediaQuery.of(context).size.height*0.06,),
+
                       ],
                     ),
                   ),
