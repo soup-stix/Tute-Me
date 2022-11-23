@@ -71,24 +71,51 @@ class _MyProfileState2 extends State<MyProfile2> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 SizedBox(
-                  width: 165,
+                  width: MediaQuery.of(context).size.width*0.55,
                   height: 32,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
-                      },
-                      style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(232, 18, 241, 222)),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  side: BorderSide(color: Color.fromARGB(232, 18, 241, 222))
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                          },
+                          style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      side: BorderSide(color: Color.fromARGB(
+                                          232, 18, 215, 241),)
+                                  )
                               )
-                          )
+                          ),
+                          child: Text("Edit", style: TextStyle(fontSize: 14),)
                       ),
-                      child: Text("Edit Profile", style: TextStyle(fontSize: 14),)
-                  ),
+                      SizedBox(width: MediaQuery.of(context).size.width*0.05,),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                          },
+                          style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25.0),
+                                      side: BorderSide(color: Color.fromARGB(
+                                          232, 18, 215, 241),)
+                                  )
+                              )
+                          ),
+                          child: Text("View", style: TextStyle(fontSize: 14),)
+                      ),
+                      Spacer(),
+                    ],
+                  )
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height*0.03,),
                 Container(
@@ -97,22 +124,10 @@ class _MyProfileState2 extends State<MyProfile2> {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(32), color: Colors.grey.shade200),
                   child: Row(
                     children: [
-                      ChoiceChip(label: Text("My Subjects"),
-                          backgroundColor: Colors.grey.shade200,
-                          labelStyle: TextStyle(
-                            color: _isSelected2 ? Colors.white : Color.fromARGB(
-                                232, 18, 215, 241),
-                          ),
-                          selectedColor: Colors.lightBlueAccent,
-                          selected: _isSelected2,
-                          onSelected: (newboolValue){
-                            setState(() {
-                              _isSelected2 = newboolValue;
-                              _isSelected = false;
-                              //_isSelected3 = false;
-                            });
-                          }
-                      ),
+                      Spacer(),
+                      Text("My Requests", style: TextStyle(color:Color.fromARGB(
+                          232, 18, 215, 241), fontSize: 15)),
+                      Spacer(),
                     ],
                   ),
                 ),
@@ -120,7 +135,7 @@ class _MyProfileState2 extends State<MyProfile2> {
                 _isSelected ? SingleChildScrollView(
                     physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     child: Column(
-                      children: [Text("No Subjects")],)/*ListView.builder(
+                      children: [Text("No Requests")],)/*ListView.builder(
                         itemCount: _listed.length,
                         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                         itemBuilder: (context, index){

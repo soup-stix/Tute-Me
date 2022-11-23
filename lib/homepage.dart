@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage>{
 
       drawer: Drawer(
         backgroundColor:Color.fromARGB(
-            232, 18, 215, 241),
+            180, 18, 215, 241),
 
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage>{
             children: [
 
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
-              widget.child == "Student" ? TextButton(
+              widget.child != "Guest" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
                   style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -132,10 +132,10 @@ class _HomePageState extends State<HomePage>{
                   child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
-                      child: Text("My Profile", style: TextStyle(fontSize: 20),)
+                      child: Text("My Profile 🧘‍", style: TextStyle(fontSize: 20),)
                   )
               ): Container(),
-              widget.child == "Guest" ? TextButton(
+              TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Map())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage>{
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("Locator ❣️", style: TextStyle(fontSize: 20),)
                   )
-              ): Container(),
+              ),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Student_Register())),
                   style: TextButton.styleFrom(
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage>{
                       child: Text("Homepage", style: TextStyle(fontSize: 20),)
                   )
               ),*/
-              TextButton(
+              widget.child == "Guest" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -178,8 +178,8 @@ class _HomePageState extends State<HomePage>{
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("Register as Tutor 🎓", style: TextStyle(fontSize: 20),)
                   )
-              ),
-              widget.child != "Student" ? TextButton(
+              ): Container(),
+              widget.child == "Guest" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -190,7 +190,17 @@ class _HomePageState extends State<HomePage>{
                       child: Text("Login", style: TextStyle(fontSize: 20),)
                   )
               ) : Container(),
-
+              widget.child != "Guest" ? TextButton(
+                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin())),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      width: MediaQuery.of(context).size.width*1,
+                      child: Text("Logout", style: TextStyle(fontSize: 20),)
+                  )
+              ) : Container(),
             ],
           ),
         ),
