@@ -21,6 +21,126 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  List<String> _values = [];
+  List<bool> _selected = [];
+  bool _showChipButtons = false;
+  bool _chipClassMade = false;
+  Widget buildClassChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _values.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: _selected[i],
+        label: Text(_values[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove class",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _selected[i] = !_selected[i];
+            _chipClassMade = true;
+          });
+        },
+        onDeleted: () {
+          _values.removeAt(i);
+          _selected.removeAt(i);
+
+          setState(() {
+            _values = _values;
+            _selected = _selected;
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+  Widget buildClassButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 1; i < 13; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_values.contains('class $i') == false) {
+                _values.add('class $i');
+                _selected.add(true);
+              }
+            });
+          },
+          child: Text("class $i", style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    if(_values.length > 0)
+      _chipClassMade = true;
+    else
+      _chipClassMade = false;
+    /*if(_subjects.length > 0)
+      _chipSubjectMade = true;
+    else
+      _chipSubjectMade = false;
+    if(_mode.length > 0)
+      _chipModeMade = true;
+    else
+      _chipModeMade = false;
+    if(_type.length > 0)
+      _chipTypeMade = true;
+    else
+      _chipTypeMade = false;*/
+  }
+  Widget profileImage = Image.asset('assets/iconbg.png', fit: BoxFit.fill,);
+  var classEdit = TextEditingController();
+  showAlertDialog(BuildContext context, TextEditingController _controller) {
+    Widget launchButton = TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: TextButton.styleFrom(
+        foregroundColor:  Color.fromARGB(
+            232, 18, 215, 241),
+      ),
+      child: Text(
+        'Ok',
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      actions: [
+        TextField(
+          controller: _controller,
+        ),
+        launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles;
 
@@ -136,55 +256,81 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   padding: EdgeInsets.all(10),
                   physics: BouncingScrollPhysics(),
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.indigo, width: 1),
-                        borderRadius: const BorderRadius.all(
-                            Radius.circular(10)
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius:MediaQuery.of(context).size.width*0.2,
-                        backgroundColor: Colors.transparent,
 
-                        child: pickedImage != null
-                            ? Image.file(
-                          pickedImage!,
-                          fit: BoxFit.fill,
 
-                        )
-                            : Image.network(
-                          'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
-                          width:170,
-                          height: 170,
-                          fit: BoxFit.cover,
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          radius: MediaQuery.of(context).size.width*0.2,
+                          backgroundColor: Colors.transparent,
+                          child: profileImage,
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 5,
-                      child: IconButton(
-                        onPressed:imagePickerOption,
-                        icon: const Icon(
-                          Icons.add_a_photo_outlined,
-                          color: Colors.blue,
-                          size: 25,
-                        ),
-                      ),
+                        IconButton(onPressed: () {
+                        }, icon: Icon(Icons.add_a_photo_rounded, color: Color.fromARGB(
+                            232, 18, 215, 241),), iconSize: 25,),
+                      ],
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton.icon(
-                          onPressed: imagePickerOption,
-                          icon: const Icon(Icons.add_a_photo_sharp),
-                          label: const Text('UPLOAD IMAGE')),
+
+
+                    const SizedBox(height: 29),
+                    Text("E-mail ID ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<E-mail ID>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
+                      ],
+                    ),
+                    Text("Class: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<class>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              setState(() {
+                                _showChipButtons = true;
+                                _chipClassMade = true;
+                              });
+                              onSubmitted: (value) {
+                                setState(() { _showChipButtons = false;});
+                              };
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        ),
+                        _showChipButtons ? Container(
+                          height: MediaQuery.of(context).size.height*0.08,
+                          child: buildClassButtons(),
+                        ) : Container(),
+                      ],
                     ),
 
-                    const SizedBox(height: 24),
+
+                    /*const SizedBox(height: 24),
                     TextFieldWidget(
                       label: 'Name',
                       text: user.name,
@@ -230,7 +376,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       text: user.Fees,
 
                       onChanged: (Fees) {},
-                    ),
+                    ),*/
                     ElevatedButton(
                         onPressed: (){
                           openImages();
