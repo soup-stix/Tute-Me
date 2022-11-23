@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage>{
             children: [
 
               SizedBox(height: MediaQuery.of(context).size.height*0.1,),
-              TextButton(
+              widget.child == "Student" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
                   style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -134,8 +134,8 @@ class _HomePageState extends State<HomePage>{
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("My Profile", style: TextStyle(fontSize: 20),)
                   )
-              ),
-              TextButton(
+              ): Container(),
+              widget.child == "Guest" ? TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Map())),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -143,9 +143,9 @@ class _HomePageState extends State<HomePage>{
                   child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
-                      child: Text("Locator", style: TextStyle(fontSize: 20),)
+                      child: Text("Locator ❣️", style: TextStyle(fontSize: 20),)
                   )
-              ),
+              ): Container(),
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Student_Register())),
                   style: TextButton.styleFrom(
@@ -154,10 +154,10 @@ class _HomePageState extends State<HomePage>{
                   child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
-                      child: Text("Find Tutor", style: TextStyle(fontSize: 20),)
+                      child: Text("Best Tutor for ME 🤔", style: TextStyle(fontSize: 20),)
                   )
               ),
-              TextButton(
+              /*TextButton(
                   onPressed: () {},
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage>{
                       width: MediaQuery.of(context).size.width*1,
                       child: Text("Homepage", style: TextStyle(fontSize: 20),)
                   )
-              ),
+              ),*/
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
                   style: TextButton.styleFrom(
@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage>{
                   child: Container(
                       alignment: Alignment.centerLeft,
                       width: MediaQuery.of(context).size.width*1,
-                      child: Text("Add Tutor", style: TextStyle(fontSize: 20),)
+                      child: Text("Register as Tutor 🎓", style: TextStyle(fontSize: 20),)
                   )
               ),
               widget.child != "Student" ? TextButton(
