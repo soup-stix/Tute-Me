@@ -69,7 +69,7 @@ class _HomePage2State extends State<HomePage2>{
       appBar: AppBar(
         actions: [
           Material(
-            borderRadius: BorderRadius.circular(90),
+            borderRadius: BorderRadius.circular(30),
             clipBehavior: Clip.antiAlias,
             elevation: 8,
             child: InkWell(

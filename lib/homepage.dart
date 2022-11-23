@@ -70,31 +70,17 @@ class _HomePageState extends State<HomePage>{
       backgroundColor: Colors.white,
       appBar: AppBar(
        actions: [
-         Material(
-           borderRadius: BorderRadius.circular(90),
-           clipBehavior: Clip.antiAlias,
-           elevation: 8,
-           child: InkWell(
-             onTap: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile2()));
-             },
-             child: Ink.image(
-                 image: NetworkImage(
-
-                   'https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80',
-                 ),
-                 height: 45,
-                 width: 53,
-                 fit: BoxFit.fill
-             ),
+         Padding(
+           padding: const EdgeInsets.all(10.0),
+           child: CircleAvatar(
+             radius: MediaQuery.of(context).size.width*0.05,
+             backgroundColor: Colors.transparent,
+             child: Image.asset('assets/iconbg.png', fit: BoxFit.fill,),
            ),
          ),
        ],
         automaticallyImplyLeading: false,
         flexibleSpace: Container(
-          
-
-
         decoration: BoxDecoration(
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 80)],
     gradient: LinearGradient(
