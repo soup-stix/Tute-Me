@@ -21,10 +21,34 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  List<String> _values = [];
-  List<bool> _selected = [];
+
+  bool _showTypeButtons = false;
+  bool _showModeButtons = false;
+  bool _showSubjectList = false;
   bool _showChipButtons = false;
   bool _chipClassMade = false;
+  bool _chipSubjectMade = false;
+  bool _chipModeMade = false;
+  bool _chipTypeMade = false;
+  bool _loadingWidget = false;
+  List<String> _values = [];
+  List<bool> _selected = [];
+  List<bool> _selectedMode = [];
+  List<bool> _selectedType = [];
+  List<dynamic> _subjects = [];
+  List<dynamic> _mode = [];
+  List<dynamic> _type = [];
+  var subject_map = {};
+  var class_map = {};
+  var mode_map = {};
+  var type_map = {};
+  List<dynamic> items = [];
+  List _searchResult = [];
+  List<dynamic> _allSubjects = ["math","science","english","history","civics","economics"];
+
+  List<dynamic> _modes = ['Online','Offline'];
+  List<dynamic> _types = ['Group','Individual'];
+
   Widget buildClassChips() {
     List<Widget> chips = [];
 
@@ -85,6 +109,145 @@ class _EditProfilePageState extends State<EditProfilePage> {
       scrollDirection: Axis.horizontal,
       children: buttons,
     );
+  }
+  Widget buildTypeChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _type.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_type[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove mode",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _chipTypeMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _type.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+  Widget buildTypeButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 0; i < 2; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_type.contains(_types[i]) == false) {
+                _type.add(_types[i]);
+                _selectedType.add(true);
+              }
+            });
+          },
+          child: Text(_types[i], style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
+  Widget buildModeChips() {
+    List<Widget> chips = [];
+
+    for (int i = 0; i < _mode.length; i++) {
+      RawChip actionChip = RawChip(
+        selected: true,
+        label: Text(_mode[i],style: TextStyle(fontSize: 15,color: Colors.black),),
+        backgroundColor: Colors.white,
+        selectedColor: Colors.lightBlue,
+        deleteButtonTooltipMessage: "Remove mode",
+        deleteIcon: Icon(Icons.close_rounded,size: 15,color: Colors.black,),
+        onPressed: () {
+          setState(() {
+            _chipModeMade = true;
+          });
+        },
+        onDeleted: () {
+          setState(() {
+            _mode.removeAt(i);
+          });
+        },
+        showCheckmark: false,
+      );
+      chips.add(actionChip);
+      chips.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: chips,
+    );
+  }
+  Widget buildModeButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 0; i < 2; i++) {
+      TextButton buttonChip = TextButton(
+          style: ButtonStyle(enableFeedback: true,),
+          onPressed: () {
+            setState(() {
+              if (_mode.contains(_modes[i]) == false) {
+                _mode.add(_modes[i]);
+                _selectedMode.add(true);
+              }
+            });
+          },
+          child: Text(_modes[i], style: TextStyle(fontSize: 15,color: Colors.lightBlue),)
+      );
+      buttons.add(buttonChip);
+      buttons.add(SizedBox(width: MediaQuery.of(context).size.width*0.01,));
+    }
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: buttons,
+    );
+  }
+
+
+  void filterSearchResults(String query) {
+    List<dynamic> dummySearchList = <dynamic>[];
+    dummySearchList.addAll(_allSubjects);
+    if(query.isNotEmpty) {
+      List<String> dummyListData = <String>[];
+      dummySearchList.forEach((item) {
+        if(item.contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+        if(item.contains(query.toUpperCase())) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        items.clear();
+        items.addAll(_allSubjects);
+      });
+    }
   }
   void setState(VoidCallback fn) {
     // TODO: implement setState
@@ -297,12 +460,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         )
                       ],
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+
+                    ),
+                    _chipClassMade ? Container(
+                      height: MediaQuery.of(context).size.height*0.08,
+                      child: buildClassChips(),
+                    ) : Container(),
                     Text("Class: ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     Row(
                       children: [
                         Text("<class>", style: TextStyle(fontSize:15),),
                         Spacer(),
-                        TextButton(onPressed: () {}, child: Row(
+                        TextButton(onPressed: () {
+
+                        }, child: Row(
                           children: [
                             const Text("Edit"),
                             IconButton(onPressed: () {
@@ -314,6 +488,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 setState(() { _showChipButtons = false;});
                               };
                               showAlertDialog(context, classEdit);
+                              _showChipButtons ? Container(
+                                height: MediaQuery.of(context).size.height*0.08,
+                                child: buildClassButtons(),
+                              ) : Container();
+
                             }, icon: Icon(Icons.edit), iconSize: 20,),
                           ],
                         ),
@@ -322,66 +501,239 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   232, 18, 215, 241),),
                             )
                         ),
-                        _showChipButtons ? Container(
+
+
+                      ],
+                    ),
+
+                    Text("Subjects ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Subjects>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              setState(() {
+                                _showSubjectList = true;
+                              });
+
+                              showAlertDialog(context, classEdit);
+
+                            },
+
+                              icon: Icon(Icons.edit), iconSize: 20,)
+
+                            ,
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
+                      ],
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height*0.03,),
+                    _showSubjectList ?
+                    Container(
+                      color: Colors.transparent,
+                      height: MediaQuery.of(context).size.height*0.3,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                            width: MediaQuery.of(context).size.width*06,
+                            height: 40,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if(_subjects.contains(items[index]) == false)
+                                      _subjects.add(items[index]);
+                                    print(_subjects);
+                                    _chipSubjectMade = true;
+                                  });
+                                },
+                                child: Text('${items[index]}'),
+                                style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                )
+                            ),
+                          );
+                        },
+                      ),
+                    ) : Container(),
+                    Text("Mode", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Mode>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              setState(() {
+                                _showModeButtons = true;
+                                _chipModeMade = true;
+                              });
+
+                              showAlertDialog(context, classEdit);
+                            },
+                              icon: Icon(Icons.edit), iconSize: 20,),
+
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        ),
+                        _showModeButtons ? Container(
                           height: MediaQuery.of(context).size.height*0.08,
-                          child: buildClassButtons(),
+                          child: buildModeButtons(),
                         ) : Container(),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      //padding: EdgeInsets.only(left:MediaQuery.of(context).size.width*0.05,top:MediaQuery.of(context).size.height*0.3),
+
+                    ),
+                    _chipTypeMade ? Container(
+                      height: MediaQuery.of(context).size.height*0.08,
+                      child: buildTypeChips(),
+                    ) : Container(),
+
+                    Text("Type", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Type>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+                              setState(() {
+                                _showTypeButtons = true;
+                                _chipTypeMade = true;
+                              });
+
+                              showAlertDialog(context, classEdit);
+                            },
+                              icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        ),
+                        _showTypeButtons ? Container(
+                          height: MediaQuery.of(context).size.height*0.08,
+                          child: buildTypeButtons(),
+                        ) : Container(),
+                      ],
+                    ),
+                    Text("Fees", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Fees>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
+                      ],
+                    ),
+                    Text("Phone no", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Phone no>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
+                      ],
+                    ),
+                    Text("Area", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<Area>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
+                      ],
+                    ),
+                    Text("About yourself", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Row(
+                      children: [
+                        Text("<About yourself>", style: TextStyle(fontSize:15),),
+                        Spacer(),
+                        TextButton(onPressed: () {}, child: Row(
+                          children: [
+                            const Text("Edit"),
+                            IconButton(onPressed: () {
+
+                              showAlertDialog(context, classEdit);
+                            }, icon: Icon(Icons.edit), iconSize: 20,),
+                          ],
+                        ),
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                                  232, 18, 215, 241),),
+                            )
+                        )
                       ],
                     ),
 
 
-                    /*const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Name',
-                      text: user.name,
-                      onChanged: (name) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Email ID',
-                      text: user.email,
-                      onChanged: (EmailID) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Subject',
-                      text: user.Subject,
 
-                      onChanged: (Subject) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Classes',
-                      text: user.Classes,
 
-                      onChanged: (Classes) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'PhoneNumber',
-                      text: user.PhoneNumber,
-
-                      onChanged: (PhoneNumber) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Address',
-                      text: user.Address,
-                      maxLines: 5,
-                      onChanged: (Address) {},
-                    ),
-                    const SizedBox(height: 24),
-                    TextFieldWidget(
-                      label: 'Fees',
-                      text: user.Fees,
-
-                      onChanged: (Fees) {},
-                    ),*/
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(
+                          232, 18, 215, 241),),
                         onPressed: (){
                           openImages();
                         },
                         child: Text("Open Images")
+
                     ),
 
                     Divider(),
