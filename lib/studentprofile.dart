@@ -1,6 +1,5 @@
 import 'dart:io';
-
-
+import 'package:image_picker/image_picker.dart';
 import 'package:editable_image/editable_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:tute_me/profilewidget.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'package:tute_me/textfield.dart';
 import 'package:tute_me/user.dart';
 import 'package:tute_me/userprefernce.dart';
 
-import 'details.dart';
 
 
 class EditProfilePage2 extends StatefulWidget {
@@ -23,12 +19,21 @@ class EditProfilePage2 extends StatefulWidget {
 }
 
 class _EditProfilePageState2 extends State<EditProfilePage2> {
-  File? pickedImage;
+  dynamic pickedImage;
   var nameEdit = TextEditingController();
   var classEdit = TextEditingController();
-
+  dynamic newImage;
   Widget profileImage = Image.asset('assets/iconbg.png', fit: BoxFit.fill,);
 
+  Future<void> chooseImage() async {
+    newImage = await ImagePicker().getImage(source: ImageSource.gallery);//await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      print(newImage);
+      profileImage = Image.file(newImage, fit: BoxFit.fill,);
+    });
+
+  }
 
   showAlertDialog(BuildContext context, TextEditingController _controller) {
     Widget launchButton = TextButton(
@@ -63,8 +68,8 @@ class _EditProfilePageState2 extends State<EditProfilePage2> {
       },
     );
   }
-  final ImagePicker imgpicker = ImagePicker();
-  List<XFile>? imagefiles;
+ /* final ImagePicker imgpicker = ImagePicker();
+  dynamic imagefiles;
 
   openImages() async {
     try {
@@ -152,9 +157,7 @@ class _EditProfilePageState2 extends State<EditProfilePage2> {
       debugPrint(error.toString());
     }
   }
-
-
-  User user = UserPreferences.myUser;
+  */
 
   @override
   Widget build(BuildContext context) =>
@@ -180,20 +183,15 @@ class _EditProfilePageState2 extends State<EditProfilePage2> {
                   physics: BouncingScrollPhysics(),
                   children: [
 
-                    /*CircleAvatar(
+                    CircleAvatar(
                       radius:MediaQuery.of(context).size.width*0.2,
                       backgroundColor: Colors.transparent,
-
-                      child: pickedImage != null
-                          ? Image.file(
-                        pickedImage!,
-                        fit: BoxFit.fill,
-                      ),
-                    ),*/
+                      child: profileImage,
+                    ),
                     Column(
                       children: [
 
-                        CircleAvatar(
+                        /*CircleAvatar(
                           radius: MediaQuery.of(context).size.width*0.2,
                           backgroundColor: Colors.transparent,
                           child: pickedImage != null ? Image.file(
@@ -203,8 +201,8 @@ class _EditProfilePageState2 extends State<EditProfilePage2> {
                           )
                               : Image.asset('assets/iconbg.png', fit: BoxFit.fill,),
 
-                        ),
-                        Positioned(
+                        ),*/
+                        /*Positioned(
                           bottom: 0,
                           right: 5,
                           child: IconButton(
@@ -216,14 +214,14 @@ class _EditProfilePageState2 extends State<EditProfilePage2> {
                               size: 25,
                             ),
                           ),
-                        ),
+                        ),*/
 
-
-
-                        /* IconButton(onPressed: imagePickerOption, icon: Icon(
-
+                        IconButton(onPressed: () async{
+                          await chooseImage();
+                          profileImage = Image.file(newImage);
+                        }, icon: Icon(
                           Icons.add_a_photo_rounded, color: Color.fromARGB(
-                            232, 18, 215, 241),), iconSize: 25,),*/
+                            232, 18, 215, 241),), iconSize: 25,),
                       ],
                     ),
 

@@ -28,6 +28,54 @@ class _HomePageState extends State<HomePage>{
   final _database = FirebaseDatabase.instance.reference();
   dynamic _data;
 
+  showAlertDialog(BuildContext context) {
+    Widget launchButton = TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: TextButton.styleFrom(
+        foregroundColor:  Color.fromARGB(
+            232, 18, 215, 241),
+      ),
+      child: Text(
+        'Ok',
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+    Widget loginButton = TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin()));
+      },
+      style: TextButton.styleFrom(
+        foregroundColor:  Color.fromARGB(
+            232, 18, 215, 241),
+      ),
+      child: Text(
+        'Login',
+        style: TextStyle(fontSize: 15),
+      ),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Align(child: Text("Login to Continue 🤩"),alignment: Alignment.topCenter,),
+      actions: [
+        loginButton,
+        launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   @override
     void initState(){
       super.initState();
@@ -136,7 +184,11 @@ class _HomePageState extends State<HomePage>{
                   )
               ): Container(),
               widget.child == "Guest" ? TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Map())),
+                  onPressed: () {
+                    widget.child == "Guest" ?
+                    showAlertDialog(context) :
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Map()));
+                  },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                   ),
@@ -147,8 +199,13 @@ class _HomePageState extends State<HomePage>{
                   )
               ): Container(),
               TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Student_Register())),
-                  style: TextButton.styleFrom(
+                    onPressed: () {
+                      widget.child == "Guest" ?
+                      showAlertDialog(context) : Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => Favourites_Expanded()));
+                    },
+                      style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                   ),
                   child: Container(
@@ -157,17 +214,6 @@ class _HomePageState extends State<HomePage>{
                       child: Text("Best Tutor for ME 🤔", style: TextStyle(fontSize: 20),)
                   )
               ),
-              /*TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width*1,
-                      child: Text("Homepage", style: TextStyle(fontSize: 20),)
-                  )
-              ),*/
               TextButton(
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Listing())),
                   style: TextButton.styleFrom(
@@ -328,7 +374,10 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Spacer(),
                   IconButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile())),
+                    onPressed: () {
+                      widget.child == "Guest" ?
+                      showAlertDialog(context) : Navigator.push(context, MaterialPageRoute(builder: (context) => MyProfile()));
+                    },
                     hoverColor: Colors.black,
                     color: Colors.white,
                     highlightColor: Colors.black12,
