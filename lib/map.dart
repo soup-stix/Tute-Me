@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:custom_marker/marker_icon.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
@@ -30,6 +31,8 @@ class _MapState extends State<Map> {
   var _isSelected = false;
   var _cardName;
   var _cardData;
+  var _cardPrice;
+  var _cardRating;
   dynamic data = [];
   var searchText = TextEditingController();
 
@@ -61,8 +64,9 @@ class _MapState extends State<Map> {
             onTap: () {
               setState(() {
                 _cardImage = items[2];
-                _cardName = items[0];
-                _cardData = items[1];
+                _cardName = items[0] + items[1];
+                _cardData = items[5];
+                _cardPrice = items[6];
                 _isSelected = true;
               });
             },
@@ -73,8 +77,9 @@ class _MapState extends State<Map> {
           onTap: () {
             setState(() {
               _cardImage = items[2];
-              _cardName = items[0];
-              _cardData = items[1];
+              _cardName = items[0] + items[1];
+              _cardData = items[5];
+              _cardPrice = items[6];
               _isSelected = true;
             });
           }, //Icon for Marker
@@ -144,8 +149,8 @@ class _MapState extends State<Map> {
       final dynamic teacher = event.snapshot.value;
       setState(() {
         teacher.forEach((k, v){
-          print([v['first_name'],v['coordinates']['latitude'],v['coordinates']['longitude']]);
-          data.add([v['first_name'],v['last_name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude']]);
+          print([v['first_name'],v['coordinates']['latitude'],v['coordinates']['longitude'],v['about'],v['fee'],v['rating']]);
+          data.add([v['first_name'],v['last_name'],"assets/gajju.jpg",v['coordinates']['latitude'],v['coordinates']['longitude'],v['about'],v['fee'],v['rating']]);
         });
       });
     });
@@ -159,8 +164,10 @@ class _MapState extends State<Map> {
             onTap: () {
               setState(() {
                 _cardImage = items[2];
-                _cardName = items[0];
-                _cardData = items[1];
+                _cardName = items[0] + items[1];
+                _cardData = items[5];
+                _cardPrice = items[6];
+                _cardRating = items[7];
                 _isSelected = true;
               });
             },
@@ -171,8 +178,10 @@ class _MapState extends State<Map> {
           onTap: () {
             setState(() {
               _cardImage = items[2];
-              _cardName = items[0];
-              _cardData = items[1];
+              _cardName = items[0] + items[1];
+              _cardData = items[5];
+              _cardPrice = items[6];
+              _cardRating = items[7];
               _isSelected = true;
             });
           }, //Icon for Marker
@@ -341,42 +350,7 @@ class _MapState extends State<Map> {
                           ),
                         ],
                       ),
-                    )/*Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(left: 8.0),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.white),
-                    width: MediaQuery.of(context).size.width*0.8,
-                    child: TextField(
-                      controller: searchText,
-                      onTap: () {
-                        setState(() {_isSelected = false; });
-                      },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        icon: Icon(Icons.search_rounded),
-                        hintText: "Search area",
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          _searchText = value;
-                          print(_searchText);
-                        });
-                      },
-                      onSubmitted: (value) {
-                        setState(() async {
-                          await _getlocation();
-                          GoogleMapController controller = await _controller.future;
-                          controller.animateCamera(CameraUpdate.newCameraPosition(
-                            // on below line we have given positions of Location 5
-                              CameraPosition(
-                                target: LatLng(location['latitude'], location['longitude']),
-                                zoom: 14,
-                              )
-                          ));
-                        });
-                      },
-                    ),
-                  ),*/
+                    )
                 ),
                 _isSelected ? Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -405,6 +379,21 @@ class _MapState extends State<Map> {
                                 children: [
                                   Text(_cardName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),),
                                   Text(_cardData, style: TextStyle(fontWeight: FontWeight.bold,),),
+                                  RatingBar.builder(
+                                      initialRating: _cardRating,
+                                      minRating:1 ,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemSize: 10,
+                                      itemPadding: EdgeInsets.all(2.0),
+                                      updateOnDrag: true,
+                                      itemBuilder: (context,_)=>
+                                          Icon(Icons.star,color: Color.fromARGB(
+                                              225, 39, 211, 241),), onRatingUpdate: (double value) { _cardRating = value; },
+                                  ),
+                                  Spacer(),
+                                  Text("Rs."+_cardPrice, style: TextStyle(fontWeight: FontWeight.bold,),),
                                 ],
                               ),
                             ),
